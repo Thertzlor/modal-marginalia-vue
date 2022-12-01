@@ -1,6 +1,2 @@
-#Modal Marginalia
-
-Todos:
-
-Newdos:
-Comments not working:why?
+# Modal Marginalia
+Private Repository for my site.
