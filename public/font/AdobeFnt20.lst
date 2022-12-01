@@ -1,0 +1,49 @@
+%!Adobe-FontList 1.20
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:Erte
+FamilyName:Erte
+StyleName:Regular
+FullName:Erte
+MenuName:Erte
+StyleBits:0
+WritingScript:Roman
+OutlineFileName:D:\develo\infinite jogress template\Font\Erte.ttf
+DataFormat:sfntData
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:21504
+FileModTime:1365499126
+WeightClass:400
+WidthClass:5
+AngleClass:0
+NameArray:0,Mac,4,Erte
+NameArray:0,Win,1,Erte
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:FeaturedItem
+FamilyName:Featured Item
+StyleName:Regular
+FullName:Featured Item
+MenuName:Featured Item
+StyleBits:0
+WritingScript:Roman
+OutlineFileName:D:\develo\infinite jogress template\Font\FeaturedItem.ttf
+DataFormat:sfntData
+hasSVG:no
+VariableFontType:NonVariableFont
+FileLength:47996
+FileModTime:1209611280
+WeightClass:400
+WidthClass:5
+AngleClass:0
+NameArray:0,Mac,4,Featured Item
+NameArray:0,Win,1,Featured Item
+%EndFont
+
