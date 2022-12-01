@@ -70,5 +70,5 @@ const apolloClient = new ApolloClient({
 const app = createApp({render: () => h(App),compilerOptions:{
   isCustomElement(t){return ['CustomLink'].includes(t)}
 }});
-app.config.globalProperties = {...globals}
+app.config.globalProperties = {...globals} as any
 app.provide(DefaultApolloClient, apolloClient).use(router).mount("#app");
