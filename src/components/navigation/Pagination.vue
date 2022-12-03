@@ -4,8 +4,9 @@ import PageEntry from "../containers/PageEntry.vue";
 const surrounding = 2;
 const maxVisible = surrounding * 2 + 1;
 
-const props = defineProps<{page_data: MetaData['pagination'], base_url?: string, res?: PaginationArg}>();
+const props = defineProps<{page_data: MetaData['pagination'], base_url?: string, res?: PaginationArg, term?: string}>();
 const emit = defineEmits<{(e: 'pg', arg: any)}>()
+const term = props.term ?? 'page'
 
 function rePage(target: number | string, base = props.base_url) {
   const page = typeof target === 'number' ? target : parseInt(target, 10)
@@ -13,7 +14,7 @@ function rePage(target: number | string, base = props.base_url) {
   const nextArg: PaginationArg = {pageSize: props.page_data.pageSize, page}
   emit('pg', nextArg)
   const curLok = base || window.location.href
-  window.history.pushState({}, '', /page=\d+/.test(curLok) ? curLok.replace(/page=\d+/gi, `page=${page}`) : `${curLok}${curLok.includes('?') ? '&' : '?'}page=${page}`)
+  window.history.pushState({}, '', (new RegExp(`${term}=\\d+`)).test(curLok) ? curLok.replace((new RegExp(`${term}=\\d+`), 'gi'), `${term}=${page}`) : `${curLok}${curLok.includes('?') ? '&' : '?'}${term}=${page}`)
 }
 
 function pageEntries(pageCount: number, current: number) {
@@ -38,12 +39,8 @@ function pageEntries(pageCount: number, current: number) {
 
 <template>
   <ul v-if="page_data.pageCount !== 1 && page_data.page <= page_data.pageCount" class="pagination">
-    <PageEntry page_text="<" :page_target="page_data.page - 1" :page_disabled="page_data.page - 1 === 0"
-      @page="rePage" />
-    <PageEntry v-for="({text, target, disabled}, idx) in pageEntries(page_data.pageCount, page_data.page)" :key="idx"
-      :page_text="text" :page_target="target" :page_current="target === page_data.page" :page_disabled="disabled"
-      @page="rePage" />
-    <PageEntry page_text=">" :page_target="page_data.page + 1" :page_disabled="page_data.page + 1 > page_data.pageCount"
-      @page="rePage" />
+    <PageEntry page_text="<" :page_target="page_data.page - 1" :page_disabled="page_data.page - 1 === 0" @page="rePage" />
+    <PageEntry v-for="({text, target, disabled}, idx) in pageEntries(page_data.pageCount, page_data.page)" :key="idx" :page_text="text" :page_target="target" :page_current="target === page_data.page" :page_disabled="disabled" @page="rePage" />
+    <PageEntry page_text=">" :page_target="page_data.page + 1" :page_disabled="page_data.page + 1 > page_data.pageCount" @page="rePage" />
   </ul>
 </template>
