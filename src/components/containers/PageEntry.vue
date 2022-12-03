@@ -12,9 +12,8 @@ const navEmit = () => !props.page_disabled && emit('page', props.page_target)
 
 <template>
   <li :class="{active: page_current}">
-    <a @click.stop.prevent="navEmit" :href="rawRoute.replace('page=#', `page=${page_target}`)" class="pagination"
-      :disabled="page_disabled ? true : undefined" :aria-current="page_current">
-      {{page_text || "..."}}
+    <a @click.stop.prevent="navEmit" :href="rawRoute.replace('page=#', `page=${page_target}`)" class="pagination" :disabled="page_disabled ? true : undefined" :aria-current="page_current">
+      {{ page_text || "..."}}
     </a>
   </li>
 </template>

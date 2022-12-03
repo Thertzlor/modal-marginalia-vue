@@ -19,8 +19,7 @@ const searchSubmit = () => router.push("/search?q=" + encodeURIComponent(searchQ
     <div v-if="latest_posts.length" class="misc">
       <ul>
         <li v-for="{attributes: {slug, publishedAt, title}, id} in latest_posts" :key="id">
-          <RouterLink :to="`/post/${id}-${slug}`">{{ title}}</RouterLink>
-          <br />
+          <RouterLink :to="`/post/${id}-${slug}`">{{ title}}</RouterLink><br />
           <span>{{ gerDate(publishedAt)}}</span>
         </li>
       </ul>

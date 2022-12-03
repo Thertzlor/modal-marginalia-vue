@@ -79,7 +79,6 @@ function commentSubmit(challengeToken) {
       <textarea minlength="20" required class="comment_input grayborder" v-model="body" name="comment_text" id="comtext" cols="30" rows="10" placeholder="Your comment"></textarea>
       <input minlength="3" type="text" v-model="user" name="comment_name" class="comment_input_2nd grayborder" placeholder="Name" required />
       <input minlength="4" type="email" v-model="mail" name="comment_email" placeholder="Email" class="comment_input_2nd grayborder" required />
-
       <button type="submit" class="comment_input_2nd grayborder hoverglow">Submit Comment</button>
       <vue-hcaptcha ref="invisibleHcaptcha" :sitekey="sitekey" theme="dark" size="invisible" @verify="commentSubmit" @expired="onExpire" challengeContainer="challenger" @challenge-expired="onChallengeExpire" @error="onError" />
     </form>

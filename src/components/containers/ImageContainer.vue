@@ -13,9 +13,7 @@ const iml = ref(false)
 <template>
   <figure v-if="imgData" :class="className" class="invisible">
     <a :href="data.url">
-      <img :srcset="imgSrcList" :src="data.url" :alt="data.alternativeText" @load="e => ((iml = true), imgload(e, 2))" :style="{
-        aspectRatio: `${data.width} / ${data.height}`, width: iml ? 'auto' : ''
-      }" :sizes="customSize || sizeText" :height="data.height" :width="data.width" />
+      <img :srcset="imgSrcList" :src="data.url" :alt="data.alternativeText" @load="e => ((iml = true), imgload(e, 2))" :style="{aspectRatio: `${data.width} / ${data.height}`, width: iml ? 'auto' : ''}" :sizes="customSize || sizeText" :height="data.height" :width="data.width" />
     </a>
     <figcaption v-if="data.caption">{{ data.caption}}</figcaption>
   </figure>

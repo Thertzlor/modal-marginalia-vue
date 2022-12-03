@@ -4,7 +4,6 @@ import CustomLink from '../navigation/CustomLink.vue';
 import ImageContainer from "../containers/ImageContainer.vue";
 const props = defineProps<{content: string, imgs: Entity<UploadedFile>[]}>()
 
-
 const findSource = imgString => (/src="([^"]+)"/.exec(imgString) || [])[1] || ''
 
 const imageTransform = (imageStr: string) => {
@@ -27,7 +26,6 @@ const dynamicComponent = computed(() => (
     components: {CustomLink, ImageContainer}
   }
 ))
-
 </script>
 
 <template>
