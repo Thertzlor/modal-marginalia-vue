@@ -7,7 +7,7 @@ export const maxResults = 100
 export const perPage = 10
 type SimpleImg = {url: string;width: number;height: number}
 export const  getImageData = (imgData:UploadedFile): SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height}).filter(f => f)
-export const getSrcSet = (imgs:SimpleImg[]): string => imgs.map(({url, width}) => `${url} ${width}w`).join(',')
+export const getSrcSet = (imgs:SimpleImg[]): string => imgs.filter(i=>i.url).map(({url, width}) => `${url} ${width}w`).join(',')
 export const searchSurround = 150
 export const defaultNote =`<olstyle="list-style-type:decimal;"><li>#</li></ol>`
 export const unRay = <T extends any>(x: T): T extends any[] ? T[0] : T => Array.isArray(x) ? x[0] : x;
