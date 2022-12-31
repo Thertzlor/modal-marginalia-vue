@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {computed, ref} from 'vue';
 import {getImageData, getSrcSet} from "@/services/GlobalDataService";
-const props = defineProps<{imgData: UploadedFile | string |Record<string,any>, className: string, customSize?: string}>();
+const props = defineProps<{imgData: UploadedFile | string |Record<string,any>, className: string, customSize?: string, image?:any}>();
 const data = computed(() => typeof props.imgData === 'string' ? JSON.parse(atob(props.imgData)) as UploadedFile : props.imgData)
 const imageData = getImageData(data.value as UploadedFile)
 const imgSrcList = getSrcSet(imageData)

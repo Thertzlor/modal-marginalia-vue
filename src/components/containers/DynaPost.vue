@@ -18,7 +18,7 @@ const imageTransform = (imageStr: string) => {
   return `<ImageContainer :imgData="'${btoa(JSON.stringify(file))}'" :className="'${classText}'" custom-size="(max-width:1100px) calc(88vw * ${multiplier}) , calc(70vw * ${multiplier}) " />`
 }
 
-const linkTransform = (linkStr: string) => (linkStr[1] === '/') ? '</CustomLink>' : `<CustomLink :className="image" :noBlank="${!linkStr.includes('target="_blank"')}" to="${(/href="([^"]+)"/.exec(linkStr))?.[1]}">`
+const linkTransform = (linkStr: string) => (linkStr[1] === '/') ? '</CustomLink>' : `<CustomLink className="image" :noBlank="${!linkStr.includes('target="_blank"')}" to="${(/href="([^"]+)"/.exec(linkStr))?.[1]}">`
 
 const dynamicComponent = computed(() => (
   {
