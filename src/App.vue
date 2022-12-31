@@ -10,6 +10,7 @@ let relCount = 5;
 const route = useRoute()
 const router = useRouter()
 const sizes = new Map<string, string>()
+const qouteSalt = ref(1)
 const menVis = ref(false)
 const slideVal = ref('-200vh')
 const pg: PaginationArg = {pageSize: 100, page: 1}
@@ -99,7 +100,8 @@ const changeStars = (forceDiff = false) => {
   }
 }
 
-router.beforeEach(() => {
+router.beforeEach(g => {
+  if(['/', '/home'].includes(g.path)) qouteSalt.value = qouteSalt.value++;
   if (first) {
     first = false;
     return
@@ -138,6 +140,10 @@ const positionAdjust = computed(() => {
 
 const {result, onError} = useQuery<{quotes: EntityCollection<Quote>, categories: EntityCollection<Category>, posts: EntityCollection<Post>}>(quer, {pg}, {fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
 onError(() => router.push('/ServerError'))
+
+const fallback = {attributes: {text: ""}}
+let quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes.text)
+
 </script>
 
 <template>
@@ -164,7 +170,7 @@ onError(() => router.push('/ServerError'))
           <RouterLink :to="result ? '/' : ''" class="nav-link">Modal<br />Marginalia</RouterLink>
         </h1>
         <Sidebar :cat_list="result?.categories.data || []" :latest_posts="result?.posts.data || []" />
-        <RouterView :quote_list="result?.quotes.data" v-slot="{Component, route}">
+        <RouterView :quote="quote" v-slot="{Component, route}">
           <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter">
             <component :style="{'--slide_height': slideVal}" :is="Component" :key="route.fullPath" />
           </Transition>

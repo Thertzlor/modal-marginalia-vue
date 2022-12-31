@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 import {onMounted} from 'vue';
-const props = defineProps<{quote_list: Entity<Quote>[]}>();
+const props = defineProps<{quote: string}>();
 
-const fallback = {attributes: {text: ""}}
-let qoute = (props.quote_list?.[Math.floor(Math.random() * props.quote_list.length)] || fallback).attributes.text
 
 onMounted(() => {
   const ins = document.getElementById("indexSVG") as any as SVGSVGElement;
@@ -17,7 +15,7 @@ onMounted(() => {
 
 <template>
   <div class="article_container">
-    <h2 class="home_header visible">{{qoute}}</h2>
+    <h2 class="home_header visible">{{quote}}</h2>
     <div class="svgContainer">
       <svg id="indexSVG" viewBox="0 -2.195 894.218 602.152" style="enable-background: new 0 0 68.6 100" xmlns="http://www.w3.org/2000/svg">
         <defs>
