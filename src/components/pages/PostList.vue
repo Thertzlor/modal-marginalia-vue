@@ -17,9 +17,8 @@ const singleCat = catQuery && !Array.isArray(catQuery);
 const exclusiveCat = singleCat && !tagQuery;
 
 const transActive = ref(false)
-//@ts-expect-error yeah,that's how that works.
-const allFilter: FilterObject<any> = {}
-const noneFilter: FilterObject<any> = {id: {eq: -1}}
+const allFilter = {}
+const noneFilter= {id: {eq: -1}}
 
 const slugFilter = (query: string | null | string[]): FilterObject<{slug: string}> => Array.isArray(query) ? {slug: {in: query.map(s => s.trim())}} : query ? {slug: {eq: query}} : allFilter;
 const catSelection = catQuery && slugFilter(catQuery);
@@ -52,7 +51,7 @@ const fetcher = (pg: PaginationArg) => {
 onResult(() => document.title = `${sitename.value} - Modal Marginalia`)
 
 const sitename = computed(() =>
-  (exclusiveCat && result.value?.categories.data[0].attributes.name) ?
+  (exclusiveCat && result.value?.categories.data[0]?.attributes.name) ?
     result.value?.categories.data[0].attributes.name :
     result.value?.tags.data.length === 1 ? `Tag "${result.value?.tags.data[0].attributes.name}"` : 'Post List'
 )
@@ -64,21 +63,15 @@ const sitename = computed(() =>
 <template>
   <div v-if="result?.posts" class="article_container">
     <h1 v-if="result?.categories?.data?.length" class="generic_header fadeborder">
-      {{ `${exclusiveCat ? "" : "Categories: "}${result.categories.data.map((c) => c.attributes.name).join(", ")}`}}
+      {{ `${exclusiveCat ? "" : "Categories: "}${result?.categories.data.map((c) => c.attributes.name).join(", ")}`}}
     </h1>
-    <p v-if="exclusiveCat && result.categories?.data" v-html="result.categories.data[0].attributes.description" class="breakdown fadeborder"></p>
+    <p v-if="exclusiveCat && result?.categories?.data" v-html="result.categories.data[0]?.attributes.description" class="breakdown fadeborder"></p>
     <h1 v-if="result?.tags?.data?.length" class="generic_header fadeborder">
-      Posts tagged <em>{{ result.tags.data.map((t) => t.attributes.name).join(", ")}}</em>
+      Posts tagged <em>{{ result?.tags.data.map((t) => t.attributes.name).join(", ")}}</em>
     </h1>
-    <h1 v-if="(!result?.tags?.data?.length) && (!result?.categories?.data?.length)" class="generic_header fadeborder">
-      All Posts
-    </h1>
-
-    <!-- {% setcontent records = 'posts' where filto limit 20 page manualPage %}
-{{ pager(records, template = './partials/_pager_basic.twig') }} -->
+    <h1 v-if="(!result?.tags?.data?.length) && (!result?.categories?.data?.length)" class="generic_header fadeborder">Posts</h1>
     <Pagination v-if="result?.posts" :page_data="result.posts.meta.pagination" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">
-
       <TransitionGroup name="v-page" v-if="result?.posts.data.length">
         <article class="listing" v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, teaser, tags: {data: tagData}, category: {data: catData}}} in result.posts.data" :key="id">
           <div :class="`top_part ${img ? '' : ' empty'}`">
@@ -114,8 +107,8 @@ const sitename = computed(() =>
             <p>{{ teaser}}</p>
           </div>
         </article>
-        <Pagination v-if="result?.posts" :page_data="result.posts.meta.pagination" @pg="fetcher" />
       </TransitionGroup>
+      <Pagination v-if="result?.posts?.data?.length" :page_data="result.posts.meta.pagination" @pg="fetcher" />
       <article v-else class="noresult">
         <h2>Not found</h2>
         <p>
