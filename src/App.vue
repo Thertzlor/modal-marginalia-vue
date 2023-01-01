@@ -101,12 +101,12 @@ const changeStars = (forceDiff = false) => {
 }
 
 router.beforeEach(g => {
-  if(['/', '/home'].includes(g.path)) qouteSalt.value = qouteSalt.value++;
   if (first) {
     first = false;
     return
   }
   relCount++
+  if(['/', '/home'].includes(g.path)) qouteSalt.value = qouteSalt.value++;
   if (!bigImgSwitch || relCount < 3 || (Math.random() * 100) <= 70) return
   relCount = 0
   changeStars()
