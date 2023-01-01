@@ -5,8 +5,11 @@ import {useQuery} from "@vue/apollo-composable";
 import Pagination from "../navigation/Pagination.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import {perPage, unRay, antiNull} from '@/services/GlobalDataService';
-import {computed, ref} from 'vue';
-
+import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
+const invisible = ref(true)
+const transi = ref('none')
+onMounted(()=>setTimeout(()=> {invisible.value = false;transi.value = 'v-page';} , 260) )
+onBeforeUnmount(()=>{transi.value='none';invisible.value = true;})
 const router = useRouter();
 const route = router.currentRoute.value;
 let targetPage = unRay(route.query.page);
@@ -72,8 +75,8 @@ const sitename = computed(() =>
     <h1 v-if="(!result?.tags?.data?.length) && (!result?.categories?.data?.length)" class="generic_header fadeborder">Posts</h1>
     <Pagination v-if="result?.posts" :page_data="result.posts.meta.pagination" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">
-      <TransitionGroup name="v-page" v-if="result?.posts.data.length">
-        <article class="listing" v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, teaser, tags: {data: tagData}, category: {data: catData}}} in result.posts.data" :key="id">
+      <TransitionGroup :name="transi" v-if="result?.posts.data.length">
+        <article :class="{listing:true,invisible}" v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, teaser, tags: {data: tagData}, category: {data: catData}}} in result.posts.data" :key="id">
           <div :class="`top_part ${img ? '' : ' empty'}`">
             <a v-if="img?.attributes.formats.medium.url" :href="`/post/${id}-${slug}`">
               <img :srcset="getSrcSet(getImageData(img.attributes))" :src="img.attributes.url" @load="imgload" :width="img.attributes.width" sizes="(max-width : 1100px) 90vw, 33vw" :height="img.attributes.height" alt="whatever" class="invisible" />
