@@ -133,8 +133,8 @@ const quer = gql`query Init($pg:PaginationArg) { quotes(pagination:$pg) { data {
 const positionAdjust = computed(() => {
   const same = bw.value === cw.value;
   return {
-    '--fullscr_offset_x': same ? '.5em' : '1em',
-    '--fullscr_offset_y': same ? '1em' : '.5em',
+    // '--fullscr_offset_x': same ? '.5em' : '1em',
+    // '--fullscr_offset_y': same ? '1em' : '.5em',
   }
 })
 
