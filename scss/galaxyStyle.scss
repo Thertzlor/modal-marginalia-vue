@@ -64,11 +64,11 @@ $mediaCutoff: 1100px;
   --jit4: .06em;
   --jit5: .075em;
   --jit6: .12em;
-  --side_width: 25vw;
-  --text_offset_r: 5vw;
+  --side_width: 20vw;
+  --text_offset_r: 20vw;
   --text_offset_l: 1.5vw;
   --article_fullwidth: 90vw;
-  --text_fullwidth: 70vw;
+  --text_fullwidth: 60vw;
   --text_fullwidth_mobile: 98vw;
   --scrollw: .6em;
   --slide_height: -200vh;
@@ -115,8 +115,8 @@ html {
   font-weight: 450;
   font-style: normal;
   font-variant: normal;
-  font-size: 20px;
-  font-size: var(--default_size);
+  font-size: 22px;
+  font-size: calc((var(--default_size) / 1.5) + .3vw);
 }
 
 li::marker { color: #fffc; }
@@ -229,8 +229,8 @@ h1 {
       color: var(--link-color);
       display: block;
       text-decoration: none;
-      font-size: 4.5vw;
-      line-height: 4.5vw;
+      font-size: 3.3vw;
+      line-height: 3.5vw;
     }
   }
   &.article_header {
@@ -421,7 +421,7 @@ h1 {
     }
     ~ div {
       .banner img { max-height: 45vh; }
-      h1.sitename { margin-top: -13vw; }
+      h1.sitename { margin-top: -11vw; }
       .sidebar {
         visibility: hidden;
         opacity: 0;
@@ -454,8 +454,10 @@ h2.home_header {
   transition: opacity .2s, margin var(--mediaTransition);
   opacity: 0;
   font-style: italic;
-  margin-bottom: 3vw;
-  margin-top: 2vw;
+  margin-bottom: 2vw;
+  margin-top: 4vw;
+  width: 74vw;
+  width: calc(94vw - var(--side_width));
 }
 
 .only_stars { height: 1200vh; }
@@ -1308,6 +1310,7 @@ ul.pagination {
     pointer-events: none;
     transition: var(--img_transition);
 
+    figcaption { margin-bottom: .5em; }
     img {
       transition: max-height .5s, width .5s, var(--img_transition);
       pointer-events: all;
@@ -1331,6 +1334,7 @@ ul.pagination {
       max-width: var(--text_fullwidth_mobile);
       padding: 2.5em 1.1em 1.2em;
     }
+
     position: relative;
     padding: 2.5em 2em 1.2em;
     background: var(--text_back);
@@ -2145,7 +2149,7 @@ mark {
       .tag {
         width: auto;
         font-size: .9em;
-        &:last-of-type { margin-right:.5em; }
+        &:last-of-type { margin-right: .5em; }
       }
     }
     p.tag_container {
@@ -2223,9 +2227,13 @@ mark {
 }
 
 .svgContainer {
-  @media (max-width: $mediaCutoff) { height: auto; }
+  @media (max-width: $mediaCutoff) {
+    width: 100%;
+    height: auto;
+  }
 
-  width: 100%;
+  width: 78vw;
+  width: calc(98vw - var(--side_width));
   height: 80vh;
   will-change: transform, opacity;
 
