@@ -18,6 +18,7 @@ const paginationFilter: PaginationArg = {page, pageSize: perPage}
 const [tagQuery, catQuery] = [route.query.tag, route.query.category].map(antiNull);
 const singleCat = catQuery && !Array.isArray(catQuery);
 const exclusiveCat = singleCat && !tagQuery;
+const exclusiveTag = !catQuery && tagQuery && !Array.isArray(tagQuery)
 
 const transActive = ref(false)
 const allFilter = {}
@@ -34,7 +35,7 @@ const postSelection: FilterObject<Post> = {}
 if (catSelection) postSelection.category = catSelection
 if (tagSelection) postSelection.tags = tagSelection
 
-const postQuery = gql`query PostList( $pf: PostFiltersInput $tf: TagFiltersInput! $cf: CategoryFiltersInput $pg:PaginationArg! ) { posts(filters: $pf, pagination: $pg sort: "publishedAt:desc") { meta { pagination { total page pageSize pageCount } } data { id attributes { publishedAt title teaser slug header { data { attributes { formats } } } tags { data { attributes { name slug color } } } category { data { attributes { name slug color } } } } } } tags(filters: $tf) { data { attributes { name slug color } } } categories(filters: $cf) { data { attributes { name slug color description } } } }`;
+const postQuery = gql`query PostList( $pf: PostFiltersInput $tf: TagFiltersInput! $cf: CategoryFiltersInput $pg:PaginationArg! ) { posts(filters: $pf, pagination: $pg sort: "publishedAt:desc") { meta { pagination { total page pageSize pageCount } } data { id attributes { publishedAt title teaser slug header { data { attributes { formats } } } tags { data { attributes { name slug color } } } category { data { attributes { name slug color } } } } } } tags(filters: $tf) { data { attributes { name slug color description } } } categories(filters: $cf) { data { attributes { name slug color description } } } }`;
 
 const {result, onError, fetchMore, onResult} = useQuery<{posts: EntityCollection<Post>, categories: EntityCollection<Category>, tags: EntityCollection<Tag>}>(postQuery, () => (
   {
@@ -58,9 +59,6 @@ const sitename = computed(() =>
     result.value?.categories.data[0].attributes.name :
     result.value?.tags.data.length === 1 ? `Tag "${result.value?.tags.data[0].attributes.name}"` : 'Post List'
 )
-
-
-
 </script>
 
 <template>
@@ -68,10 +66,11 @@ const sitename = computed(() =>
     <h1 v-if="result?.categories?.data?.length" class="generic_header fadeborder">
       {{ `${exclusiveCat ? "" : "Categories: "}${result?.categories.data.map((c) => c.attributes.name).join(", ")}`}}
     </h1>
-    <p v-if="exclusiveCat && result?.categories?.data" v-html="result.categories.data[0]?.attributes.description" class="breakdown fadeborder"></p>
     <h1 v-if="result?.tags?.data?.length" class="generic_header fadeborder">
       Posts tagged <em>{{ result?.tags.data.map((t) => t.attributes.name).join(", ")}}</em>
     </h1>
+    <p v-if="exclusiveCat && result?.categories?.data" v-html="result.categories.data[0]?.attributes.description" class="breakdown fadeborder"></p>
+    <p v-else-if="exclusiveTag && result?.tags?.data[0]?.attributes.description" v-html="result.tags.data[0]?.attributes.description" class="breakdown fadeborder"></p>
     <h1 v-if="(!result?.tags?.data?.length) && (!result?.categories?.data?.length)" class="generic_header fadeborder">Posts</h1>
     <Pagination v-if="result?.posts" :page_data="result.posts.meta.pagination" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">

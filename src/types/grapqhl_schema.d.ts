@@ -93,6 +93,7 @@ type Tag = {
    posts: RelationCollection<Post>
    slug: string
    color: string
+   description:string
    createdAt: Date
    updatedAt: Date
 }

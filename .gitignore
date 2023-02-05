@@ -5,6 +5,7 @@ node_modules
 theigstyle
 .got
 
+run_dev.lnk
 .stylelintrc
 
 # local env files
