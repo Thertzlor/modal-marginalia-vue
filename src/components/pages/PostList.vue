@@ -46,11 +46,7 @@ const {result, onError, fetchMore, onResult} = useQuery<{posts: EntityCollection
   }
 ));
 onError(() => router.push('/ServerError'))
-const fetcher = (pg: PaginationArg) => {
-  fetchMore({
-    variables: {pg}
-  })
-}
+const fetcher = (pg: PaginationArg) => {fetchMore({variables: {pg}})}
 
 onResult(() => document.title = `${sitename.value} - Modal Marginalia`)
 

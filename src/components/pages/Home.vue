@@ -2,7 +2,6 @@
 import {onMounted} from 'vue';
 const props = defineProps<{quote: string}>();
 
-
 onMounted(() => {
   const ins = document.getElementById("indexSVG") as any as SVGSVGElement;
   if (ins) {
