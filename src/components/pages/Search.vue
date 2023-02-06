@@ -116,17 +116,17 @@ function locatePreview(text: string, query: string[]) {
       <input type="search" v-model="query" placeholder="..." name="searchTerm" />
       <button class="hoverglow" type="submit">Search</button>
       <fieldset>
-        <label><input type="checkbox" v-model="incTitle" name="incTitle" id="incTitle" />Match Title</label>
-        <label><input type="checkbox" v-model="incTeaser" name="incTeaser" id="incTeaser" />Match Teaser</label>
+        <label title="Match post title"><input type="checkbox" v-model="incTitle" name="incTitle" id="incTitle" />Match Title</label>
+        <label title="Match the post's teaser text"><input type="checkbox" v-model="incTeaser" name="incTeaser" id="incTeaser" />Match Teaser</label>
       </fieldset>
       <fieldset>
-        <label><input type="checkbox" v-model="incNotes" name="incNotes" id="incNotes" />Match Notes</label>
-        <label><input type="checkbox" v-model="andMode" name="andMode" id="andMode" />Strict</label>
+        <label title="Include footnotes and foenotes in your search"><input type="checkbox" v-model="incNotes" name="incNotes" id="incNotes" />Match Notes</label>
+        <label title="Posts have to match all terms not just some of them"><input type="checkbox" v-model="andMode" name="andMode" id="andMode" />Strict</label>
       </fieldset>
-      <fieldset><label class="select">Sort<select name="sortSelect" v-model="sortVal" id="sortSelect">
+      <fieldset title="Choose field for sorting"><label class="select">Sort<select name="sortSelect" v-model="sortVal" id="sortSelect">
             <option v-for="{graphVal, userVal} in sortOptions" :key="graphVal" :value="graphVal">{{ userVal}}</option>
           </select></label>
-        <label><input type="checkbox" v-model="sortAsc" name="sortAsc" id="sortAsc" />Ascending</label>
+        <label title="Reverse sort order"><input type="checkbox" v-model="sortAsc" name="sortAsc" id="sortAsc" />Ascending</label>
       </fieldset>
     </form>
     <Pagination v-if="result?.posts" :page_data="result.posts.meta.pagination" :base_url="href" @pg="a => {pg = a; searchSubmit()}" />
