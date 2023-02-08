@@ -143,7 +143,7 @@ function locatePreview(text: string, query: string[]) {
           </h2>
           <p class="grayborder" v-html="locatePreview(body_searchable || '', staticSplit)"></p>
           <p class="tag_container">Tags:
-            <TaxoList :list="tagData" :taxType="'tag'" />
+            <TaxoList :list="taxoSort([...tagData])" :taxType="'tag'" />
           </p>
           <p class="tag_container">Category:
             <TaxoList :list="[catData].filter(f => f)" :taxType="'category'" />

@@ -41,7 +41,7 @@ const contentFetcher = () => refetch()
         {{ result.post.data.attributes.title}}
       </h1>
       <div class="tag_container">
-        <TaxoList :list="result.post.data.attributes.tags.data" :taxType="'tag'" />
+        <TaxoList :list="taxoSort([...result.post.data.attributes.tags.data])" :taxType="'tag'" />
       </div>
       <ImageContainer v-if="result.post.data.attributes.header?.data" :imgData="result.post.data.attributes.header.data.attributes" :className="'banner'" custom-size="60vw" />
       <main>

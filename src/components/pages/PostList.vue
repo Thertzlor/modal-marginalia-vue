@@ -86,7 +86,7 @@ const sitename = computed(() =>
               </p>
               <p class="tag_container">
                 Tags:
-                <TaxoList :list="tagData" :taxType="'tag'" />
+                <TaxoList :list="taxoSort([...tagData])" :taxType="'tag'" />
               </p>
             </div>
             <div class="tagdiv">
@@ -96,7 +96,7 @@ const sitename = computed(() =>
               </p>
               <p class="tag_container">
                 Tags:
-                <TaxoList :list="tagData" :taxType="'tag'" />
+                <TaxoList :list="taxoSort([...tagData])" :taxType="'tag'" />
               </p>
             </div>
           </div>

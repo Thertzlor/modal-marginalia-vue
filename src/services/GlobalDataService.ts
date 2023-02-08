@@ -3,6 +3,8 @@ const apiBase = 'http://192.168.0.35:1337'
 export const gerDate = (date:Date):string => new Date(date).toLocaleString("de-DE", {month: "2-digit",day: "2-digit",year: "numeric"});
 export const graphqlURL=`${apiBase}/graphql`
 export const apiURL=`${apiBase}/api`
+const col = new Intl.Collator('en')
+export const taxoSort = (l:Entity<Tag | Category>[])=> l.sort((a,b) => col.compare(a.attributes.name, b.attributes.name)).sort((a,b) => ('tier' in a.attributes? a.attributes.tier ?? 0 : 0) > ('tier' in b.attributes? b.attributes.tier ?? 0 : 0) ? -1 : 1 )
 export const maxResults = 100
 export const perPage = 10
 type SimpleImg = {url: string;width: number;height: number}
