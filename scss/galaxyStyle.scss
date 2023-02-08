@@ -316,42 +316,42 @@ h1 {
 }
 
 #starChanger {
-  float: right;
-  color: white;
-  font-size: 2.3vmax;
-  width: 0;
-  background: none;
-  opacity: .2;
-  transform: rotate(360deg);
-  line-height: 1;
-  overflow: visible;
-  padding: 0;
-  size: 2vmax;
-  text-align: center;
-  margin: 0;
-  right: 1rem;
-  top: calc(var(--fullscr_offset_y) * 2.5);
-  display: block;
-  border: none;
-  cursor: pointer;
-  z-index: 50001;
-  transition: transform .6s ease-in, opacity .5s linear;
-  position: absolute;
+  display: none;
+  float: none;
+}
 
+
+label[for="starChanger"] {
+  position: relative;
+  opacity: .2;
+  cursor: pointer;
+  transition: transform .6s ease-in, opacity .5s linear, top .4s ease, right .4s ease;
+  z-index: 50001;
+
+  svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    size: 85% !important;
+    transition: transform .6s ease-in-out;
+    transform: rotate(270deg);
+  }
   &:hover {
     opacity: 1;
-    transform: none;
+
+    svg {
+      transform: none;
+    }
   }
 
-  @media (max-width: $mediaCutoff) {
-    top: var(--fullscr_offset_y);
-  }
+  display: block;
 }
+
 
 #fullcheck {
   display: none;
 
-  + label {
+  ~ label {
     @media (max-width: $mediaCutoff) {
       visibility: hidden;
       right: -3vmax;
@@ -434,6 +434,10 @@ h1 {
         width: var(--article_fullwidth);
         margin-left: calc(((100vw - var(--scrollw)) - var(--article_fullwidth)) / 2);
 
+        .svgContainer {
+          width: auto;
+          height: 88vh;
+        }
         h2.home_header {
           margin: -.5% 0;
           opacity: 0;
