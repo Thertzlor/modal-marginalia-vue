@@ -65,11 +65,11 @@ type Post = {
 type PluginComment ={
    content:string
    author:Relation<User>
-   related_to:Relation<PLuginContentId>
+   related_to:Relation<PluginContentId>
    createdAt:Date
 }
 
-type PLuginContentId ={
+type PluginContentId ={
    slug:string
    slag:RelationCollection<Post>
 }
