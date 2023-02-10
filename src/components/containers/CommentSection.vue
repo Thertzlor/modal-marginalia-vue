@@ -74,7 +74,7 @@ function commentSubmit(challengeToken) {
     <p v-else class="no_comment">Nothing here yet.</p>
 
     <input v-model="expanded" :disabled="commented" type="checkbox" name="comCheck" id="comment_check" />
-    <label class="grayborder hoverglow" for="comment_check">Post a Comment</label>
+    <label :class="{grayborder:true, hoverglow:!commented, grayed:commented}" for="comment_check">Post a Comment</label>
     <form class="com_forms" id="comment_form" @submit.stop.prevent="formSubmit">
       <textarea minlength="20" required class="comment_input grayborder" v-model="body" name="comment_text" id="comtext" cols="30" rows="10" placeholder="Your comment"></textarea>
       <input minlength="3" type="text" v-model="user" name="comment_name" class="comment_input_2nd grayborder" placeholder="Name" required />

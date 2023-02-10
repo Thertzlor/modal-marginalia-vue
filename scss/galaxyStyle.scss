@@ -945,6 +945,8 @@ h2.home_header {
   filter: grayscale(0);
 }
 
+.grayed { color: #fff8; }
+
 .vistrans2 { transition: opacity .2s; }
 
 .article_container {
@@ -1736,6 +1738,7 @@ div[style^="background-color: rgb(255, 255, 255)"] {
     text-align: center;
     padding-top: .45em;
 
+    &.grayed { cursor: default; }
     ~ form {
       text-align: left;
       display: flex;

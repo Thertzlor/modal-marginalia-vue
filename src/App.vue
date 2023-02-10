@@ -137,7 +137,7 @@ const positionAdjust = computed(() => {
   const same = bw.value === cw.value;
   return [
     {'--fullscr_offset_x': same ? '.5em' : '1em','--fullscr_offset_y': same ? '1em' : '.5em'},
-    {'--fullscr_offset_x': same ? '3.2vmax' : '3vmax','--fullscr_offset_y': same ? '1.2em' : '.7em'}
+    {'--fullscr_offset_x': same ? '4em' : '3.5em','--fullscr_offset_y': same ? '1.2em' : '.7em'}
   ]
 })
 
