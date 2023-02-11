@@ -351,7 +351,7 @@ label[for="starChanger"] {
 #fullcheck {
   display: none;
 
-  ~ label {
+  + label, + label + label {
     @media (max-width: $mediaCutoff) {
       visibility: hidden;
       right: -3vmax;
@@ -454,6 +454,12 @@ label[for="starChanger"] {
 }
 
 h2.home_header {
+  @media (max-width: $mediaCutoff) {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   font-weight: 470;
   transition: opacity .2s, margin var(--mediaTransition);
   opacity: 0;
@@ -627,7 +633,6 @@ h2.home_header {
       padding-inline-start: var(--side-offset);
 
       li {
-        min-width: 18vw;
         margin: 0;
         transition: text-shadow .5s, padding-left .5s;
         cursor: pointer;
@@ -716,7 +721,8 @@ h2.home_header {
   position: sticky;
   max-height: 80vh;
   border-radius: 0 0 .25em;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   z-index: 6000;
   max-width: 40vw;
   min-width: var(--mobile-min);
@@ -2235,7 +2241,8 @@ mark {
 
 .svgContainer {
   @media (max-width: $mediaCutoff) {
-    width: 100%;
+    width: 100vw;
+    margin-left: -3vw;
     height: auto;
   }
 
