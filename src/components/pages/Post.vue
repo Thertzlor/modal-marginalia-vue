@@ -24,11 +24,22 @@ const hashNav = (noDelay = false) => {
   hashy && window.setTimeout(() => document.getElementById(hashy.slice(1))?.scrollIntoView(), noDelay ? 0 : 1000)
 }
 
-const postQuery = gql`query SinglePost( $postId: ID) { commentManagerComments( filters: { related_to: { slag: { id: { eq: $postId } } } } ) { data { attributes { content createdAt author { data { attributes { username } } } } } } post(id: $postId) { data { id attributes { title header { data { attributes { url caption width height alternativeText formats } } } body slug toc publishedAt comments_enabled footnotes toenotes category { data { attributes { color name slug } } } tags { data { attributes { color name slug } } } images { data { attributes { url width height caption formats } } } } } } } `;
+const postQuery = gql`query SinglePost( $postId: ID) { commentManagerComments( filters: { related_to: { slag: { id: { eq: $postId } } } } ) { data { attributes { content createdAt author { data { attributes { username } } } } } } post(id: $postId) { data { id attributes { title header { data { attributes { url caption width height alternativeText formats } } } body slug toc publishedAt updatedAt comments_enabled footnotes toenotes category { data { attributes { color name slug } } } tags { data { attributes { color name slug } } } images { data { attributes { url width height caption formats } } } } } } } `;
+
+const changeQuery = gql`query postCheck($postId: ID) { post(id: $postId) { data { id attributes { updatedAt } }}}`
+
+let updated: number|undefined
+let inVal:number|undefined
 
 const {result, onResult, refetch, onError} = useQuery<{post: Relation<Post>, commentManagerComments: RelationCollection<PluginComment>}>(postQuery, {postId});
+const {onResult:upRes,refetch:upFetch} = useQuery<{post: Relation<Post>}>(changeQuery,{postId},{enabled:true})
+upRes(r=> {if(new Date(r.data?.post.data?.attributes.updatedAt ?? updated).getTime() !== updated) refetch();})
 onError(() => router.push('/ServerError'))
-onResult(r => (!r.data.post.data) ? router.push('/NotFound') : onResult(() => document.title = `${r.data.post.data.attributes.title} - Modal Marginalia`)
+onResult(r => r.networkStatus !== 4 && ((!r.data?.post.data) ? (router.push('/NotFound')) : onResult(rs => {
+  document.title = `${r.data.post.data.attributes.title} - Modal Marginalia`
+  updated = new Date(rs.data.post.data.attributes.updatedAt).getTime();
+  if(!inVal) inVal = setInterval(()=>{upFetch()},30000)
+}))
 )
 onUpdated(() => (processContent(result.value?.post.data?.attributes.toc), hashNav()))
 const contentFetcher = () => refetch()
