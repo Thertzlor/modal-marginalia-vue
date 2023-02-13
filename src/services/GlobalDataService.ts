@@ -7,6 +7,7 @@ const col = new Intl.Collator('en')
 export const taxoSort = (l:Entity<Tag | Category>[])=> l.sort((a,b) => col.compare(a.attributes.name, b.attributes.name)).sort((a,b) => ('tier' in a.attributes? a.attributes.tier ?? 0 : 0) > ('tier' in b.attributes? b.attributes.tier ?? 0 : 0) ? -1 : 1 )
 export const maxResults = 100
 export const perPage = 10
+export const refreshRate = 30000
 type SimpleImg = {url: string;width: number;height: number}
 export const  getImageData = (imgData:UploadedFile): SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height}).filter(f => f)
 export const getSrcSet = (imgs:SimpleImg[]): string => imgs.filter(i=>i.url).map(({url, width}) => `${url} ${width}w`).join(',')

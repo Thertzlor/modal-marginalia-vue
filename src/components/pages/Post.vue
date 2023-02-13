@@ -6,7 +6,7 @@ import ImageContainer from "../containers/ImageContainer.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import CommentSection from "../containers/CommentSection.vue";
 import {onUpdated} from 'vue';
-import {processContent, defaultNote} from '@/services/GlobalDataService';
+import {processContent, defaultNote, refreshRate} from '@/services/GlobalDataService';
 import DynaPost from '../containers/DynaPost.vue';
 const router = useRouter();
 
@@ -38,7 +38,7 @@ onError(() => router.push('/ServerError'))
 onResult(r => r.networkStatus !== 4 && ((!r.data?.post.data) ? (router.push('/NotFound')) : onResult(rs => {
   document.title = `${r.data.post.data.attributes.title} - Modal Marginalia`
   updated = new Date(rs.data.post.data.attributes.updatedAt).getTime();
-  if(!inVal) inVal = setInterval(()=>{upFetch()},30000)
+  if(!inVal) inVal = setInterval(()=>{upFetch()},refreshRate)
 }))
 )
 onUpdated(() => (processContent(result.value?.post.data?.attributes.toc), hashNav()))
