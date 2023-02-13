@@ -2,10 +2,13 @@
 import SidebarMobile from "./components/navigation/SidebarMobile.vue";
 import Sidebar from "./components/navigation/Sidebar.vue";
 import CanvasService from "./services/CanvasService";
+import {refreshRate} from "./services/GlobalDataService";
 import gql from "graphql-tag";
-import {useQuery} from "@vue/apollo-composable";
+import {useQuery,provideApolloClient} from "@vue/apollo-composable";
 import {onMounted, onBeforeMount, computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
+import { apolloClient } from './main';
+provideApolloClient(apolloClient)
 let relCount = 5;
 const route = useRoute()
 const router = useRouter()
@@ -131,7 +134,7 @@ router.afterEach(({fullPath}) => {
 const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.value.fullPath) || '-200vh'))
 onBeforeMount(bodyClass)
 
-const quer = gql`query Init($pg:PaginationArg) { quotes(pagination:$pg) { data { id attributes { text } } } categories { data { attributes { name slug } } } posts(pagination: {start: 0, limit: 5}, sort: "publishedAt:desc") { data { id attributes { publishedAt title slug } } } }`;
+const quer = gql`query Init($pg: PaginationArg) { quotes(pagination: $pg) { data { id attributes { text } } } categories { data { attributes { name slug } } } posts(pagination: { start: 0, limit: 5 }, sort: "publishedAt:desc") { meta{pagination{total}} data { id attributes { publishedAt title slug } } } }`;
 
 const positionAdjust = computed(() => {
   const same = bw.value === cw.value;
@@ -141,8 +144,27 @@ const positionAdjust = computed(() => {
   ]
 })
 
-const {result, onError} = useQuery<{quotes: EntityCollection<Quote>, categories: EntityCollection<Category>, posts: EntityCollection<Post>}>(quer, {pg}, {fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
+const {result, onError, onResult,refetch} = useQuery<{quotes: EntityCollection<Quote>, categories: EntityCollection<Category>, posts: EntityCollection<Post>}>(quer, {pg}, {fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
 onError(() => router.push('/ServerError'))
+
+let numPosts:number|undefined
+let inVal: number|undefined
+
+onResult(r=>{
+  if(!r.data?.posts?.meta.pagination.total) return
+  numPosts = r.data.posts.meta.pagination.total;
+  if(!inVal) {
+    inVal = 1;
+    setTimeout(()=>{
+      const checkLatest = gql`query lastPosts {posts { meta{pagination{total}} }}`
+      const {onResult:checkRes,refetch:checkFetch} = useQuery<MetaKey<'posts'>>(checkLatest)
+      checkRes(r=>{
+        if((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) refetch()
+      })
+      setInterval(()=>{checkFetch()},refreshRate)
+  },refreshRate)
+}
+})
 
 const fallback = {attributes: {text: ""}}
 let quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes.text)

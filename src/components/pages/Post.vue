@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import {useRouter} from "vue-router";
 import gql from "graphql-tag";
-import {useQuery} from "@vue/apollo-composable";
+import {useQuery, provideApolloClient} from "@vue/apollo-composable";
+import { apolloClient } from '../../main';
 import ImageContainer from "../containers/ImageContainer.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import CommentSection from "../containers/CommentSection.vue";
@@ -9,6 +10,8 @@ import {onUpdated} from 'vue';
 import {processContent, defaultNote, refreshRate} from '@/services/GlobalDataService';
 import DynaPost from '../containers/DynaPost.vue';
 const router = useRouter();
+
+provideApolloClient(apolloClient)
 
 const selector = router.currentRoute.value.params.select;
 if (!selector || typeof selector !== "string") router.push('/NotFound');
@@ -26,19 +29,23 @@ const hashNav = (noDelay = false) => {
 
 const postQuery = gql`query SinglePost( $postId: ID) { commentManagerComments( filters: { related_to: { slag: { id: { eq: $postId } } } } ) { data { attributes { content createdAt author { data { attributes { username } } } } } } post(id: $postId) { data { id attributes { title header { data { attributes { url caption width height alternativeText formats } } } body slug toc publishedAt updatedAt comments_enabled footnotes toenotes category { data { attributes { color name slug } } } tags { data { attributes { color name slug } } } images { data { attributes { url width height caption formats } } } } } } } `;
 
-const changeQuery = gql`query postCheck($postId: ID) { post(id: $postId) { data { id attributes { updatedAt } }}}`
-
 let updated: number|undefined
 let inVal:number|undefined
 
 const {result, onResult, refetch, onError} = useQuery<{post: Relation<Post>, commentManagerComments: RelationCollection<PluginComment>}>(postQuery, {postId});
-const {onResult:upRes,refetch:upFetch} = useQuery<{post: Relation<Post>}>(changeQuery,{postId},{enabled:true})
-upRes(r=> {if(new Date(r.data?.post.data?.attributes.updatedAt ?? updated).getTime() !== updated) refetch();})
 onError(() => router.push('/ServerError'))
 onResult(r => r.networkStatus !== 4 && ((!r.data?.post.data) ? (router.push('/NotFound')) : onResult(rs => {
   document.title = `${r.data.post.data.attributes.title} - Modal Marginalia`
   updated = new Date(rs.data.post.data.attributes.updatedAt).getTime();
-  if(!inVal) inVal = setInterval(()=>{upFetch()},refreshRate)
+  if(!inVal) {
+    inVal = 1;
+    setTimeout(()=>{
+      const changeQuery = gql`query postCheck($postId: ID) { post(id: $postId) { data { id attributes { updatedAt } }}}`
+      const {onResult:upRes,refetch:upFetch} = useQuery<{post: Relation<Post>}>(changeQuery,{postId},{enabled:true})
+      upRes(r=> {if(new Date(r.data?.post.data?.attributes.updatedAt ?? updated).getTime() !== updated) refetch();})
+      inVal = setInterval(()=>{upFetch()},refreshRate)
+    },refreshRate)
+  }
 }))
 )
 onUpdated(() => (processContent(result.value?.post.data?.attributes.toc), hashNav()))

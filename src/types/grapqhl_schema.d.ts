@@ -69,6 +69,8 @@ type PluginComment ={
    createdAt:Date
 }
 
+type MetaKey<T extends string> = Record<T,EntityCollection<any>>
+
 type PluginContentId ={
    slug:string
    slag:RelationCollection<Post>

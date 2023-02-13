@@ -26,7 +26,7 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties extends GlobalData {}
 }
 
-const apolloClient = new ApolloClient({
+export const apolloClient = new ApolloClient({
   cache:new InMemoryCache({
     typePolicies:{
       PostEntity:{

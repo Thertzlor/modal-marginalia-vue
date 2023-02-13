@@ -1,13 +1,15 @@
 <script lang="ts"  setup>
 import {useRouter} from "vue-router";
 import gql from "graphql-tag";
-import {useQuery} from "@vue/apollo-composable";
+import {useQuery,provideApolloClient} from "@vue/apollo-composable";
 import Pagination from "../navigation/Pagination.vue";
 import TaxoList from "../containers/TaxoList.vue";
-import {perPage, unRay, antiNull} from '@/services/GlobalDataService';
+import {perPage, unRay, antiNull, refreshRate} from '@/services/GlobalDataService';
+import { apolloClient } from '../../main';
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
 const invisible = ref(true)
 const transi = ref('none')
+provideApolloClient(apolloClient)
 onMounted(()=>setTimeout(()=> {invisible.value = false;transi.value = 'v-page';} , 260) )
 onBeforeUnmount(()=>{transi.value='none';invisible.value = true;})
 const router = useRouter();
@@ -37,7 +39,7 @@ if (tagSelection) postSelection.tags = tagSelection
 
 const postQuery = gql`query PostList( $pf: PostFiltersInput $tf: TagFiltersInput! $cf: CategoryFiltersInput $pg:PaginationArg! ) { posts(filters: $pf, pagination: $pg sort: "publishedAt:desc") { meta { pagination { total page pageSize pageCount } } data { id attributes { publishedAt title teaser slug header { data { attributes { formats } } } tags { data { attributes { name slug color } } } category { data { attributes { name slug color } } } } } } tags(filters: $tf) { data { attributes { name slug color description } } } categories(filters: $cf) { data { attributes { name slug color description } } } }`;
 
-const {result, onError, fetchMore, onResult} = useQuery<{posts: EntityCollection<Post>, categories: EntityCollection<Category>, tags: EntityCollection<Tag>}>(postQuery, () => (
+const {result, onError, fetchMore, onResult,refetch} = useQuery<{posts: EntityCollection<Post>, categories: EntityCollection<Category>, tags: EntityCollection<Tag>}>(postQuery, () => (
   {
     pg: paginationFilter,
     pf: postSelection,
@@ -48,7 +50,24 @@ const {result, onError, fetchMore, onResult} = useQuery<{posts: EntityCollection
 onError(() => router.push('/ServerError'))
 const fetcher = (pg: PaginationArg) => {fetchMore({variables: {pg}})}
 
-onResult(() => document.title = `${sitename.value} - Modal Marginalia`)
+let postCount:number|undefined;
+let inVal:number|undefined
+
+onResult(r => {
+  document.title = `${sitename.value} - Modal Marginalia`
+  if(!r.data.posts.meta.pagination.total) return
+  postCount = r.data.posts.meta.pagination.total
+  if(!inVal) {
+    inVal = 1;
+    setTimeout(()=>{
+      const countQuery = gql`query PostCount( $pf: PostFiltersInput $pg: PaginationArg! ) { posts(filters: $pf, pagination: $pg) { meta { pagination { total pageSize } } } }`
+      const {onResult:upRes,refetch:upFetch} = useQuery<MetaKey<'posts'>>(countQuery,{pg: paginationFilter,pf: postSelection},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'})
+      upRes(r=> {if((r.data?.posts.meta?.pagination.total ?? postCount) !== postCount) refetch();})
+      inVal = setInterval(()=>{upFetch()},refreshRate)
+    },refreshRate)
+  }
+
+})
 
 const sitename = computed(() =>
   (exclusiveCat && result.value?.categories.data[0]?.attributes.name) ?
