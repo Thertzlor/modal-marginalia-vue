@@ -37,6 +37,7 @@ onError(() => router.push('/ServerError'))
 onResult(r => r.networkStatus !== 4 && ((!r.data?.post.data) ? (router.push('/NotFound')) : onResult(rs => {
   document.title = `${r.data.post.data.attributes.title} - Modal Marginalia`
   updated = new Date(rs.data.post.data.attributes.updatedAt).getTime();
+  if(!refreshRate) return
   if(!inVal) {
     inVal = 1;
     setTimeout(()=>{

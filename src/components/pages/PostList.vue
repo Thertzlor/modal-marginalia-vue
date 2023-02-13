@@ -55,7 +55,7 @@ let inVal:number|undefined
 
 onResult(r => {
   document.title = `${sitename.value} - Modal Marginalia`
-  if(!r.data.posts.meta.pagination.total) return
+  if(!r.data?.posts?.meta.pagination.total || !refreshRate) return
   postCount = r.data.posts.meta.pagination.total
   if(!inVal) {
     inVal = 1;

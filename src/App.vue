@@ -151,7 +151,7 @@ let numPosts:number|undefined
 let inVal: number|undefined
 
 onResult(r=>{
-  if(!r.data?.posts?.meta.pagination.total) return
+  if(!r.data?.posts?.meta.pagination.total || !refreshRate) return
   numPosts = r.data.posts.meta.pagination.total;
   if(!inVal) {
     inVal = 1;
