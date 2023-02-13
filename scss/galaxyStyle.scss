@@ -1949,7 +1949,7 @@ mark {
     float: left;
     color: white;
     text-align: center;
-    width: calc(100% - var(--menu-search-width) - var(--side-offset) * 2.5);
+    min-width: calc(100% - var(--menu-search-width) - var(--side-offset) * 2.5);
     border-color: var(--search-border-color);
     cursor: pointer;
     transition: box-shadow .2s linear, border-color .2s linear, font-weight .2s ease-in-out;
@@ -2116,7 +2116,7 @@ mark {
     padding: 0;
     position: relative;
     width: 100%;
-
+    &.is_new > a:last-of-type::after { content: "New"; }
     &:hover img { max-width: 77%; }
     &.empty::before { padding-bottom: 0; }
     > a:last-of-type {
@@ -2131,10 +2131,17 @@ mark {
 
       &::after {
         content: "";
-        position: absolute;
         height: 100%;
-        width: 100%;
+        position: absolute;
+        color: #f5d377;
+        font-weight: 650;
+        text-align: right;
+        font-style: italic;
         top: 0;
+        width: 100%;
+        padding: .4vmax;
+        font-size: 1.6vmax;
+        text-shadow: .03em -.01em .05em rgb(255 254 213), 0 0 .07em black, 0 0 .1em black, 0 0 .2em black;
       }
       h2 {
         @media (max-width: $mediaCutoff) { font-size: 3vmax; }

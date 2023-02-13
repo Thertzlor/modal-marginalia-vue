@@ -1,21 +1,23 @@
-declare const hljs: any
-const apiBase = 'http://192.168.0.35:1337'
-export const gerDate = (date:Date):string => new Date(date).toLocaleString("de-DE", {month: "2-digit",day: "2-digit",year: "numeric"});
-export const graphqlURL=`${apiBase}/graphql`
-export const apiURL=`${apiBase}/api`
-const col = new Intl.Collator('en')
-export const taxoSort = (l:Entity<Tag | Category>[])=> l.sort((a,b) => col.compare(a.attributes.name, b.attributes.name)).sort((a,b) => ('tier' in a.attributes? a.attributes.tier ?? 0 : 0) > ('tier' in b.attributes? b.attributes.tier ?? 0 : 0) ? -1 : 1 )
 export const maxResults = 100
 export const perPage = 10
 export const refreshRate = 30000
+export const searchSurround = 150
+const daysNew = 12
+export const newTime = daysNew * 24 * 60 * 60 * 1000
+export const defaultNote =`<olstyle="list-style-type:decimal;"><li>#</li></ol>`
+const apiBase = 'http://192.168.0.35:1337'
+export const apiURL=`${apiBase}/api`
+export const graphqlURL=`${apiBase}/graphql`
+declare const hljs: any
+export const gerDate = (date:Date):string => new Date(date).toLocaleString("de-DE", {month: "2-digit",day: "2-digit",year: "numeric"});
+const col = new Intl.Collator('en')
+export const taxoSort = (l:Entity<Tag | Category>[])=> l.sort((a,b) => col.compare(a.attributes.name, b.attributes.name)).sort((a,b) => ('tier' in a.attributes? a.attributes.tier ?? 0 : 0) > ('tier' in b.attributes? b.attributes.tier ?? 0 : 0) ? -1 : 1 )
 type SimpleImg = {url: string;width: number;height: number}
 export const  getImageData = (imgData:UploadedFile): SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height}).filter(f => f)
 export const getSrcSet = (imgs:SimpleImg[]): string => imgs.filter(i=>i.url).map(({url, width}) => `${url} ${width}w`).join(',')
-export const searchSurround = 150
-export const defaultNote =`<olstyle="list-style-type:decimal;"><li>#</li></ol>`
 export const unRay = <T extends any>(x: T): T extends any[] ? T[0] : T => Array.isArray(x) ? x[0] : x;
 export const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],Nullish>[]:T => Array.isArray(arr)?arr.filter(f=>f) as any:arr
-export const pipe = <T>(something:T):T => (console.log(something),something)
+export const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f=>f)),something)
 export const hist = (url:string):void => window.history.pushState({}, '',url)
 export const imgload = (e:Event,parSelect=0):void => {
   let targ = e.target as HTMLElement;
