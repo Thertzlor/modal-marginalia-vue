@@ -91,7 +91,7 @@ const sitename = computed(() =>
     <main class="list_body" :class="{transitioning: transActive}">
       <TransitionGroup :name="transi" v-if="result?.posts.data.length">
         <article :class="{listing:true,invisible}" v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, teaser, tags: {data: tagData}, category: {data: catData}}} in result.posts.data" :key="id">
-          <div :class="{top_part:true,empty:!!img,is_new:(new Date().getTime()-newTime) < (new Date(publishedAt).getTime())}">
+          <div :class="{top_part:true,empty:!img,is_new:(new Date().getTime()-newTime) < (new Date(publishedAt).getTime())}">
             <a v-if="img?.attributes.formats.medium.url" :href="`/post/${id}-${slug}`">
               <img :srcset="getSrcSet(getImageData(img.attributes))" :src="img.attributes.url" @load="imgload" :width="img.attributes.width" sizes="(max-width : 1100px) 90vw, 33vw" :height="img.attributes.height" alt="whatever" class="invisible" />
             </a>
