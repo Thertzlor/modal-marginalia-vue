@@ -76,6 +76,7 @@ $mediaCutoff: 1100px;
   --mag_color: rgb(206 206 206);
 }
 
+
 input {
   color-scheme: dark;
 
@@ -1472,7 +1473,7 @@ td.hljs-ln-numbers {
 .toc {
   @media (max-width: $mediaCutoff) {
     min-width: 40vw;
-    max-width: var(--text_fullwidth_mobile);
+    max-width: calc(var(--text_fullwidth_mobile) * .75);
   }
 
   transition: max-height .5s linear .1s, box-shadow .5s linear, padding-bottom .2s linear .4s, min-width .2s;
@@ -1586,7 +1587,7 @@ td.hljs-ln-numbers {
     }
   }
   &.toenotes {
-    @media (max-width: $mediaCutoff) { max-width: calc(var(--text_fullwidth_mobile) * .75); }
+    @media (max-width: $mediaCutoff) { max-width: calc(var(--text_fullwidth_mobile) * .7); }
 
     max-width: calc(var(--text_fullwidth) * .75);
     box-shadow: 0 0 .6em 0 white, 0 0 .6em 0 white inset;
@@ -1888,7 +1889,7 @@ mark {
 
 #search_input_mobile#search_input_mobile {
   margin-bottom: 8%;
-  width: 65%;
+  width: 55%;
 
   + label {
     size: 2em;
@@ -1915,7 +1916,7 @@ mark {
       transform: rotate(-45deg);
       width: .8em;
       bottom: .5em;
-      left: .2em;
+      right: .85em;
     }
     input { display: none; }
   }
