@@ -263,6 +263,7 @@ h1 {
   color: #0f0;
   mix-blend-mode: screen;
   position: relative;
+  margin-bottom: .5em;
 
   &::before, &::after {
     mix-blend-mode: inherit;
@@ -883,6 +884,7 @@ h2.home_header {
 .content {
   overflow: hidden;
   padding-top: 2vh;
+  padding-bottom: .3em;
 
   //min-height: 100vh;
 }
