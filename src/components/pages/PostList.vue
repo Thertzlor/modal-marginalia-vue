@@ -84,8 +84,7 @@ const sitename = computed(() =>
     <h1 v-if="result?.tags?.data?.length" class="generic_header fadeborder">
       Posts tagged <em>{{ result?.tags.data.map((t) => t.attributes.name).join(", ")}}</em>
     </h1>
-    <p v-if="exclusiveCat && result?.categories?.data" v-html="result.categories.data[0]?.attributes.description" class="breakdown fadeborder"></p>
-    <p v-else-if="exclusiveTag && result?.tags?.data[0]?.attributes.description" v-html="result.tags.data[0]?.attributes.description" class="breakdown fadeborder"></p>
+    <p v-if="(exclusiveCat && result?.categories?.data) || (exclusiveTag && result?.tags?.data[0]?.attributes.description)" v-html="exclusiveCat?result.categories.data[0]?.attributes.description:result.tags.data[0]?.attributes.description" class="breakdown fadeborder"></p>
     <h1 v-if="(!result?.tags?.data?.length) && (!result?.categories?.data?.length)" class="generic_header fadeborder">Posts</h1>
     <Pagination v-if="result?.posts" :page_data="result.posts.meta.pagination" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">
