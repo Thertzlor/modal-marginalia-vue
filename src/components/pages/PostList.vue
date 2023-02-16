@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import {useQuery,provideApolloClient} from "@vue/apollo-composable";
 import Pagination from "../navigation/Pagination.vue";
 import TaxoList from "../containers/TaxoList.vue";
-import {perPage, unRay, antiNull, refreshRate, newTime} from '@/services/GlobalDataService';
+import {perPage, unRay, antiNull, refreshRate, newTime, hist} from '@/services/GlobalDataService';
 import { apolloClient } from '../../main';
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
 const invisible = ref(true)
@@ -14,6 +14,7 @@ onMounted(()=>setTimeout(()=> {invisible.value = false;transi.value = 'v-page';}
 onBeforeUnmount(()=>{transi.value='none';invisible.value = true;})
 const router = useRouter();
 const route = router.currentRoute.value;
+const origRoute = route.fullPath
 let targetPage = unRay(route.query.page);
 const page = targetPage ? parseInt(targetPage, 10) : 1;
 const paginationFilter: PaginationArg = {page, pageSize: perPage}
@@ -47,7 +48,7 @@ const {result, onError, fetchMore, onResult,refetch} = useQuery<{posts: EntityCo
     cf: catFilter
   }
 ));
-onError(() => router.push('/ServerError'))
+onError(() => router.push('/ServerError').then(()=>hist(origRoute)))
 const fetcher = (pg: PaginationArg) => {fetchMore({variables: {pg}})}
 
 let postCount:number|undefined;

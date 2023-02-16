@@ -2,13 +2,14 @@
 import gql from "graphql-tag";
 import {useQuery} from "@vue/apollo-composable";
 import {useRouter} from 'vue-router';
-import {processContent} from '@/services/GlobalDataService';
+import {processContent,hist} from '@/services/GlobalDataService';
 import {onUpdated} from 'vue';
 import DynaPost from '../containers/DynaPost.vue';
 const router = useRouter()
+const origRoute = router.currentRoute.value.fullPath
 const postQuery = gql`query about {aboutPage { data { attributes { text title footnotes toenotes         images { data { attributes { url width height caption formats } } }} } } } `;
 const {result, onError} = useQuery<{aboutPage: Relation<AboutPage>}>(postQuery);
-onError(() => router.push('/ServerError'))
+onError(() => router.push('/ServerError').then(()=>hist(origRoute)))
 onUpdated(() => processContent(false))
 </script>
 

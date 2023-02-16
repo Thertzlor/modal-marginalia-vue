@@ -3,8 +3,10 @@ import gql from "graphql-tag";
 import {useQuery} from "@vue/apollo-composable";
 import {useRouter} from 'vue-router';
 import {computed} from 'vue';
+import {hist} from '@/services/GlobalDataService';
 
 const router = useRouter();
+const origRoute = router.currentRoute.value.fullPath
 const maxEm = 2.5
 const maxWeight = 600
 const minEm = .5
@@ -15,7 +17,7 @@ const linearTransform = (val: number, oldMin: number, oldMax: number, newMin: nu
 const tagQuery = gql`query TagList { tags(filters:{posts:{id:{notNull:true},publishedAt:{notNull:true}}}) { data { attributes { name slug color posts(filters:{publishedAt:{notNull:true} id:{notNull:true}}) { data { id } } } } } }`;
 
 const {result: tagList, onError} = useQuery<{tags: EntityCollection<Tag>}>(tagQuery);
-onError(() => router.push('/ServerError'))
+onError(() => router.push('/ServerError').then(()=>hist(origRoute)))
 
 const getMax = computed(() => (([...((tagList.value)?.tags?.data || [])]).sort((a, b) => a.attributes.posts.data.length < b.attributes.posts.data.length ? 1 : -1)[0]?.attributes.posts.data.length || 1));
 

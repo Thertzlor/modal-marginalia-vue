@@ -2,7 +2,7 @@
 import SidebarMobile from "./components/navigation/SidebarMobile.vue";
 import Sidebar from "./components/navigation/Sidebar.vue";
 import CanvasService from "./services/CanvasService";
-import {refreshRate} from "./services/GlobalDataService";
+import {refreshRate,hist} from "./services/GlobalDataService";
 import gql from "graphql-tag";
 import {useQuery,provideApolloClient} from "@vue/apollo-composable";
 import {onMounted, onBeforeMount, computed, ref} from 'vue';
@@ -145,7 +145,7 @@ const positionAdjust = computed(() => {
 })
 
 const {result, onError, onResult,refetch} = useQuery<{quotes: EntityCollection<Quote>, categories: EntityCollection<Category>, posts: EntityCollection<Post>}>(quer, {pg}, {fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
-onError(() => router.push('/ServerError'))
+onError(() => router.push('/ServerError').then(()=>hist('/')))
 
 let numPosts:number|undefined
 let inVal: number|undefined
@@ -197,7 +197,7 @@ let quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Mat
       <div :style="{backgroundImage, opacity}" class="parallax p3 invisible"></div>
       <div class="content">
         <h1 class="sitename" :class="{main: isMain}">
-          <RouterLink :to="result ? '/' : ''" class="nav-link">Modal<br />Marginalia</RouterLink>
+          <RouterLink to="/">Modal<br />Marginalia</RouterLink>
         </h1>
         <Sidebar :cat_list="result?.categories.data || []" :latest_posts="result?.posts.data || []" />
         <RouterView :quote="quote" v-slot="{Component, route}">

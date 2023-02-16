@@ -9,6 +9,7 @@ import TaxoList from "../containers/TaxoList.vue";
 
 const router = useRouter();
 const route = router.currentRoute.value
+const origRoute = route.fullPath
 
 function proc<T>(t: T) {return unRay(antiNull(t))}
 
@@ -75,7 +76,7 @@ const postFilter: ComputedRef<QueryFilter<Post>> = computed(() => splitQuery.val
 const postQuery = gql`query postSearch ($postFilter:PostFiltersInput!,$pg:PaginationArg!,$sort:[String]){ posts(filters:$postFilter, pagination:$pg, sort:$sort ){ meta { pagination { total page pageSize pageCount } } data { id attributes { publishedAt body_searchable title teaser slug header { data { attributes { formats } } } tags { data { attributes { name slug color } } } category { data { attributes { name slug color } } } } } } }`;
 
 const {result, onError, refetch, fetchMore} = useQuery<{posts: EntityCollection<Post>}>(postQuery, {pg: pg.value, postFilter: postFilter.value, sort: [sortArg.value]});
-onError(() => router.push('/ServerError'))
+onError(() => (router.push('/ServerError').then(()=>hist(origRoute))))
 
 const fmore = (pg: PaginationArg) => fetchMore({variables: {pg}})
 

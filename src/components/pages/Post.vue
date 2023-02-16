@@ -7,16 +7,17 @@ import ImageContainer from "../containers/ImageContainer.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import CommentSection from "../containers/CommentSection.vue";
 import {onUpdated} from 'vue';
-import {processContent, defaultNote, refreshRate} from '@/services/GlobalDataService';
+import {processContent, defaultNote, refreshRate, hist} from '@/services/GlobalDataService';
 import DynaPost from '../containers/DynaPost.vue';
 const router = useRouter();
+const origRoute = router.currentRoute.value.fullPath
 
 provideApolloClient(apolloClient)
 
 const selector = router.currentRoute.value.params.select;
-if (!selector || typeof selector !== "string") router.push('/NotFound');
+if (!selector || typeof selector !== "string") router.push('/NotFound').then(()=>hist(origRoute));
 const postId = parseInt((selector as any).split("-")[0]);
-if (isNaN(postId)) router.push('/NotFound');
+if (isNaN(postId)) router.push('/NotFound').then(()=>hist(origRoute));
 
 let navd = false;
 
@@ -33,8 +34,8 @@ let updated: number|undefined
 let inVal:number|undefined
 
 const {result, onResult, refetch, onError} = useQuery<{post: Relation<Post>, commentManagerComments: RelationCollection<PluginComment>}>(postQuery, {postId});
-onError(() => router.push('/ServerError'))
-onResult(r => r.networkStatus !== 4 && ((!r.data?.post.data) ? (router.push('/NotFound')) : onResult(rs => {
+onError(() => router.push('/ServerError').then(()=>hist(origRoute)))
+onResult(r => r.networkStatus !== 4 && (!r.data?.post.data ? router.push('/NotFound').then(()=>hist(origRoute)) : onResult(rs => {
   document.title = `${r.data.post.data.attributes.title} - Modal Marginalia`
   updated = new Date(rs.data.post.data.attributes.updatedAt).getTime();
   if(!refreshRate) return
