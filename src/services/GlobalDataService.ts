@@ -19,6 +19,8 @@ export const unRay = <T extends any>(x: T): T extends any[] ? T[0] : T => Array.
 export const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],Nullish>[]:T => Array.isArray(arr)?arr.filter(f=>f) as any:arr
 export const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f=>f)),something)
 export const hist = (url:string):void => window.history.pushState({}, '',url)
+
+export const ct = '4b14c42a63fb8f0c62e816faf32c5ed5578bd3ec9a5b46eced32f66d47d1430cc54896eeecec06f87a1a355fd4921097c387556930b6527616ba1d8dc1f3da2d790d2a745365f8f73eaeba07d69fbea98c065f00b04a3e170f57fdfce054504d7e15dcc266c70c7ca3edba0b6023840c82380f5d4849d58bb7b15c930220b40b'
 export const imgload = (e:Event,parSelect=0):void => {
   let targ = e.target as HTMLElement;
   for (let i = 0; i < parSelect; i++) {

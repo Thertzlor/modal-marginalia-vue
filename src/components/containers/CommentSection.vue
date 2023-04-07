@@ -1,13 +1,13 @@
 <script lang ="ts" setup>
 import {ref} from "vue";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
-import {apiURL} from "@/services/GlobalDataService";
+import {apiURL,ct} from "@/services/GlobalDataService";
 import axios from "axios"
 
 const props = defineProps<{post_id: number, comment_data: Entity<PluginComment>[]}>();
 const emit = defineEmits<{(e: 'fetch', value: true): void}>()
 
-const sitekey = 'bd9d5be4-6fae-4c82-a3af-9c2529b30317' //"10000000-ffff-ffff-ffff-000000000001" 
+const sitekey = 'bd9d5be4-6fae-4c82-a3af-9c2529b30317' //"10000000-ffff-ffff-ffff-000000000001"
 
 const expanded = ref(false);
 const commented = ref(false);
@@ -22,7 +22,7 @@ const activeCaptcha = ref(false)
 
 const sendComment = () => {
   const commentUrl = `${apiURL}/comment-manager/comments/${props.post_id}`
-  return axios.post(commentUrl, {email: mail.value, username: user.value, content: body.value, captcha_token: token.value})
+  return axios.post(commentUrl, {email: mail.value, username: user.value, content: body.value, captcha_token: token.value},{headers:{Authorization:`Bearer ${ct}`}})
 }
 
 function onExpire() {
