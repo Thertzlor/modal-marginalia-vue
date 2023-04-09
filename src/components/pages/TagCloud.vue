@@ -3,7 +3,8 @@ import gql from "graphql-tag";
 import {useQuery} from "@vue/apollo-composable";
 import {useRouter} from 'vue-router';
 import {computed} from 'vue';
-import {hist} from '@/services/GlobalDataService';
+import { useGlobals } from '@/stores/globals';
+ const {hist} = useGlobals()
 
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath
@@ -30,10 +31,10 @@ const getMax = computed(() => (([...((tagList.value)?.tags?.data || [])]).sort((
       <ul>
         <li v-for="{attributes: {color, slug, name, posts: {data: {length}, }, }} in tagList.tags.data" :title="`Posts: ${length}`" :key="`post-list?tag=${slug}`">
           <RouterLink :style="{
-            fontSize: `${linearTransform(length, 1, getMax, minEm, maxEm).toFixed(2)}em`,
-            fontWeight: linearTransform(length, 1, getMax, minWeight, maxWeight).toFixed(2),
-            color: color
-          }" :to="`post-list?tag=${slug}`">{{ name}}</RouterLink>
+              fontSize: `${linearTransform(length, 1, getMax, minEm, maxEm).toFixed(2)}em`,
+              fontWeight: linearTransform(length, 1, getMax, minWeight, maxWeight).toFixed(2),
+              color: color
+            }" :to="`post-list?tag=${slug}`">{{ name}}</RouterLink>
         </li>
       </ul>
     </main>

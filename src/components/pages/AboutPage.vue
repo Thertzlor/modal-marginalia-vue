@@ -2,9 +2,10 @@
 import gql from "graphql-tag";
 import {useQuery} from "@vue/apollo-composable";
 import {useRouter} from 'vue-router';
-import {processContent,hist} from '@/services/GlobalDataService';
+import { useGlobals } from '@/stores/globals';
 import {onUpdated} from 'vue';
 import DynaPost from '../containers/DynaPost.vue';
+const {processContent,hist} = useGlobals()
 const router = useRouter()
 const origRoute = router.currentRoute.value.fullPath
 const postQuery = gql`query about {aboutPage { data { attributes { text title footnotes toenotes         images { data { attributes { url width height caption formats } } }} } } } `;

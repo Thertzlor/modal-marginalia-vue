@@ -2,10 +2,11 @@
 import {useRouter} from "vue-router";
 import {computed, ComputedRef, Ref, ref} from 'vue';
 import {useQuery} from "@vue/apollo-composable";
-import {perPage, unRay, antiNull, hist, searchSurround} from '@/services/GlobalDataService';
+import { useGlobals } from '@/stores/globals';
 import gql from "graphql-tag";
 import Pagination from "../navigation/Pagination.vue";
 import TaxoList from "../containers/TaxoList.vue";
+const {perPage, unRay, antiNull, hist, searchSurround} = useGlobals()
 
 const router = useRouter();
 const route = router.currentRoute.value

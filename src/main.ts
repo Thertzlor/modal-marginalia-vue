@@ -1,31 +1,30 @@
 //@ts-ignore missing type idk
 import App from "@/App.vue";
 import router from "@/router";
+import { createApp,h  } from "vue";
 import { createPinia } from "pinia";
 import { DefaultApolloClient } from '@vue/apollo-composable'
-import { onError } from "@apollo/client/link/error";
-import { createApp,h  } from "vue";
 import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client/core'
-import * as globals from "./services/GlobalDataService"
+import { onError } from "@apollo/client/link/error";
+import {useGlobals} from "@/stores/globals"
 
-const httpLink = new HttpLink({uri: globals.graphqlURL});
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties extends ReturnType<typeof useGlobals> {}
+}
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-      ),
-    );
-
+  if (graphQLErrors) for (const { message, locations, path } of graphQLErrors) console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
   if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
-type GlobalData = Unspace<typeof globals>
-
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties extends GlobalData {}
-}
+const pinia = createPinia()
+const app = createApp({
+  render: () => h(App),compilerOptions:{isCustomElement(t){return ['CustomLink'].includes(t)}}}
+).use(router).use(pinia);
+//Pina is loaded now
+const globals = useGlobals()
+app.config.globalProperties = globals as any
+const httpLink = new HttpLink({uri: globals.graphqlURL});
 
 export const apolloClient = new ApolloClient({
   cache:new InMemoryCache({
@@ -64,11 +63,4 @@ export const apolloClient = new ApolloClient({
   }
 })
 
-const pinia = createPinia()
-
-const app = createApp({render: () => h(App),compilerOptions:{
-  isCustomElement(t){return ['CustomLink'].includes(t)}
-}});
-
-app.config.globalProperties = {...globals} as any
-app.provide(DefaultApolloClient, apolloClient).use(router).use(pinia).mount("#app");
+app.provide(DefaultApolloClient, apolloClient).mount('#app')

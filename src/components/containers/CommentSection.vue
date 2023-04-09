@@ -1,8 +1,9 @@
 <script lang ="ts" setup>
 import {ref} from "vue";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
-import {apiURL,ct} from "@/services/GlobalDataService";
+import { useGlobals } from '@/stores/globals';
 import axios from "axios"
+const {apiURL,ct} = useGlobals()
 
 const props = defineProps<{post_id: number, comment_data: Entity<PluginComment>[]}>();
 const emit = defineEmits<{(e: 'fetch', value: true): void}>()

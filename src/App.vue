@@ -2,12 +2,13 @@
 import SidebarMobile from "./components/navigation/SidebarMobile.vue";
 import Sidebar from "./components/navigation/Sidebar.vue";
 import { useCanvas } from "@/stores/canvas";
-import {refreshRate,hist} from "./services/GlobalDataService";
+import { useGlobals } from './stores/globals';
 import gql from "graphql-tag";
 import {useQuery,provideApolloClient} from "@vue/apollo-composable";
 import {onMounted, onBeforeMount, computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import { apolloClient } from './main';
+const {refreshRate,hist} = useGlobals()
 provideApolloClient(apolloClient)
 let relCount = 5;
 const route = useRoute()

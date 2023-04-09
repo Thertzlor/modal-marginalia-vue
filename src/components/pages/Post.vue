@@ -7,8 +7,9 @@ import ImageContainer from "../containers/ImageContainer.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import CommentSection from "../containers/CommentSection.vue";
 import {onUpdated} from 'vue';
-import {processContent, defaultNote, refreshRate, hist} from '@/services/GlobalDataService';
+import { useGlobals } from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
+const {processContent, defaultNote, refreshRate, hist} = useGlobals()
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath
 
@@ -72,7 +73,7 @@ const contentFetcher = () => refetch()
       </main>
 
       <div v-if="result.post.data.attributes.footnotes
-      && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
+          && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
         <DynaPost :content="result.post.data.attributes.footnotes" :imgs="[]" />
       </div>
       <div v-if="result.post.data.attributes.toenotes && result.post.data.attributes.toenotes.replace(/\s*/g, '') !== defaultNote" id="toenote_container" class="footnotes toenotes">

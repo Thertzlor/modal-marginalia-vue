@@ -4,9 +4,10 @@ import gql from "graphql-tag";
 import {useQuery,provideApolloClient} from "@vue/apollo-composable";
 import Pagination from "../navigation/Pagination.vue";
 import TaxoList from "../containers/TaxoList.vue";
-import {perPage, unRay, antiNull, refreshRate, newTime, hist} from '@/services/GlobalDataService';
+import { useGlobals } from '@/stores/globals';
 import { apolloClient } from '../../main';
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
+const {perPage, unRay, antiNull, refreshRate, newTime, hist} = useGlobals()
 const invisible = ref(true)
 const transi = ref('none')
 provideApolloClient(apolloClient)
