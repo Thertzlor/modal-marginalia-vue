@@ -15,7 +15,7 @@ export const taxoSort = (l:Entity<Tag | Category>[])=> l.sort((a,b) => col.compa
 type SimpleImg = {url: string;width: number;height: number}
 export const  getImageData = (imgData:UploadedFile): SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height}).filter(f => f)
 export const getSrcSet = (imgs:SimpleImg[]): string => imgs.filter(i=>i.url).map(({url, width}) => `${url} ${width}w`).join(',')
-export const unRay = <T extends any>(x: T): T extends any[] ? T[0] : T => Array.isArray(x) ? x[0] : x;
+export const unRay = <T>(x: T): T extends any[] ? T[0] : T => Array.isArray(x) ? x[0] : x;
 export const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],Nullish>[]:T => Array.isArray(arr)?arr.filter(f=>f) as any:arr
 export const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f=>f)),something)
 export const hist = (url:string):void => window.history.pushState({}, '',url)

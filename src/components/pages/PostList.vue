@@ -15,7 +15,7 @@ onBeforeUnmount(()=>{transi.value='none';invisible.value = true;})
 const router = useRouter();
 const route = router.currentRoute.value;
 const origRoute = route.fullPath
-let targetPage = unRay(route.query.page);
+const targetPage = unRay(route.query.page);
 const page = targetPage ? parseInt(targetPage, 10) : 1;
 const paginationFilter: PaginationArg = {page, pageSize: perPage}
 const [tagQuery, catQuery] = [route.query.tag, route.query.category].map(antiNull);

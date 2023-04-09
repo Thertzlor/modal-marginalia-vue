@@ -1,6 +1,7 @@
 //@ts-ignore missing type idk
 import App from "@/App.vue";
 import router from "@/router";
+import { createPinia } from "pinia";
 import { DefaultApolloClient } from '@vue/apollo-composable'
 import { onError } from "@apollo/client/link/error";
 import { createApp,h  } from "vue";
@@ -39,7 +40,7 @@ export const apolloClient = new ApolloClient({
     },
       QuoteEntity:{
         keyFields:['id']
-      
+
     },
     Query:{
     fields:{
@@ -67,8 +68,11 @@ export const apolloClient = new ApolloClient({
   }
 })
 
+const pinia = createPinia()
+
 const app = createApp({render: () => h(App),compilerOptions:{
   isCustomElement(t){return ['CustomLink'].includes(t)}
 }});
+
 app.config.globalProperties = {...globals} as any
-app.provide(DefaultApolloClient, apolloClient).use(router).mount("#app");
+app.provide(DefaultApolloClient, apolloClient).use(router).use(pinia).mount("#app");

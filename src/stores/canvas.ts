@@ -1,6 +1,8 @@
-class CanvasService {
-  canvasUtilities: Record<string, (...args: any) => any> = {}
-  activateCanvas() {
+import { defineStore } from "pinia";
+
+export const useCanvas = defineStore('canvas',()=>{
+  const canvasUtilities: Record<string, (...args: any) => any> = {}
+  function activateCanvas() {
     function drawCircle(context: CanvasRenderingContext2D, xPos: number, yPos: number, radius: number, color: string) {
       context.shadowColor = color;
       context.shadowOffsetX = 0;
@@ -79,12 +81,12 @@ class CanvasService {
         context.fillRect(0, 0, width, height);
       })
 
-      this.canvasUtilities.refill = refill;
+      canvasUtilities.refill = refill;
       window.addEventListener('resize', debounce(refill, 16))
       const resizeObserver = new ResizeObserver(throttle2(refill, 16))
       resizeObserver.observe(wrapElement)
     })();
   }
-}
 
-export default new CanvasService()
+  return {activateCanvas}
+})

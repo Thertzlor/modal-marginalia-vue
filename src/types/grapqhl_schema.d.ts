@@ -1,7 +1,7 @@
 type Nullish = null|undefined|''
 type Unspace<T> = {[K in keyof T]:T[K]}
 
-type Quote = {text: string} 
+type Quote = {text: string}
 
 type UploadedFile = {
    name: string
@@ -123,14 +123,14 @@ type Relation<T> = {data: Entity<T>}
 
 type RelationCollection<T> = {data: Entity<T>[]}
 
-type QueryFilter<T extends any> = T extends Date ? FilterPrimitive<T> : T extends any[] ? QueryFilter<T[number]> : T extends Record<string, any> ? FilterObject<T> : FilterPrimitive<T>
+type QueryFilter<T> = T extends Date ? FilterPrimitive<T> : T extends any[] ? QueryFilter<T[number]> : T extends Record<string, any> ? FilterObject<T> : FilterPrimitive<T>
 
 type FilterObject<T extends Record<string, any>> = Partial<{[K in keyof T]: QueryFilter<Unrelate<T[K]>>}
    & {and: FilterObject<T>[], or: FilterObject<T>[], not: FilterObject<T>[], id: FilterPrimitive<ID>}>
 
 type PaginationArg = {page: number, pageSize: number}
 
-type FilterPrimitive<T extends any = any> = Partial<{
+type FilterPrimitive<T = any> = Partial<{
    not: FilterPrimitive<T>,
    eq: T,
    ne: T,

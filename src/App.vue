@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import SidebarMobile from "./components/navigation/SidebarMobile.vue";
 import Sidebar from "./components/navigation/Sidebar.vue";
-import CanvasService from "./services/CanvasService";
+import { useCanvas } from "@/stores/canvas";
 import {refreshRate,hist} from "./services/GlobalDataService";
 import gql from "graphql-tag";
 import {useQuery,provideApolloClient} from "@vue/apollo-composable";
@@ -65,7 +65,7 @@ onMounted(
       };
       else run(() => el.classList.add("visible"));
     });
-    CanvasService.activateCanvas();
+    useCanvas().activateCanvas();
   }
 )
 
@@ -96,7 +96,7 @@ const changeStars = (forceDiff = false) => {
   }
   if (picEl && randomImg !== currentImg.value) {
     opacity.value = '0';
-    let loaded = loadedImgs.includes(randomImg)
+    const loaded = loadedImgs.includes(randomImg)
     const loady = loaded ? true : imgLoader(randomImg)
     setTimeout(async () => {
       currentImg.value = randomImg
@@ -162,12 +162,12 @@ onResult(r=>{
         if((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) refetch()
       })
       setInterval(()=>{checkFetch()},refreshRate)
-  },refreshRate)
-}
+    },refreshRate)
+  }
 })
 
 const fallback = {attributes: {text: ""}}
-let quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes.text)
+const quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes.text)
 
 </script>
 

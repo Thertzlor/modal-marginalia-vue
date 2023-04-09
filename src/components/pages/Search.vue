@@ -91,12 +91,12 @@ function searchSubmit() {
 }
 
 function locatePreview(text: string, query: string[]) {
-  let lookAround = searchSurround;
+  const lookAround = searchSurround;
   const searchtext = text.toLowerCase();
   const process = (txt: string, matchStart: number, matchLength: number, overflowStart: boolean, overflowEnd: boolean) =>
     `${overflowStart ? "[...]" : ""}${(matchLength
       ? `${txt.slice(0, matchStart)}<mark>${txt.slice(matchStart, matchStart + matchLength)}</mark>${txt.slice(matchStart + matchLength, txt.length)
-        }`.trim() : txt.trim()
+      }`.trim() : txt.trim()
     ).replace(/(\S+$)/, /\S/.test(text[matchStart + matchLength + 1] || '') ? "" : "$1").replace(/^(\S+)/, /\S/.test(text[matchStart - 1] || '') ? "" : "$1").trim()}${overflowEnd ? "[...]" : ""}`.replace(/\n/g, "<br/>");
 
   for (let i = 0; i < query.length; i++) {

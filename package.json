@@ -18,6 +18,7 @@
     "core-js": "^3.27.2",
     "graphql": "^16.6.0",
     "graphql-tag": "^2.12.6",
+    "pinia": "^2.0.34",
     "postcss": "^8.4.21",
     "postcss-scss": "^4.0.6",
     "scss": "^0.2.4",
