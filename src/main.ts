@@ -32,29 +32,25 @@ export const apolloClient = new ApolloClient({
     typePolicies:{
       PostEntity:{
         keyFields:['id'],
-        fields:{attributes:{
-          keyArgs:['slug'],
-          merge:true
+        fields:{
+          attributes:{
+            keyArgs:['slug'],
+            merge:true
+          }
+        }
+      },
+      QuoteEntity:{keyFields:['id']},
+      Query:{
+        fields:{
+          posts:{
+            keyArgs:['id'],
+            merge:true
+          },
+          tags:{keyArgs:['id']}
         }
       }
-    },
-      QuoteEntity:{
-        keyFields:['id']
-
-    },
-    Query:{
-    fields:{
-      posts:{
-        keyArgs:['id'],
-        merge:true
-      },
-      tags:{
-        keyArgs:['id']
-      }
     }
-  }
-}
-}),
+  }),
   link:from([errorLink, httpLink]),
   defaultOptions: {
     query:{

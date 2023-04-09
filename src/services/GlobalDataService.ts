@@ -33,8 +33,7 @@ export const imgload = (e:Event,parSelect=0):void => {
 const wrap = (el: HTMLElement, wrapper: HTMLElement) => (el.parentNode?.insertBefore(wrapper, el) && wrapper.appendChild(el));
 
 function codeWrapper() {
-  [...document.getElementsByTagName("pre")].filter(f=>!f.getElementsByTagName("code").length)
-  .forEach(pr => {
+  [...document.getElementsByTagName("pre")].filter(f=>!f.getElementsByTagName("code").length).forEach(pr => {
     const coder = document.createElement("code");
     coder.className = pr.className;
     pr.className = "";
@@ -44,7 +43,7 @@ function codeWrapper() {
   });
 
   [...document.getElementsByTagName("code")].
-  forEach((el) => (el?.parentElement?.tagName !== "PRE") && wrap(el, document.createElement("pre")));
+    forEach((el) => (el?.parentElement?.tagName !== "PRE") && wrap(el, document.createElement("pre")));
 }
 function tocGenerator(main: HTMLElement) {
   const posty = main.getElementsByClassName("post_text")[0] as HTMLElement;
