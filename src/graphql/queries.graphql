@@ -1,0 +1,7 @@
+query Init($pg: PaginationArg) { quotes(pagination: $pg) { data { id attributes { text } } } categories { data { attributes { name slug } } } posts(pagination: { start: 0, limit: 5 }, sort: "publishedAt:desc") { meta{pagination{total}} data { id attributes { publishedAt title slug } } } }
+
+query lastPosts{posts { meta{pagination{total}} }}
+
+query about {aboutPage { data { attributes { text title footnotes toenotes         images { data { attributes { url width height caption formats } } }} } } }
+
+query TagList { tags(filters:{posts:{id:{notNull:true},publishedAt:{notNull:true}}}) { data { attributes { name slug color posts(filters:{publishedAt:{notNull:true} id:{notNull:true}}) { data { id } } } } } }

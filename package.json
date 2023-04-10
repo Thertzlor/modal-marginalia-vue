@@ -8,7 +8,8 @@
     "lint": "vue-cli-service lint",
     "serve-vite": "vite",
     "build-vite": "vite build",
-    "preview-vite": "vite preview"
+    "preview-vite": "vite preview",
+    "auto-graph": "graphql-codegen && replace-in-files --string '@vue/composition-api' --replacement 'vue' ./src/graphql/api.ts && replace-in-files --regex 'DateTime:\\sany' --replacement 'DateTime:Date' ./src/graphql/api.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.7.7",
@@ -32,6 +33,10 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^3.3.0",
+    "@graphql-codegen/typescript": "^3.0.3",
+    "@graphql-codegen/typescript-operations": "^3.0.3",
+    "@graphql-codegen/typescript-vue-apollo": "^3.3.7",
     "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
@@ -43,6 +48,7 @@
     "eslint": "^8.33.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^9.9.0",
+    "graphql-codegen": "^0.4.0",
     "prettier": "^2.8.3",
     "stylelint-config-standard-scss": "^6.1.0",
     "typescript": "^4.9.5",
