@@ -1575,6 +1575,47 @@ export type TagListQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type TagListQuery = { __typename?: 'Query', tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null, posts?: { __typename?: 'PostRelationResponseCollection', data: Array<{ __typename?: 'PostEntity', id?: string | null }> } | null } | null }> } | null };
 
+export type PostSearchQueryVariables = Exact<{
+  postFilter: PostFiltersInput;
+  pg: PaginationArg;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>> | InputMaybe<Scalars['String']>>;
+}>;
+
+
+export type PostSearchQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', formats?: any | null } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null } | null }> } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null } | null } | null } | null }> } | null };
+
+export type SinglePostQueryVariables = Exact<{
+  postId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type SinglePostQuery = { __typename?: 'Query', commentManagerComments?: { __typename?: 'CommentManagerCommentEntityResponseCollection', data: Array<{ __typename?: 'CommentManagerCommentEntity', attributes?: { __typename?: 'CommentManagerComment', content?: string | null, createdAt?: any | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body: string, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null, height?: number | null, caption?: string | null, formats?: any | null } | null }> } | null } | null } | null } | null };
+
+export type PostCheckQueryVariables = Exact<{
+  postId?: InputMaybe<Scalars['ID']>;
+}>;
+
+
+export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', updatedAt?: any | null } | null } | null } | null };
+
+export type PostCountQueryVariables = Exact<{
+  pf?: InputMaybe<PostFiltersInput>;
+  pg: PaginationArg;
+}>;
+
+
+export type PostCountQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, pageSize: number } } } | null };
+
+export type PostListQueryVariables = Exact<{
+  pf?: InputMaybe<PostFiltersInput>;
+  tf: TagFiltersInput;
+  cf?: InputMaybe<CategoryFiltersInput>;
+  pg: PaginationArg;
+}>;
+
+
+export type PostListQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', formats?: any | null } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null } | null }> } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null } | null } | null } | null }> } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null };
+
 
 export const InitDocument = gql`
     query Init($pg: PaginationArg) {
@@ -1748,3 +1789,341 @@ export function useTagListLazyQuery(options: VueApolloComposable.UseQueryOptions
   return VueApolloComposable.useLazyQuery<TagListQuery, TagListQueryVariables>(TagListDocument, {}, options);
 }
 export type TagListQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<TagListQuery, TagListQueryVariables>;
+export const PostSearchDocument = gql`
+    query postSearch($postFilter: PostFiltersInput!, $pg: PaginationArg!, $sort: [String]) {
+  posts(filters: $postFilter, pagination: $pg, sort: $sort) {
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
+    data {
+      id
+      attributes {
+        publishedAt
+        body_searchable
+        title
+        teaser
+        slug
+        header {
+          data {
+            attributes {
+              formats
+            }
+          }
+        }
+        tags {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+        category {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostSearchQuery__
+ *
+ * To run a query within a Vue component, call `usePostSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostSearchQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = usePostSearchQuery({
+ *   postFilter: // value for 'postFilter'
+ *   pg: // value for 'pg'
+ *   sort: // value for 'sort'
+ * });
+ */
+export function usePostSearchQuery(variables: PostSearchQueryVariables | VueCompositionApi.Ref<PostSearchQueryVariables> | ReactiveFunction<PostSearchQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<PostSearchQuery, PostSearchQueryVariables>(PostSearchDocument, variables, options);
+}
+export function usePostSearchLazyQuery(variables: PostSearchQueryVariables | VueCompositionApi.Ref<PostSearchQueryVariables> | ReactiveFunction<PostSearchQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<PostSearchQuery, PostSearchQueryVariables>(PostSearchDocument, variables, options);
+}
+export type PostSearchQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostSearchQuery, PostSearchQueryVariables>;
+export const SinglePostDocument = gql`
+    query SinglePost($postId: ID) {
+  commentManagerComments(filters: {related_to: {slag: {id: {eq: $postId}}}}) {
+    data {
+      attributes {
+        content
+        createdAt
+        author {
+          data {
+            attributes {
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+  post(id: $postId) {
+    data {
+      id
+      attributes {
+        title
+        header {
+          data {
+            attributes {
+              url
+              caption
+              width
+              height
+              alternativeText
+              formats
+            }
+          }
+        }
+        body
+        slug
+        toc
+        publishedAt
+        updatedAt
+        comments_enabled
+        footnotes
+        toenotes
+        category {
+          data {
+            attributes {
+              color
+              name
+              slug
+            }
+          }
+        }
+        tags {
+          data {
+            attributes {
+              color
+              name
+              slug
+            }
+          }
+        }
+        images {
+          data {
+            attributes {
+              url
+              width
+              height
+              caption
+              formats
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useSinglePostQuery__
+ *
+ * To run a query within a Vue component, call `useSinglePostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSinglePostQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useSinglePostQuery({
+ *   postId: // value for 'postId'
+ * });
+ */
+export function useSinglePostQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, variables, options);
+}
+export function useSinglePostLazyQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, variables, options);
+}
+export type SinglePostQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<SinglePostQuery, SinglePostQueryVariables>;
+export const PostCheckDocument = gql`
+    query postCheck($postId: ID) {
+  post(id: $postId) {
+    data {
+      id
+      attributes {
+        updatedAt
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostCheckQuery__
+ *
+ * To run a query within a Vue component, call `usePostCheckQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostCheckQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = usePostCheckQuery({
+ *   postId: // value for 'postId'
+ * });
+ */
+export function usePostCheckQuery(variables: PostCheckQueryVariables | VueCompositionApi.Ref<PostCheckQueryVariables> | ReactiveFunction<PostCheckQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<PostCheckQuery, PostCheckQueryVariables>(PostCheckDocument, variables, options);
+}
+export function usePostCheckLazyQuery(variables: PostCheckQueryVariables | VueCompositionApi.Ref<PostCheckQueryVariables> | ReactiveFunction<PostCheckQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<PostCheckQuery, PostCheckQueryVariables>(PostCheckDocument, variables, options);
+}
+export type PostCheckQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostCheckQuery, PostCheckQueryVariables>;
+export const PostCountDocument = gql`
+    query PostCount($pf: PostFiltersInput, $pg: PaginationArg!) {
+  posts(filters: $pf, pagination: $pg) {
+    meta {
+      pagination {
+        total
+        pageSize
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostCountQuery__
+ *
+ * To run a query within a Vue component, call `usePostCountQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostCountQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = usePostCountQuery({
+ *   pf: // value for 'pf'
+ *   pg: // value for 'pg'
+ * });
+ */
+export function usePostCountQuery(variables: PostCountQueryVariables | VueCompositionApi.Ref<PostCountQueryVariables> | ReactiveFunction<PostCountQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<PostCountQuery, PostCountQueryVariables>(PostCountDocument, variables, options);
+}
+export function usePostCountLazyQuery(variables: PostCountQueryVariables | VueCompositionApi.Ref<PostCountQueryVariables> | ReactiveFunction<PostCountQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<PostCountQuery, PostCountQueryVariables>(PostCountDocument, variables, options);
+}
+export type PostCountQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostCountQuery, PostCountQueryVariables>;
+export const PostListDocument = gql`
+    query PostList($pf: PostFiltersInput, $tf: TagFiltersInput!, $cf: CategoryFiltersInput, $pg: PaginationArg!) {
+  posts(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
+    data {
+      id
+      attributes {
+        publishedAt
+        title
+        teaser
+        slug
+        header {
+          data {
+            attributes {
+              formats
+            }
+          }
+        }
+        tags {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+        category {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+      }
+    }
+  }
+  tags(filters: $tf) {
+    data {
+      attributes {
+        name
+        slug
+        color
+        description
+      }
+    }
+  }
+  categories(filters: $cf) {
+    data {
+      attributes {
+        name
+        slug
+        color
+        description
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePostListQuery__
+ *
+ * To run a query within a Vue component, call `usePostListQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePostListQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = usePostListQuery({
+ *   pf: // value for 'pf'
+ *   tf: // value for 'tf'
+ *   cf: // value for 'cf'
+ *   pg: // value for 'pg'
+ * });
+ */
+export function usePostListQuery(variables: PostListQueryVariables | VueCompositionApi.Ref<PostListQueryVariables> | ReactiveFunction<PostListQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<PostListQuery, PostListQueryVariables>(PostListDocument, variables, options);
+}
+export function usePostListLazyQuery(variables: PostListQueryVariables | VueCompositionApi.Ref<PostListQueryVariables> | ReactiveFunction<PostListQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<PostListQuery, PostListQueryVariables>(PostListDocument, variables, options);
+}
+export type PostListQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostListQuery, PostListQueryVariables>;

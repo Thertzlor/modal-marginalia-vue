@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {CategoryEntity} from '@/graphql/api';
+import type {CategoryEntity} from '@/graphql/api';
 import CustomLink from './CustomLink.vue';
 const voodo = {} as  any as Present<CategoryEntity,'attributes'>
 

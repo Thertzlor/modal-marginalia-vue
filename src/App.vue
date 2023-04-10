@@ -5,7 +5,7 @@ import { useCanvas } from "@/stores/canvas";
 import { useGlobals } from './stores/globals';
 import {onMounted, onBeforeMount, computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
-import { useInitQuery, useLastPostsQuery } from "@/graphql/api";
+import { PaginationArg, useInitQuery, useLastPostsQuery } from "@/graphql/api";
 const {refreshRate,hist} = useGlobals()
 let relCount = 5;
 const route = useRoute()

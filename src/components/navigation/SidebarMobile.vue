@@ -2,7 +2,7 @@
 import NavMenu from "./NavMenu.vue";
 import {useRouter} from 'vue-router'
 import {ref} from 'vue';
-import {CategoryEntity} from '@/graphql/api';
+import type {CategoryEntity} from '@/graphql/api';
 const router = useRouter();
 defineProps<{cat_list: CategoryEntity[]}>();
 const query = ref('')

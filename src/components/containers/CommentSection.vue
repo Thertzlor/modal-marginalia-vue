@@ -1,11 +1,12 @@
 <script lang ="ts" setup>
+import type {CommentManagerCommentEntity} from '@/graphql/api';
 import {ref} from "vue";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
 import { useGlobals } from '@/stores/globals';
 import axios from "axios"
 const {apiURL,ct} = useGlobals()
 
-const props = defineProps<{post_id: number, comment_data: Entity<PluginComment>[]}>();
+const props = defineProps<{post_id: number, comment_data: CommentManagerCommentEntity[]}>();
 const emit = defineEmits<{(e: 'fetch', value: true): void}>()
 
 const sitekey = 'bd9d5be4-6fae-4c82-a3af-9c2529b30317' //"10000000-ffff-ffff-ffff-000000000001"
@@ -65,9 +66,9 @@ function commentSubmit(challengeToken) {
     <h2>Comments</h2>
     <hr />
     <ul v-if="comment_data.length">
-      <li v-for="{attributes: {author: {data: {attributes: {username}}}, createdAt, content}, id} in comment_data" :key="id">
+      <li v-for="{attributes: {author: {data: {attributes: {username}}}, createdAt, content}, id} in comment_data.filter((f):f is Present<NonNullable<typeof f>> & {attributes:{author:{data:{attributes:{}}}}}  => !!(f.attributes?.author?.data?.attributes))" :key="id">
         <span class="commentitle">{{ username}}</span>
-        <span class="commentStats">posted {{ gerDate(createdAt)}}</span>
+        <span class="commentStats">posted {{ gerDate(createdAt??new Date(0))}}</span>
         <hr />
         <div class="commentbody">{{ content}}</div>
       </li>

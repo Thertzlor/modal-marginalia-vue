@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
-import {computed, ComputedRef, Ref, ref} from 'vue';
-import {useQuery} from "@vue/apollo-composable";
+import {computed, ref} from 'vue';
 import { useGlobals } from '@/stores/globals';
-import gql from "graphql-tag";
+import { usePostSearchQuery } from "@/graphql/api";
+import type { PostFiltersInput, PaginationArg, UploadFile, Post } from "@/graphql/api";
 import Pagination from "../navigation/Pagination.vue";
 import TaxoList from "../containers/TaxoList.vue";
 const {perPage, unRay, antiNull, hist, searchSurround} = useGlobals()
@@ -44,7 +44,7 @@ const searchQuery = ref(query.value)
 const sortAsc = ref(qSortDir === 'asc')
 const sortVal = ref((sortOptions.find(s => s.urlVal === qSort) || {graphVal: 'published'}).graphVal)
 const sortArg = computed(() => `${sortVal.value}:${sortAsc.value ? 'asc' : 'desc'}`)
-const pg: Ref<PaginationArg> = ref({page: pageTarget.value, pageSize: perPageVal.value, });
+const pg= ref({page: pageTarget.value, pageSize: perPageVal.value} as PaginationArg);
 
 const splitter = (t: string) => {
   const exactEx = /(?:"|')([^"']+)(?:"|')/gim;
@@ -61,7 +61,7 @@ const staticSplit = computed(() => splitter(searchQuery.value))
 const splitQuery = computed(() => splitter(searchQuery.value));
 
 const genQuery = (t: string) => {
-  const filter: QueryFilter<Post> = {or: [{body_searchable: {contains: t}}], };
+  const filter:PostFiltersInput= {or: [{body_searchable: {contains: t}}], };
   const pushy = (f: keyof Post) => filter.or && filter.or.push({[f]: {contains: t}});
   if (incTitle.value) pushy("title");
   if (incTeaser.value) pushy("teaser");
@@ -72,11 +72,9 @@ const genQuery = (t: string) => {
   return filter;
 };
 
-const postFilter: ComputedRef<QueryFilter<Post>> = computed(() => splitQuery.value.length === 1 ? genQuery(splitQuery.value[0]) : {[andMode.value ? "and" : "or"]: splitQuery.value.map(f => genQuery(f)), });
+const postFilter = computed(() => splitQuery.value.length === 1 ? genQuery(splitQuery.value[0]) : {[andMode.value ? "and" : "or"]: splitQuery.value.map(f => genQuery(f)), });
 
-const postQuery = gql`query postSearch ($postFilter:PostFiltersInput!,$pg:PaginationArg!,$sort:[String]){ posts(filters:$postFilter, pagination:$pg, sort:$sort ){ meta { pagination { total page pageSize pageCount } } data { id attributes { publishedAt body_searchable title teaser slug header { data { attributes { formats } } } tags { data { attributes { name slug color } } } category { data { attributes { name slug color } } } } } } }`;
-
-const {result, onError, refetch, fetchMore} = useQuery<{posts: EntityCollection<Post>}>(postQuery, {pg: pg.value, postFilter: postFilter.value, sort: [sortArg.value]});
+const {result, onError, refetch, fetchMore} = usePostSearchQuery( {pg: pg.value, postFilter: postFilter.value, sort: [sortArg.value]});
 onError(() => (router.push('/ServerError').then(()=>hist(origRoute))))
 
 const fmore = (pg: PaginationArg) => fetchMore({variables: {pg}})
@@ -133,9 +131,9 @@ function locatePreview(text: string, query: string[]) {
     </form>
     <Pagination v-if="result?.posts" :page_data="result.posts.meta.pagination" :base_url="href" @pg="a => {pg = a; searchSubmit()}" />
     <TransitionGroup name="v-page">
-      <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, body_searchable, tags: {data: tagData}, category: {data: catData}}} in result.posts.data" :key="id" class="search_result">
-        <RouterLink :to="`/post/${id}-${slug}`" v-if="img">
-          <img :srcset="getSrcSet(getImageData(img.attributes))" :src="img.attributes.url" :width="img.attributes.width" sizes="30vw" :height="img.attributes.height" alt="whatever" @load="imgload" class="invisible" />
+      <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, body_searchable, tags: {data: tagData}, category: {data: catData}}} in result.posts.data?.filter((f): f is Present<typeof f,'id'|'attributes'> & {attributes:{tags:{data:{}}, category:{data:{}}, header:{data:{attributes:UploadFile}}}} => !!(f?.id && f.attributes?.header?.data && f.attributes.category?.data)) ?? []" :key="id" class="search_result">
+        <RouterLink :to="`/post/${id}-${slug}`" v-if="img?.attributes">
+          <img :srcset="getSrcSet(getImageData(img.attributes))" :src="img.attributes.url" :width="img.attributes.width ?? ''" sizes="30vw" :height="img.attributes.height??''" alt="whatever" @load="imgload" class="invisible" />
         </RouterLink>
 
         <div class="search_group">

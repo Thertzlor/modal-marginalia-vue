@@ -1,10 +1,11 @@
 <script lang="ts" setup>
+import type {Pagination, PaginationArg} from '@/graphql/api';
 import PageEntry from "../containers/PageEntry.vue";
 
 const surrounding = 2;
 const maxVisible = surrounding * 2 + 1;
 
-const props = defineProps<{page_data: MetaData['pagination'], base_url?: string, res?: PaginationArg, term?: string}>();
+const props = defineProps<{page_data: Pagination, base_url?: string, res?: PaginationArg, term?: string}>();
 const emit = defineEmits<{(e: 'pg', arg: any)}>()
 const term = props.term ?? 'page'
 

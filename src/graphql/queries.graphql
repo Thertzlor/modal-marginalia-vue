@@ -1,7 +1,313 @@
-query Init($pg: PaginationArg) { quotes(pagination: $pg) { data { id attributes { text } } } categories { data { attributes { name slug } } } posts(pagination: { start: 0, limit: 5 }, sort: "publishedAt:desc") { meta{pagination{total}} data { id attributes { publishedAt title slug } } } }
+query Init($pg: PaginationArg) {
+  quotes(pagination: $pg) {
+    data {
+      id
+      attributes {
+        text
+      }
+    }
+  }
+  categories {
+    data {
+      attributes {
+        name
+        slug
+      }
+    }
+  }
+  posts(pagination: { start: 0, limit: 5 }, sort: "publishedAt:desc") {
+    meta {
+      pagination {
+        total
+      }
+    }
+    data {
+      id
+      attributes {
+        publishedAt
+        title
+        slug
+      }
+    }
+  }
+}
 
-query lastPosts{posts { meta{pagination{total}} }}
+query lastPosts {
+  posts {
+    meta {
+      pagination {
+        total
+      }
+    }
+  }
+}
 
-query about {aboutPage { data { attributes { text title footnotes toenotes         images { data { attributes { url width height caption formats } } }} } } }
+query about {
+  aboutPage {
+    data {
+      attributes {
+        text
+        title
+        footnotes
+        toenotes
+        images {
+          data {
+            attributes {
+              url
+              width
+              height
+              caption
+              formats
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
-query TagList { tags(filters:{posts:{id:{notNull:true},publishedAt:{notNull:true}}}) { data { attributes { name slug color posts(filters:{publishedAt:{notNull:true} id:{notNull:true}}) { data { id } } } } } }
+query TagList {
+  tags(
+    filters: {
+      posts: { id: { notNull: true }, publishedAt: { notNull: true } }
+    }
+  ) {
+    data {
+      attributes {
+        name
+        slug
+        color
+        posts(
+          filters: { publishedAt: { notNull: true }, id: { notNull: true } }
+        ) {
+          data {
+            id
+          }
+        }
+      }
+    }
+  }
+}
+
+query postSearch(
+  $postFilter: PostFiltersInput!
+  $pg: PaginationArg!
+  $sort: [String]
+) {
+  posts(filters: $postFilter, pagination: $pg, sort: $sort) {
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
+    data {
+      id
+      attributes {
+        publishedAt
+        body_searchable
+        title
+        teaser
+        slug
+        header {
+          data {
+            attributes {
+              formats
+            }
+          }
+        }
+        tags {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+        category {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query SinglePost($postId: ID) {
+  commentManagerComments(
+    filters: { related_to: { slag: { id: { eq: $postId } } } }
+  ) {
+    data {
+      attributes {
+        content
+        createdAt
+        author {
+          data {
+            attributes {
+              username
+            }
+          }
+        }
+      }
+    }
+  }
+  post(id: $postId) {
+    data {
+      id
+      attributes {
+        title
+        header {
+          data {
+            attributes {
+              url
+              caption
+              width
+              height
+              alternativeText
+              formats
+            }
+          }
+        }
+        body
+        slug
+        toc
+        publishedAt
+        updatedAt
+        comments_enabled
+        footnotes
+        toenotes
+        category {
+          data {
+            attributes {
+              color
+              name
+              slug
+            }
+          }
+        }
+        tags {
+          data {
+            attributes {
+              color
+              name
+              slug
+            }
+          }
+        }
+        images {
+          data {
+            attributes {
+              url
+              width
+              height
+              caption
+              formats
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query postCheck($postId: ID) {
+  post(id: $postId) {
+    data {
+      id
+      attributes {
+        updatedAt
+      }
+    }
+  }
+}
+
+query PostCount($pf: PostFiltersInput, $pg: PaginationArg!) {
+  posts(filters: $pf, pagination: $pg) {
+    meta {
+      pagination {
+        total
+        pageSize
+      }
+    }
+  }
+}
+
+query PostList(
+  $pf: PostFiltersInput
+  $tf: TagFiltersInput!
+  $cf: CategoryFiltersInput
+  $pg: PaginationArg!
+) {
+  posts(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
+    meta {
+      pagination {
+        total
+        page
+        pageSize
+        pageCount
+      }
+    }
+    data {
+      id
+      attributes {
+        publishedAt
+        title
+        teaser
+        slug
+        header {
+          data {
+            attributes {
+              formats
+            }
+          }
+        }
+        tags {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+        category {
+          data {
+            attributes {
+              name
+              slug
+              color
+            }
+          }
+        }
+      }
+    }
+  }
+  tags(filters: $tf) {
+    data {
+      attributes {
+        name
+        slug
+        color
+        description
+      }
+    }
+  }
+  categories(filters: $cf) {
+    data {
+      attributes {
+        name
+        slug
+        color
+        description
+      }
+    }
+  }
+}

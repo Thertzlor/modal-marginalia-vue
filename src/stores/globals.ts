@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { UploadFile,TagEntity, CategoryEntity} from '@/graphql/api';
 declare const hljs: any
 
 export const useGlobals = defineStore('globals',()=>{
@@ -14,12 +15,12 @@ export const useGlobals = defineStore('globals',()=>{
   const graphqlURL=`${apiBase}/graphql`
   const gerDate = (date:Date):string => new Date(date).toLocaleString("de-DE", {month: "2-digit",day: "2-digit",year: "numeric"});
   const col = new Intl.Collator('en')
-  const taxoSort = (l:Entity<Tag | Category>[])=> l.sort((a,b) => col.compare(a.attributes.name, b.attributes.name)).sort((a,b) => ('tier' in a.attributes? a.attributes.tier ?? 0 : 0) > ('tier' in b.attributes? b.attributes.tier ?? 0 : 0) ? -1 : 1 )
+  const taxoSort = (l:(TagEntity | CategoryEntity)[])=> l.sort((a,b) => col.compare(a.attributes?.name ?? '', b.attributes?.name ?? '')).sort((a,b) => ( ( a.attributes && 'tier' in a.attributes)? a.attributes.tier ?? 0 : 0) > ((b.attributes && 'tier' in b.attributes)? b.attributes.tier ?? 0 : 0) ? -1 : 1 )
   type SimpleImg = {url: string;width: number;height: number}
-  const  getImageData = (imgData:UploadedFile): SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height}).filter(f => f)
+  const  getImageData = (imgData:UploadFile): SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height}).filter(f => f)
   const getSrcSet = (imgs:SimpleImg[]): string => imgs.filter(i=>i.url).map(({url, width}) => `${url} ${width}w`).join(',')
   const unRay = <T>(x: T): T extends any[] ? T[0] : T => Array.isArray(x) ? x[0] : x;
-  const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],Nullish>[]:T => Array.isArray(arr)?arr.filter(f=>f) as any:arr
+  const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],null|undefined>[]:T => Array.isArray(arr)?arr.filter(f=>f) as any:arr
   const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f=>f)),something)
   const hist = (url:string):void => window.history.pushState({}, '',url)
 
@@ -91,7 +92,7 @@ export const useGlobals = defineStore('globals',()=>{
     });
     main.insertBefore(enclosure, main.getElementsByTagName("main")[0]);
   }
-  function processContent(doToc=true):void {
+  function processContent(doToc:boolean|null=true):void {
     const loadedFocus = document.hasFocus();
     const main = document.getElementById("main_article");
     if (main?.classList.contains("processed")) return;

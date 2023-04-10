@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import type {CategoryEntity, PostEntity} from '@/graphql/api';
 import NavMenu from "./NavMenu.vue";
 import {useRouter} from 'vue-router'
 import {ref} from 'vue';
-import type {CategoryEntity, PostEntity} from '@/graphql/api';
 defineProps<{cat_list: CategoryEntity[], latest_posts: (SomeOf<PostEntity>)[]|undefined}>();
 const router = useRouter()
 const searchQuery = ref('')
