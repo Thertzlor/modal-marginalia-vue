@@ -4,7 +4,7 @@ defineProps<{error_code: number | string}>()
 
 <template>
   <div class="error_container article_container">
-    <h1 :style='({"--title": `"${error_code}"`} as any)' class="block title">{{ error_code}}</h1>
+    <h1 :style='({"--title": `"${error_code}"`})' class="block title">{{ error_code}}</h1>
     <div class="error_block">
       <p v-if="error_code == '404'">Not Found.<br>Whatever you were looking for isn't here.</p>
       <p v-else-if="error_code == '501'">Server Error!<br>Something must have gone wrong on my end, I am probably

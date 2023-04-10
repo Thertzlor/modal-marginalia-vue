@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type {TagEntity, CategoryEntity} from '@/graphql/api';
-
 defineProps<{list: (TagEntity|CategoryEntity|null|undefined)[], taxType: string}>();
 </script>
 

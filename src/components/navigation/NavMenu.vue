@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import type {CategoryEntity} from '@/graphql/api';
 import CustomLink from './CustomLink.vue';
-const voodo = {} as  any as Present<CategoryEntity,'attributes'>
-
-voodo.attributes
-
 defineProps<{main_categories: CategoryEntity[] | undefined}>()
 const categories = [
   {name: "About", url: "/about"},
