@@ -3,13 +3,10 @@ import SidebarMobile from "./components/navigation/SidebarMobile.vue";
 import Sidebar from "./components/navigation/Sidebar.vue";
 import { useCanvas } from "@/stores/canvas";
 import { useGlobals } from './stores/globals';
-import gql from "graphql-tag";
-import {useQuery,provideApolloClient} from "@vue/apollo-composable";
 import {onMounted, onBeforeMount, computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
-import { apolloClient } from './main';
+import { useInitQuery, useLastPostsQuery } from "@/graphql/api";
 const {refreshRate,hist} = useGlobals()
-provideApolloClient(apolloClient)
 let relCount = 5;
 const route = useRoute()
 const router = useRouter()
@@ -135,7 +132,6 @@ router.afterEach(({fullPath}) => {
 const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.value.fullPath) || '-200vh'))
 onBeforeMount(bodyClass)
 
-const quer = gql`query Init($pg: PaginationArg) { quotes(pagination: $pg) { data { id attributes { text } } } categories { data { attributes { name slug } } } posts(pagination: { start: 0, limit: 5 }, sort: "publishedAt:desc") { meta{pagination{total}} data { id attributes { publishedAt title slug } } } }`;
 
 const positionAdjust = computed(() => {
   const same = bw.value === cw.value;
@@ -145,7 +141,8 @@ const positionAdjust = computed(() => {
   ]
 })
 
-const {result, onError, onResult,refetch} = useQuery<{quotes: EntityCollection<Quote>, categories: EntityCollection<Category>, posts: EntityCollection<Post>}>(quer, {pg}, {fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
+const {result, onError, onResult,refetch} = useInitQuery({pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'})
+
 onError(() => router.push('/ServerError').then(()=>hist('/')))
 
 let numPosts:number|undefined
@@ -157,8 +154,7 @@ onResult(r=>{
   if(!inVal) {
     inVal = 1;
     setTimeout(()=>{
-      const checkLatest = gql`query lastPosts {posts { meta{pagination{total}} }}`
-      const {onResult:checkRes,refetch:checkFetch} = useQuery<MetaKey<'posts'>>(checkLatest)
+      const {onResult:checkRes,refetch:checkFetch} = useLastPostsQuery()
       checkRes(r=>{
         if((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) refetch()
       })
@@ -168,7 +164,7 @@ onResult(r=>{
 })
 
 const fallback = {attributes: {text: ""}}
-const quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes.text)
+const quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes?.text ??'')
 
 </script>
 
@@ -200,7 +196,7 @@ const quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[M
         <h1 class="sitename" :class="{main: isMain}">
           <RouterLink to="/">Modal<br />Marginalia</RouterLink>
         </h1>
-        <Sidebar :cat_list="result?.categories.data || []" :latest_posts="result?.posts.data || []" />
+        <Sidebar :cat_list="result?.categories?.data ?? []" :latest_posts="result?.posts?.data ?? []" />
         <RouterView :quote="quote" v-slot="{Component, route}">
           <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter">
             <component :style="{'--slide_height': slideVal}" :is="Component" :key="route.fullPath" />

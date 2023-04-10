@@ -14,7 +14,7 @@ const scrolly = (anch: string) => document.getElementById(anch.slice(1))?.scroll
   <a v-else-if="isAnchor" @click.stop.prevent="() => scrolly(to)" :href="to">
     <slot />
   </a>
-  <router-link v-else v-bind="props">
+  <router-link v-else v-bind="props as any">
     <slot />
   </router-link>
 </template>

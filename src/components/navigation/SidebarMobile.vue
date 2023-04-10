@@ -2,8 +2,9 @@
 import NavMenu from "./NavMenu.vue";
 import {useRouter} from 'vue-router'
 import {ref} from 'vue';
+import {CategoryEntity} from '@/graphql/api';
 const router = useRouter();
-defineProps<{cat_list: Entity<Category>[]}>();
+defineProps<{cat_list: CategoryEntity[]}>();
 const query = ref('')
 const searchSubmit = () => router.push("/search?q=" + encodeURIComponent(query.value));
 </script>

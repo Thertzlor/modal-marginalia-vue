@@ -2,13 +2,14 @@
 import {computed} from 'vue';
 import CustomLink from '../navigation/CustomLink.vue';
 import ImageContainer from "../containers/ImageContainer.vue";
-const props = defineProps<{content: string, imgs: Entity<UploadedFile>[]}>()
+import type {UploadFileEntity} from '@/graphql/api';
+const props = defineProps<{content: string, imgs: SomeOf<UploadFileEntity>[]}>()
 
 const findSource = imgString => (/src="([^"]+)"/.exec(imgString) || [])[1] || ''
 
 const imageTransform = (imageStr: string) => {
   const src = findSource(imageStr)
-  const file = props.imgs.map(f => f.attributes).find(({url}) => url === src)
+  const file = props.imgs.map(f => f?.attributes).filter((f): f is NonNullable<typeof f> => !!f).find(({url}) => url === src)
   if (!file) return imageStr
   const percentage = /style="width:([\d.]+)/.exec(imageStr)?.[1]
   const multiplier = parseFloat(percentage || '25') / 100
