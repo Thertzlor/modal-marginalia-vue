@@ -1,10 +1,10 @@
 <script lang ="ts" setup>
-import type {CommentManagerCommentEntity} from '@/graphql/api';
+import type {CommentEntity} from '@/graphql/api';
 import {ref} from "vue";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
 import {useCommentatorMutation} from '@/graphql/api'
 
-const props = defineProps<{post_id: number, comment_data: CommentManagerCommentEntity[]}>();
+const props = defineProps<{post_id: number, comment_data: CommentEntity[]}>();
 const emit = defineEmits<{(e: 'fetch', value: true): void}>()
 
 const sitekey = 'bd9d5be4-6fae-4c82-a3af-9c2529b30317' //"10000000-ffff-ffff-ffff-000000000001"
@@ -30,7 +30,7 @@ onCommentError(e=> alert(`Something went wrong:
   ${e.message ?? 'Unknown error'}
   Try again if you like.`))
 
-const sendComment = () =>  mutate({email: mail.value, username: user.value, content: body.value, token: token.value})
+const sendComment = () =>  mutate({email: mail.value, username: user.value, content: body.value, token: token.value,post:props.post_id.toString(10)})
 
 function onExpire() {
   console.log("Ex Pire");

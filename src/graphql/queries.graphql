@@ -140,25 +140,7 @@ query postSearch(
     }
   }
 }
-
 query SinglePost($postId: ID) {
-  commentManagerComments(
-    filters: { related_to: { slag: { id: { eq: $postId } } } }
-  ) {
-    data {
-      attributes {
-        content
-        createdAt
-        author {
-          data {
-            attributes {
-              username
-            }
-          }
-        }
-      }
-    }
-  }
   post(id: $postId) {
     data {
       id
@@ -199,6 +181,27 @@ query SinglePost($postId: ID) {
               color
               name
               slug
+            }
+          }
+        }
+        comments {
+          data {
+            attributes {
+              depth
+              subcomments {
+                data {
+                  id
+                }
+              }
+              createdAt
+              content
+              author {
+                data {
+                  attributes {
+                    username
+                  }
+                }
+              }
             }
           }
         }
@@ -312,19 +315,20 @@ query PostList(
   }
 }
 
-
 mutation commentator(
-  $content: String!
-  $token: String!
-  $email: String!
+  $post: ID!
   $username: String!
+  $content: String!
+  $email: String!
+  $token: String!
 ) {
-  createCommentManagerComment(
+  createComment(
     data: {
+      post: $post
       content: $content
+      username: $username
       email: $email
       token: $token
-      username: $username
     }
   ) {
     data {

@@ -138,172 +138,72 @@ export type CategoryInput = {
   slug?: InputMaybe<Scalars['String']>;
 };
 
-export type CommentManagerComment = {
-  __typename?: 'CommentManagerComment';
+export type Comment = {
+  __typename?: 'Comment';
+  admin_comment?: Maybe<Scalars['Boolean']>;
   author?: Maybe<UsersPermissionsUserEntityResponse>;
-  content?: Maybe<Scalars['String']>;
+  content: Scalars['String'];
   createdAt?: Maybe<Scalars['DateTime']>;
-  from_admin?: Maybe<Scalars['Boolean']>;
-  related_to?: Maybe<CommentManagerContentIdEntityResponse>;
-  subcomments?: Maybe<CommentManagerSubcommentRelationResponseCollection>;
+  depth: Scalars['Int'];
+  post?: Maybe<PostEntityResponse>;
+  subcomments?: Maybe<CommentRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']>;
 };
 
 
-export type CommentManagerCommentSubcommentsArgs = {
-  filters?: InputMaybe<CommentManagerSubcommentFiltersInput>;
+export type CommentSubcommentsArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type CommentManagerCommentEntity = {
-  __typename?: 'CommentManagerCommentEntity';
-  attributes?: Maybe<CommentManagerComment>;
+export type CommentEntity = {
+  __typename?: 'CommentEntity';
+  attributes?: Maybe<Comment>;
   id?: Maybe<Scalars['ID']>;
 };
 
-export type CommentManagerCommentEntityResponse = {
-  __typename?: 'CommentManagerCommentEntityResponse';
-  data?: Maybe<CommentManagerCommentEntity>;
+export type CommentEntityResponse = {
+  __typename?: 'CommentEntityResponse';
+  data?: Maybe<CommentEntity>;
 };
 
-export type CommentManagerCommentEntityResponseCollection = {
-  __typename?: 'CommentManagerCommentEntityResponseCollection';
-  data: Array<CommentManagerCommentEntity>;
+export type CommentEntityResponseCollection = {
+  __typename?: 'CommentEntityResponseCollection';
+  data: Array<CommentEntity>;
   meta: ResponseCollectionMeta;
 };
 
-export type CommentManagerCommentFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<CommentManagerCommentFiltersInput>>>;
+export type CommentFiltersInput = {
+  admin_comment?: InputMaybe<BooleanFilterInput>;
+  and?: InputMaybe<Array<InputMaybe<CommentFiltersInput>>>;
   author?: InputMaybe<UsersPermissionsUserFiltersInput>;
   content?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
-  from_admin?: InputMaybe<BooleanFilterInput>;
+  depth?: InputMaybe<IntFilterInput>;
   id?: InputMaybe<IdFilterInput>;
-  not?: InputMaybe<CommentManagerCommentFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<CommentManagerCommentFiltersInput>>>;
-  related_to?: InputMaybe<CommentManagerContentIdFiltersInput>;
-  subcomments?: InputMaybe<CommentManagerSubcommentFiltersInput>;
+  not?: InputMaybe<CommentFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<CommentFiltersInput>>>;
+  post?: InputMaybe<PostFiltersInput>;
+  subcomments?: InputMaybe<CommentFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
-export type CommentManagerCommentInput = {
+export type CommentInput = {
+  admin_comment?: InputMaybe<Scalars['Boolean']>;
   author?: InputMaybe<Scalars['ID']>;
   content?: InputMaybe<Scalars['String']>;
+  depth?: InputMaybe<Scalars['Int']>;
   email: Scalars['String'];
-  from_admin?: InputMaybe<Scalars['Boolean']>;
-  related_to?: InputMaybe<Scalars['ID']>;
+  post?: InputMaybe<Scalars['ID']>;
   subcomments?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   token: Scalars['String'];
   username: Scalars['String'];
 };
 
-export type CommentManagerCommentRelationResponseCollection = {
-  __typename?: 'CommentManagerCommentRelationResponseCollection';
-  data: Array<CommentManagerCommentEntity>;
-};
-
-export type CommentManagerContentId = {
-  __typename?: 'CommentManagerContentId';
-  comments?: Maybe<CommentManagerCommentRelationResponseCollection>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  slag?: Maybe<PostEntityResponse>;
-  slug?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-};
-
-
-export type CommentManagerContentIdCommentsArgs = {
-  filters?: InputMaybe<CommentManagerCommentFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-export type CommentManagerContentIdEntity = {
-  __typename?: 'CommentManagerContentIdEntity';
-  attributes?: Maybe<CommentManagerContentId>;
-  id?: Maybe<Scalars['ID']>;
-};
-
-export type CommentManagerContentIdEntityResponse = {
-  __typename?: 'CommentManagerContentIdEntityResponse';
-  data?: Maybe<CommentManagerContentIdEntity>;
-};
-
-export type CommentManagerContentIdEntityResponseCollection = {
-  __typename?: 'CommentManagerContentIdEntityResponseCollection';
-  data: Array<CommentManagerContentIdEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type CommentManagerContentIdFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<CommentManagerContentIdFiltersInput>>>;
-  comments?: InputMaybe<CommentManagerCommentFiltersInput>;
-  createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
-  not?: InputMaybe<CommentManagerContentIdFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<CommentManagerContentIdFiltersInput>>>;
-  slag?: InputMaybe<PostFiltersInput>;
-  slug?: InputMaybe<StringFilterInput>;
-  updatedAt?: InputMaybe<DateTimeFilterInput>;
-};
-
-export type CommentManagerContentIdInput = {
-  comments?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
-  slag?: InputMaybe<Scalars['ID']>;
-  slug?: InputMaybe<Scalars['String']>;
-};
-
-export type CommentManagerSubcomment = {
-  __typename?: 'CommentManagerSubcomment';
-  author?: Maybe<UsersPermissionsUserEntityResponse>;
-  content?: Maybe<Scalars['String']>;
-  createdAt?: Maybe<Scalars['DateTime']>;
-  from_admin?: Maybe<Scalars['Boolean']>;
-  parent_comment?: Maybe<CommentManagerCommentEntityResponse>;
-  updatedAt?: Maybe<Scalars['DateTime']>;
-};
-
-export type CommentManagerSubcommentEntity = {
-  __typename?: 'CommentManagerSubcommentEntity';
-  attributes?: Maybe<CommentManagerSubcomment>;
-  id?: Maybe<Scalars['ID']>;
-};
-
-export type CommentManagerSubcommentEntityResponse = {
-  __typename?: 'CommentManagerSubcommentEntityResponse';
-  data?: Maybe<CommentManagerSubcommentEntity>;
-};
-
-export type CommentManagerSubcommentEntityResponseCollection = {
-  __typename?: 'CommentManagerSubcommentEntityResponseCollection';
-  data: Array<CommentManagerSubcommentEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type CommentManagerSubcommentFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<CommentManagerSubcommentFiltersInput>>>;
-  author?: InputMaybe<UsersPermissionsUserFiltersInput>;
-  content?: InputMaybe<StringFilterInput>;
-  createdAt?: InputMaybe<DateTimeFilterInput>;
-  from_admin?: InputMaybe<BooleanFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
-  not?: InputMaybe<CommentManagerSubcommentFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<CommentManagerSubcommentFiltersInput>>>;
-  parent_comment?: InputMaybe<CommentManagerCommentFiltersInput>;
-  updatedAt?: InputMaybe<DateTimeFilterInput>;
-};
-
-export type CommentManagerSubcommentInput = {
-  author?: InputMaybe<Scalars['ID']>;
-  content?: InputMaybe<Scalars['String']>;
-  from_admin?: InputMaybe<Scalars['Boolean']>;
-  parent_comment?: InputMaybe<Scalars['ID']>;
-};
-
-export type CommentManagerSubcommentRelationResponseCollection = {
-  __typename?: 'CommentManagerSubcommentRelationResponseCollection';
-  data: Array<CommentManagerSubcommentEntity>;
+export type CommentRelationResponseCollection = {
+  __typename?: 'CommentRelationResponseCollection';
+  data: Array<CommentEntity>;
 };
 
 export type DateTimeFilterInput = {
@@ -360,7 +260,7 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']>;
 };
 
-export type GenericMorph = AboutPage | Category | CommentManagerComment | CommentManagerContentId | CommentManagerSubcomment | I18NLocale | Post | Quote | Tag | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = AboutPage | Category | Comment | I18NLocale | Post | Quote | Tag | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
@@ -474,9 +374,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   changePassword?: Maybe<UsersPermissionsLoginPayload>;
   createCategory?: Maybe<CategoryEntityResponse>;
-  createCommentManagerComment?: Maybe<CommentManagerCommentEntityResponse>;
-  createCommentManagerContentId?: Maybe<CommentManagerContentIdEntityResponse>;
-  createCommentManagerSubcomment?: Maybe<CommentManagerSubcommentEntityResponse>;
+  createComment?: Maybe<CommentEntityResponse>;
   createPost?: Maybe<PostEntityResponse>;
   createQuote?: Maybe<QuoteEntityResponse>;
   createTag?: Maybe<TagEntityResponse>;
@@ -486,9 +384,7 @@ export type Mutation = {
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
   deleteAboutPage?: Maybe<AboutPageEntityResponse>;
   deleteCategory?: Maybe<CategoryEntityResponse>;
-  deleteCommentManagerComment?: Maybe<CommentManagerCommentEntityResponse>;
-  deleteCommentManagerContentId?: Maybe<CommentManagerContentIdEntityResponse>;
-  deleteCommentManagerSubcomment?: Maybe<CommentManagerSubcommentEntityResponse>;
+  deleteComment?: Maybe<CommentEntityResponse>;
   deletePost?: Maybe<PostEntityResponse>;
   deleteQuote?: Maybe<QuoteEntityResponse>;
   deleteTag?: Maybe<TagEntityResponse>;
@@ -505,9 +401,7 @@ export type Mutation = {
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
   updateAboutPage?: Maybe<AboutPageEntityResponse>;
   updateCategory?: Maybe<CategoryEntityResponse>;
-  updateCommentManagerComment?: Maybe<CommentManagerCommentEntityResponse>;
-  updateCommentManagerContentId?: Maybe<CommentManagerContentIdEntityResponse>;
-  updateCommentManagerSubcomment?: Maybe<CommentManagerSubcommentEntityResponse>;
+  updateComment?: Maybe<CommentEntityResponse>;
   updateFileInfo: UploadFileEntityResponse;
   updatePost?: Maybe<PostEntityResponse>;
   updateQuote?: Maybe<QuoteEntityResponse>;
@@ -532,18 +426,8 @@ export type MutationCreateCategoryArgs = {
 };
 
 
-export type MutationCreateCommentManagerCommentArgs = {
-  data: CommentManagerCommentInput;
-};
-
-
-export type MutationCreateCommentManagerContentIdArgs = {
-  data: CommentManagerContentIdInput;
-};
-
-
-export type MutationCreateCommentManagerSubcommentArgs = {
-  data: CommentManagerSubcommentInput;
+export type MutationCreateCommentArgs = {
+  data: CommentInput;
 };
 
 
@@ -587,17 +471,7 @@ export type MutationDeleteCategoryArgs = {
 };
 
 
-export type MutationDeleteCommentManagerCommentArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteCommentManagerContentIdArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteCommentManagerSubcommentArgs = {
+export type MutationDeleteCommentArgs = {
   id: Scalars['ID'];
 };
 
@@ -688,20 +562,8 @@ export type MutationUpdateCategoryArgs = {
 };
 
 
-export type MutationUpdateCommentManagerCommentArgs = {
-  data: CommentManagerCommentInput;
-  id: Scalars['ID'];
-};
-
-
-export type MutationUpdateCommentManagerContentIdArgs = {
-  data: CommentManagerContentIdInput;
-  id: Scalars['ID'];
-};
-
-
-export type MutationUpdateCommentManagerSubcommentArgs = {
-  data: CommentManagerSubcommentInput;
+export type MutationUpdateCommentArgs = {
+  data: CommentInput;
   id: Scalars['ID'];
 };
 
@@ -782,6 +644,7 @@ export type Post = {
   body: Scalars['String'];
   body_searchable?: Maybe<Scalars['String']>;
   category?: Maybe<CategoryEntityResponse>;
+  comments?: Maybe<CommentRelationResponseCollection>;
   comments_enabled: Scalars['Boolean'];
   createdAt?: Maybe<Scalars['DateTime']>;
   footnotes: Scalars['String'];
@@ -795,6 +658,13 @@ export type Post = {
   toc?: Maybe<Scalars['Boolean']>;
   toenotes: Scalars['String'];
   updatedAt?: Maybe<Scalars['DateTime']>;
+};
+
+
+export type PostCommentsArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 
@@ -833,6 +703,7 @@ export type PostFiltersInput = {
   body?: InputMaybe<StringFilterInput>;
   body_searchable?: InputMaybe<StringFilterInput>;
   category?: InputMaybe<CategoryFiltersInput>;
+  comments?: InputMaybe<CommentFiltersInput>;
   comments_enabled?: InputMaybe<BooleanFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   footnotes?: InputMaybe<StringFilterInput>;
@@ -853,6 +724,7 @@ export type PostInput = {
   body?: InputMaybe<Scalars['String']>;
   body_searchable?: InputMaybe<Scalars['String']>;
   category?: InputMaybe<Scalars['ID']>;
+  comments?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   comments_enabled?: InputMaybe<Scalars['Boolean']>;
   footnotes?: InputMaybe<Scalars['String']>;
   header?: InputMaybe<Scalars['ID']>;
@@ -881,12 +753,8 @@ export type Query = {
   aboutPage?: Maybe<AboutPageEntityResponse>;
   categories?: Maybe<CategoryEntityResponseCollection>;
   category?: Maybe<CategoryEntityResponse>;
-  commentManagerComment?: Maybe<CommentManagerCommentEntityResponse>;
-  commentManagerComments?: Maybe<CommentManagerCommentEntityResponseCollection>;
-  commentManagerContentId?: Maybe<CommentManagerContentIdEntityResponse>;
-  commentManagerContentIds?: Maybe<CommentManagerContentIdEntityResponseCollection>;
-  commentManagerSubcomment?: Maybe<CommentManagerSubcommentEntityResponse>;
-  commentManagerSubcomments?: Maybe<CommentManagerSubcommentEntityResponseCollection>;
+  comment?: Maybe<CommentEntityResponse>;
+  comments?: Maybe<CommentEntityResponseCollection>;
   i18NLocale?: Maybe<I18NLocaleEntityResponse>;
   i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
@@ -919,37 +787,13 @@ export type QueryCategoryArgs = {
 };
 
 
-export type QueryCommentManagerCommentArgs = {
+export type QueryCommentArgs = {
   id?: InputMaybe<Scalars['ID']>;
 };
 
 
-export type QueryCommentManagerCommentsArgs = {
-  filters?: InputMaybe<CommentManagerCommentFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type QueryCommentManagerContentIdArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryCommentManagerContentIdsArgs = {
-  filters?: InputMaybe<CommentManagerContentIdFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
-
-export type QueryCommentManagerSubcommentArgs = {
-  id?: InputMaybe<Scalars['ID']>;
-};
-
-
-export type QueryCommentManagerSubcommentsArgs = {
-  filters?: InputMaybe<CommentManagerSubcommentFiltersInput>;
+export type QueryCommentsArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
@@ -1496,12 +1340,20 @@ export type UsersPermissionsUpdateRolePayload = {
 export type UsersPermissionsUser = {
   __typename?: 'UsersPermissionsUser';
   blocked?: Maybe<Scalars['Boolean']>;
+  comments?: Maybe<CommentRelationResponseCollection>;
   confirmed?: Maybe<Scalars['Boolean']>;
   createdAt?: Maybe<Scalars['DateTime']>;
   provider?: Maybe<Scalars['String']>;
   role?: Maybe<UsersPermissionsRoleEntityResponse>;
   updatedAt?: Maybe<Scalars['DateTime']>;
   username: Scalars['String'];
+};
+
+
+export type UsersPermissionsUserCommentsArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type UsersPermissionsUserEntity = {
@@ -1524,6 +1376,7 @@ export type UsersPermissionsUserEntityResponseCollection = {
 export type UsersPermissionsUserFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
   blocked?: InputMaybe<BooleanFilterInput>;
+  comments?: InputMaybe<CommentFiltersInput>;
   confirmationToken?: InputMaybe<StringFilterInput>;
   confirmed?: InputMaybe<BooleanFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
@@ -1541,6 +1394,7 @@ export type UsersPermissionsUserFiltersInput = {
 
 export type UsersPermissionsUserInput = {
   blocked?: InputMaybe<Scalars['Boolean']>;
+  comments?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
   confirmationToken?: InputMaybe<Scalars['String']>;
   confirmed?: InputMaybe<Scalars['Boolean']>;
   email?: InputMaybe<Scalars['String']>;
@@ -1592,7 +1446,7 @@ export type SinglePostQueryVariables = Exact<{
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', commentManagerComments?: { __typename?: 'CommentManagerCommentEntityResponseCollection', data: Array<{ __typename?: 'CommentManagerCommentEntity', attributes?: { __typename?: 'CommentManagerComment', content?: string | null, createdAt?: any | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body: string, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null, height?: number | null, caption?: string | null, formats?: any | null } | null }> } | null } | null } | null } | null };
+export type SinglePostQuery = { __typename?: 'Query', post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body: string, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null, comments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', attributes?: { __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', id?: string | null }> } | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null, height?: number | null, caption?: string | null, formats?: any | null } | null }> } | null } | null } | null } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId?: InputMaybe<Scalars['ID']>;
@@ -1620,14 +1474,15 @@ export type PostListQueryVariables = Exact<{
 export type PostListQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', formats?: any | null } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null } | null }> } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null } | null } | null } | null }> } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null };
 
 export type CommentatorMutationVariables = Exact<{
-  content: Scalars['String'];
-  token: Scalars['String'];
-  email: Scalars['String'];
+  post: Scalars['ID'];
   username: Scalars['String'];
+  content: Scalars['String'];
+  email: Scalars['String'];
+  token: Scalars['String'];
 }>;
 
 
-export type CommentatorMutation = { __typename?: 'Mutation', createCommentManagerComment?: { __typename?: 'CommentManagerCommentEntityResponse', data?: { __typename?: 'CommentManagerCommentEntity', id?: string | null } | null } | null };
+export type CommentatorMutation = { __typename?: 'Mutation', createComment?: { __typename?: 'CommentEntityResponse', data?: { __typename?: 'CommentEntity', id?: string | null } | null } | null };
 
 
 export const InitDocument = gql`
@@ -1878,21 +1733,6 @@ export function usePostSearchLazyQuery(variables: PostSearchQueryVariables | Vue
 export type PostSearchQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostSearchQuery, PostSearchQueryVariables>;
 export const SinglePostDocument = gql`
     query SinglePost($postId: ID) {
-  commentManagerComments(filters: {related_to: {slag: {id: {eq: $postId}}}}) {
-    data {
-      attributes {
-        content
-        createdAt
-        author {
-          data {
-            attributes {
-              username
-            }
-          }
-        }
-      }
-    }
-  }
   post(id: $postId) {
     data {
       id
@@ -1933,6 +1773,27 @@ export const SinglePostDocument = gql`
               color
               name
               slug
+            }
+          }
+        }
+        comments {
+          data {
+            attributes {
+              depth
+              subcomments {
+                data {
+                  id
+                }
+              }
+              createdAt
+              content
+              author {
+                data {
+                  attributes {
+                    username
+                  }
+                }
+              }
             }
           }
         }
@@ -2141,9 +2002,9 @@ export function usePostListLazyQuery(variables: PostListQueryVariables | VueComp
 }
 export type PostListQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostListQuery, PostListQueryVariables>;
 export const CommentatorDocument = gql`
-    mutation commentator($content: String!, $token: String!, $email: String!, $username: String!) {
-  createCommentManagerComment(
-    data: {content: $content, email: $email, token: $token, username: $username}
+    mutation commentator($post: ID!, $username: String!, $content: String!, $email: String!, $token: String!) {
+  createComment(
+    data: {post: $post, content: $content, username: $username, email: $email, token: $token}
   ) {
     data {
       id
@@ -2165,10 +2026,11 @@ export const CommentatorDocument = gql`
  * @example
  * const { mutate, loading, error, onDone } = useCommentatorMutation({
  *   variables: {
- *     content: // value for 'content'
- *     token: // value for 'token'
- *     email: // value for 'email'
+ *     post: // value for 'post'
  *     username: // value for 'username'
+ *     content: // value for 'content'
+ *     email: // value for 'email'
+ *     token: // value for 'token'
  *   },
  * });
  */
