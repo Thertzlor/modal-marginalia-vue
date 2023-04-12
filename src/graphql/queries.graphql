@@ -311,3 +311,24 @@ query PostList(
     }
   }
 }
+
+
+mutation commentator(
+  $content: String!
+  $token: String!
+  $email: String!
+  $username: String!
+) {
+  createCommentManagerComment(
+    data: {
+      content: $content
+      email: $email
+      token: $token
+      username: $username
+    }
+  ) {
+    data {
+      id
+    }
+  }
+}

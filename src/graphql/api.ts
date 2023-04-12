@@ -190,9 +190,12 @@ export type CommentManagerCommentFiltersInput = {
 export type CommentManagerCommentInput = {
   author?: InputMaybe<Scalars['ID']>;
   content?: InputMaybe<Scalars['String']>;
+  email: Scalars['String'];
   from_admin?: InputMaybe<Scalars['Boolean']>;
   related_to?: InputMaybe<Scalars['ID']>;
   subcomments?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  token: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type CommentManagerCommentRelationResponseCollection = {
@@ -1616,6 +1619,16 @@ export type PostListQueryVariables = Exact<{
 
 export type PostListQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', formats?: any | null } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null } | null }> } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null } | null } | null } | null }> } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null };
 
+export type CommentatorMutationVariables = Exact<{
+  content: Scalars['String'];
+  token: Scalars['String'];
+  email: Scalars['String'];
+  username: Scalars['String'];
+}>;
+
+
+export type CommentatorMutation = { __typename?: 'Mutation', createCommentManagerComment?: { __typename?: 'CommentManagerCommentEntityResponse', data?: { __typename?: 'CommentManagerCommentEntity', id?: string | null } | null } | null };
+
 
 export const InitDocument = gql`
     query Init($pg: PaginationArg) {
@@ -2127,3 +2140,39 @@ export function usePostListLazyQuery(variables: PostListQueryVariables | VueComp
   return VueApolloComposable.useLazyQuery<PostListQuery, PostListQueryVariables>(PostListDocument, variables, options);
 }
 export type PostListQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostListQuery, PostListQueryVariables>;
+export const CommentatorDocument = gql`
+    mutation commentator($content: String!, $token: String!, $email: String!, $username: String!) {
+  createCommentManagerComment(
+    data: {content: $content, email: $email, token: $token, username: $username}
+  ) {
+    data {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useCommentatorMutation__
+ *
+ * To run a mutation, you first call `useCommentatorMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useCommentatorMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useCommentatorMutation({
+ *   variables: {
+ *     content: // value for 'content'
+ *     token: // value for 'token'
+ *     email: // value for 'email'
+ *     username: // value for 'username'
+ *   },
+ * });
+ */
+export function useCommentatorMutation(options: VueApolloComposable.UseMutationOptions<CommentatorMutation, CommentatorMutationVariables> | ReactiveFunction<VueApolloComposable.UseMutationOptions<CommentatorMutation, CommentatorMutationVariables>> = {}) {
+  return VueApolloComposable.useMutation<CommentatorMutation, CommentatorMutationVariables>(CommentatorDocument, options);
+}
+export type CommentatorMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<CommentatorMutation, CommentatorMutationVariables>;

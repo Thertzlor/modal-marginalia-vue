@@ -1,3 +1,14 @@
+input CommentManagerCommentInput {
+  email: String!
+  token: String!
+  username: String!
+  content: String
+  author: ID
+  subcomments: [ID]
+  from_admin: Boolean
+  related_to: ID
+}
+
 # The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 scalar JSON
 
@@ -189,263 +200,6 @@ input JSONFilterInput {
   in: [JSON]
   notIn: [JSON]
   between: [JSON]
-}
-
-input AboutPageInput {
-  text: String
-  title: String
-  footnotes: String
-  toenotes: String
-  images: [ID]
-}
-
-type AboutPage {
-  text: String
-  title: String
-  footnotes: String
-  toenotes: String
-  images(
-    filters: UploadFileFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): UploadFileRelationResponseCollection
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-type AboutPageEntity {
-  id: ID
-  attributes: AboutPage
-}
-
-type AboutPageEntityResponse {
-  data: AboutPageEntity
-}
-
-input CategoryFiltersInput {
-  id: IDFilterInput
-  name: StringFilterInput
-  posts: PostFiltersInput
-  description: StringFilterInput
-  slug: StringFilterInput
-  color: StringFilterInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  and: [CategoryFiltersInput]
-  or: [CategoryFiltersInput]
-  not: CategoryFiltersInput
-}
-
-input CategoryInput {
-  name: String
-  posts: [ID]
-  description: String
-  slug: String
-  color: String
-}
-
-type Category {
-  name: String!
-  posts(
-    filters: PostFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): PostRelationResponseCollection
-  description: String
-  slug: String!
-  color: String
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-type CategoryEntity {
-  id: ID
-  attributes: Category
-}
-
-type CategoryEntityResponse {
-  data: CategoryEntity
-}
-
-type CategoryEntityResponseCollection {
-  data: [CategoryEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input PostFiltersInput {
-  id: IDFilterInput
-  title: StringFilterInput
-  tags: TagFiltersInput
-  body: StringFilterInput
-  slug: StringFilterInput
-  teaser: StringFilterInput
-  category: CategoryFiltersInput
-  comments_enabled: BooleanFilterInput
-  footnotes: StringFilterInput
-  toenotes: StringFilterInput
-  body_searchable: StringFilterInput
-  toc: BooleanFilterInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  publishedAt: DateTimeFilterInput
-  and: [PostFiltersInput]
-  or: [PostFiltersInput]
-  not: PostFiltersInput
-}
-
-input PostInput {
-  title: String
-  tags: [ID]
-  header: ID
-  body: String
-  slug: String
-  teaser: String
-  category: ID
-  comments_enabled: Boolean
-  footnotes: String
-  toenotes: String
-  body_searchable: String
-  toc: Boolean
-  images: [ID]
-  publishedAt: DateTime
-}
-
-type Post {
-  title: String!
-  tags(
-    filters: TagFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): TagRelationResponseCollection
-  header: UploadFileEntityResponse
-  body: String!
-  slug: String!
-  teaser: String
-  category: CategoryEntityResponse
-  comments_enabled: Boolean!
-  footnotes: String!
-  toenotes: String!
-  body_searchable: String
-  toc: Boolean
-  images(
-    filters: UploadFileFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): UploadFileRelationResponseCollection
-  createdAt: DateTime
-  updatedAt: DateTime
-  publishedAt: DateTime
-}
-
-type PostEntity {
-  id: ID
-  attributes: Post
-}
-
-type PostEntityResponse {
-  data: PostEntity
-}
-
-type PostEntityResponseCollection {
-  data: [PostEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type PostRelationResponseCollection {
-  data: [PostEntity!]!
-}
-
-input QuoteFiltersInput {
-  id: IDFilterInput
-  text: StringFilterInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  and: [QuoteFiltersInput]
-  or: [QuoteFiltersInput]
-  not: QuoteFiltersInput
-}
-
-input QuoteInput {
-  text: String
-}
-
-type Quote {
-  text: String!
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-type QuoteEntity {
-  id: ID
-  attributes: Quote
-}
-
-type QuoteEntityResponse {
-  data: QuoteEntity
-}
-
-type QuoteEntityResponseCollection {
-  data: [QuoteEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-input TagFiltersInput {
-  id: IDFilterInput
-  name: StringFilterInput
-  posts: PostFiltersInput
-  slug: StringFilterInput
-  color: StringFilterInput
-  description: StringFilterInput
-  tier: IntFilterInput
-  createdAt: DateTimeFilterInput
-  updatedAt: DateTimeFilterInput
-  and: [TagFiltersInput]
-  or: [TagFiltersInput]
-  not: TagFiltersInput
-}
-
-input TagInput {
-  name: String
-  posts: [ID]
-  slug: String
-  color: String
-  description: String
-  tier: Int
-}
-
-type Tag {
-  name: String!
-  posts(
-    filters: PostFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): PostRelationResponseCollection
-  slug: String!
-  color: String
-  description: String
-  tier: Int
-  createdAt: DateTime
-  updatedAt: DateTime
-}
-
-type TagEntity {
-  id: ID
-  attributes: Tag
-}
-
-type TagEntityResponse {
-  data: TagEntity
-}
-
-type TagEntityResponseCollection {
-  data: [TagEntity!]!
-  meta: ResponseCollectionMeta!
-}
-
-type TagRelationResponseCollection {
-  data: [TagEntity!]!
 }
 
 input UploadFileFiltersInput {
@@ -776,14 +530,6 @@ input CommentManagerCommentFiltersInput {
   not: CommentManagerCommentFiltersInput
 }
 
-input CommentManagerCommentInput {
-  content: String
-  author: ID
-  subcomments: [ID]
-  from_admin: Boolean
-  related_to: ID
-}
-
 type CommentManagerComment {
   content: String
   author: UsersPermissionsUserEntityResponse
@@ -907,13 +653,265 @@ type CommentManagerContentIdEntityResponseCollection {
   meta: ResponseCollectionMeta!
 }
 
+input AboutPageInput {
+  text: String
+  title: String
+  footnotes: String
+  toenotes: String
+  images: [ID]
+}
+
+type AboutPage {
+  text: String
+  title: String
+  footnotes: String
+  toenotes: String
+  images(
+    filters: UploadFileFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): UploadFileRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type AboutPageEntity {
+  id: ID
+  attributes: AboutPage
+}
+
+type AboutPageEntityResponse {
+  data: AboutPageEntity
+}
+
+input CategoryFiltersInput {
+  id: IDFilterInput
+  name: StringFilterInput
+  posts: PostFiltersInput
+  description: StringFilterInput
+  slug: StringFilterInput
+  color: StringFilterInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  and: [CategoryFiltersInput]
+  or: [CategoryFiltersInput]
+  not: CategoryFiltersInput
+}
+
+input CategoryInput {
+  name: String
+  posts: [ID]
+  description: String
+  slug: String
+  color: String
+}
+
+type Category {
+  name: String!
+  posts(
+    filters: PostFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): PostRelationResponseCollection
+  description: String
+  slug: String!
+  color: String
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type CategoryEntity {
+  id: ID
+  attributes: Category
+}
+
+type CategoryEntityResponse {
+  data: CategoryEntity
+}
+
+type CategoryEntityResponseCollection {
+  data: [CategoryEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+input PostFiltersInput {
+  id: IDFilterInput
+  title: StringFilterInput
+  tags: TagFiltersInput
+  body: StringFilterInput
+  slug: StringFilterInput
+  teaser: StringFilterInput
+  category: CategoryFiltersInput
+  comments_enabled: BooleanFilterInput
+  footnotes: StringFilterInput
+  toenotes: StringFilterInput
+  body_searchable: StringFilterInput
+  toc: BooleanFilterInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  publishedAt: DateTimeFilterInput
+  and: [PostFiltersInput]
+  or: [PostFiltersInput]
+  not: PostFiltersInput
+}
+
+input PostInput {
+  title: String
+  tags: [ID]
+  header: ID
+  body: String
+  slug: String
+  teaser: String
+  category: ID
+  comments_enabled: Boolean
+  footnotes: String
+  toenotes: String
+  body_searchable: String
+  toc: Boolean
+  images: [ID]
+  publishedAt: DateTime
+}
+
+type Post {
+  title: String!
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagRelationResponseCollection
+  header: UploadFileEntityResponse
+  body: String!
+  slug: String!
+  teaser: String
+  category: CategoryEntityResponse
+  comments_enabled: Boolean!
+  footnotes: String!
+  toenotes: String!
+  body_searchable: String
+  toc: Boolean
+  images(
+    filters: UploadFileFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): UploadFileRelationResponseCollection
+  createdAt: DateTime
+  updatedAt: DateTime
+  publishedAt: DateTime
+}
+
+type PostEntity {
+  id: ID
+  attributes: Post
+}
+
+type PostEntityResponse {
+  data: PostEntity
+}
+
+type PostEntityResponseCollection {
+  data: [PostEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type PostRelationResponseCollection {
+  data: [PostEntity!]!
+}
+
+input QuoteFiltersInput {
+  id: IDFilterInput
+  text: StringFilterInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  and: [QuoteFiltersInput]
+  or: [QuoteFiltersInput]
+  not: QuoteFiltersInput
+}
+
+input QuoteInput {
+  text: String
+}
+
+type Quote {
+  text: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type QuoteEntity {
+  id: ID
+  attributes: Quote
+}
+
+type QuoteEntityResponse {
+  data: QuoteEntity
+}
+
+type QuoteEntityResponseCollection {
+  data: [QuoteEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+input TagFiltersInput {
+  id: IDFilterInput
+  name: StringFilterInput
+  posts: PostFiltersInput
+  slug: StringFilterInput
+  color: StringFilterInput
+  description: StringFilterInput
+  tier: IntFilterInput
+  createdAt: DateTimeFilterInput
+  updatedAt: DateTimeFilterInput
+  and: [TagFiltersInput]
+  or: [TagFiltersInput]
+  not: TagFiltersInput
+}
+
+input TagInput {
+  name: String
+  posts: [ID]
+  slug: String
+  color: String
+  description: String
+  tier: Int
+}
+
+type Tag {
+  name: String!
+  posts(
+    filters: PostFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): PostRelationResponseCollection
+  slug: String!
+  color: String
+  description: String
+  tier: Int
+  createdAt: DateTime
+  updatedAt: DateTime
+}
+
+type TagEntity {
+  id: ID
+  attributes: Tag
+}
+
+type TagEntityResponse {
+  data: TagEntity
+}
+
+type TagEntityResponseCollection {
+  data: [TagEntity!]!
+  meta: ResponseCollectionMeta!
+}
+
+type TagRelationResponseCollection {
+  data: [TagEntity!]!
+}
+
 union GenericMorph =
-    AboutPage
-  | Category
-  | Post
-  | Quote
-  | Tag
-  | UploadFile
+    UploadFile
   | UploadFolder
   | I18NLocale
   | UsersPermissionsPermission
@@ -922,6 +920,11 @@ union GenericMorph =
   | CommentManagerComment
   | CommentManagerSubcomment
   | CommentManagerContentId
+  | AboutPage
+  | Category
+  | Post
+  | Quote
+  | Tag
 
 input FileInfoInput {
   name: String
@@ -986,32 +989,6 @@ input PaginationArg {
 }
 
 type Query {
-  aboutPage: AboutPageEntityResponse
-  category(id: ID): CategoryEntityResponse
-  categories(
-    filters: CategoryFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): CategoryEntityResponseCollection
-  post(id: ID): PostEntityResponse
-  posts(
-    filters: PostFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-    publicationState: PublicationState = LIVE
-  ): PostEntityResponseCollection
-  quote(id: ID): QuoteEntityResponse
-  quotes(
-    filters: QuoteFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): QuoteEntityResponseCollection
-  tag(id: ID): TagEntityResponse
-  tags(
-    filters: TagFiltersInput
-    pagination: PaginationArg = {}
-    sort: [String] = []
-  ): TagEntityResponseCollection
   uploadFile(id: ID): UploadFileEntityResponse
   uploadFiles(
     filters: UploadFileFiltersInput
@@ -1060,24 +1037,36 @@ type Query {
     pagination: PaginationArg = {}
     sort: [String] = []
   ): CommentManagerContentIdEntityResponseCollection
+  aboutPage: AboutPageEntityResponse
+  category(id: ID): CategoryEntityResponse
+  categories(
+    filters: CategoryFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): CategoryEntityResponseCollection
+  post(id: ID): PostEntityResponse
+  posts(
+    filters: PostFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+    publicationState: PublicationState = LIVE
+  ): PostEntityResponseCollection
+  quote(id: ID): QuoteEntityResponse
+  quotes(
+    filters: QuoteFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): QuoteEntityResponseCollection
+  tag(id: ID): TagEntityResponse
+  tags(
+    filters: TagFiltersInput
+    pagination: PaginationArg = {}
+    sort: [String] = []
+  ): TagEntityResponseCollection
   me: UsersPermissionsMe
 }
 
 type Mutation {
-  updateAboutPage(data: AboutPageInput!): AboutPageEntityResponse
-  deleteAboutPage: AboutPageEntityResponse
-  createCategory(data: CategoryInput!): CategoryEntityResponse
-  updateCategory(id: ID!, data: CategoryInput!): CategoryEntityResponse
-  deleteCategory(id: ID!): CategoryEntityResponse
-  createPost(data: PostInput!): PostEntityResponse
-  updatePost(id: ID!, data: PostInput!): PostEntityResponse
-  deletePost(id: ID!): PostEntityResponse
-  createQuote(data: QuoteInput!): QuoteEntityResponse
-  updateQuote(id: ID!, data: QuoteInput!): QuoteEntityResponse
-  deleteQuote(id: ID!): QuoteEntityResponse
-  createTag(data: TagInput!): TagEntityResponse
-  updateTag(id: ID!, data: TagInput!): TagEntityResponse
-  deleteTag(id: ID!): TagEntityResponse
   createUploadFile(data: UploadFileInput!): UploadFileEntityResponse
   updateUploadFile(id: ID!, data: UploadFileInput!): UploadFileEntityResponse
   deleteUploadFile(id: ID!): UploadFileEntityResponse
@@ -1113,6 +1102,20 @@ type Mutation {
     data: CommentManagerContentIdInput!
   ): CommentManagerContentIdEntityResponse
   deleteCommentManagerContentId(id: ID!): CommentManagerContentIdEntityResponse
+  updateAboutPage(data: AboutPageInput!): AboutPageEntityResponse
+  deleteAboutPage: AboutPageEntityResponse
+  createCategory(data: CategoryInput!): CategoryEntityResponse
+  updateCategory(id: ID!, data: CategoryInput!): CategoryEntityResponse
+  deleteCategory(id: ID!): CategoryEntityResponse
+  createPost(data: PostInput!): PostEntityResponse
+  updatePost(id: ID!, data: PostInput!): PostEntityResponse
+  deletePost(id: ID!): PostEntityResponse
+  createQuote(data: QuoteInput!): QuoteEntityResponse
+  updateQuote(id: ID!, data: QuoteInput!): QuoteEntityResponse
+  deleteQuote(id: ID!): QuoteEntityResponse
+  createTag(data: TagInput!): TagEntityResponse
+  updateTag(id: ID!, data: TagInput!): TagEntityResponse
+  deleteTag(id: ID!): TagEntityResponse
   upload(
     refId: ID
     ref: String

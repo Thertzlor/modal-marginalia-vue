@@ -2,9 +2,7 @@
 import type {CommentManagerCommentEntity} from '@/graphql/api';
 import {ref} from "vue";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
-import { useGlobals } from '@/stores/globals';
-import axios from "axios"
-const {apiURL,ct} = useGlobals()
+import {useCommentatorMutation} from '@/graphql/api'
 
 const props = defineProps<{post_id: number, comment_data: CommentManagerCommentEntity[]}>();
 const emit = defineEmits<{(e: 'fetch', value: true): void}>()
@@ -22,10 +20,17 @@ const invisibleHcaptcha = ref<any | null>(null)
 const submission = ref(false)
 const activeCaptcha = ref(false)
 
-const sendComment = () => {
-  const commentUrl = `${apiURL}/comment-manager/comments/${props.post_id}`
-  return axios.post(commentUrl, {email: mail.value, username: user.value, content: body.value, captcha_token: token.value},{headers:{Authorization:`Bearer ${ct}`}})
-}
+const {onDone,onError:onCommentError,mutate} =  useCommentatorMutation()
+onDone(()=>{
+  emit('fetch', true);
+  expanded.value = false;
+  commented.value = true;
+})
+onCommentError(e=> alert(`Something went wrong:
+  ${e.message ?? 'Unknown error'}
+  Try again if you like.`))
+
+const sendComment = () =>  mutate({email: mail.value, username: user.value, content: body.value, token: token.value})
 
 function onExpire() {
   console.log("Ex Pire");
@@ -47,16 +52,7 @@ function commentSubmit(challengeToken) {
   if (!submission.value) throw new Error("No comment form submitted!");
   submission.value = false
   token.value = challengeToken;
-  sendComment().then(
-    () => {
-      emit('fetch', true);
-      expanded.value = false;
-      commented.value = true;
-    },
-    x => alert(`Something went wrong:
-    ${x?.response?.data?.error?.message ?? 'Unknown error'}
-    Try again if you like.`)
-  );
+  sendComment()
 }
 </script>
 
