@@ -1598,6 +1598,8 @@ td.hljs-ln-numbers {
   padding-top: .75em;
   width: 80%;
 
+  ul.pagination { margin: var(--input_margin) auto; }
+
   li { margin-top: 1em; }
   .comment_input_2nd {
     visibility: hidden;

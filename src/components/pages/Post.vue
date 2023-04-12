@@ -1,13 +1,13 @@
 <script lang="ts" setup>
 import {useRouter} from "vue-router";
-import { useSinglePostQuery, usePostCheckLazyQuery } from "@/graphql/api";
+import { useSinglePostQuery, usePostCheckLazyQuery, type PaginationArg } from "@/graphql/api";
 import ImageContainer from "../containers/ImageContainer.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import CommentSection from "../containers/CommentSection.vue";
 import {onUpdated} from 'vue';
 import { useGlobals } from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
-const {processContent, defaultNote, refreshRate, hist} = useGlobals()
+const {processContent, defaultNote, refreshRate, hist, unRay, perComment} = useGlobals()
 
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath
@@ -15,6 +15,14 @@ const selector = router.currentRoute.value.params.select;
 if (!selector || typeof selector !== "string") router.push('/NotFound').then(()=>hist(origRoute));
 const postId = parseInt((selector as any).split("-")[0]);
 if (isNaN(postId)) router.push('/NotFound').then(()=>hist(origRoute));
+
+const targetPage = unRay(router.currentRoute.value.query.p);
+const page = targetPage ? parseInt(targetPage, 10) : 1;
+const commentPagination:PaginationArg = {
+  page,
+  pageSize:perComment
+}
+
 
 let navd = false;
 
@@ -31,7 +39,7 @@ let inVal:number|undefined
 const {onResult:upRes,refetch:upFetch,load} = usePostCheckLazyQuery({postId:postId.toString(10)},{enabled:true})
 upRes(r=> {if(new Date(r.data?.post?.data?.attributes?.updatedAt ?? updated).getTime() !== updated) refetch();})
 
-const {result, onResult, refetch, onError} = useSinglePostQuery({postId:postId.toString(10)});
+const {result, onResult, refetch, onError, fetchMore} = useSinglePostQuery({postId:postId.toString(10),commentPagination});
 onError(() => router.push('/ServerError').then(()=>hist(origRoute)))
 onResult(r => r.networkStatus !== 4 && (!r.data?.post?.data ? router.push('/NotFound').then(()=>hist(origRoute)) : onResult(rs => {
   document.title = `${r.data.post?.data?.attributes?.title} - Modal Marginalia`
@@ -48,6 +56,9 @@ onResult(r => r.networkStatus !== 4 && (!r.data?.post?.data ? router.push('/NotF
 )
 onUpdated(() => (processContent(result.value?.post?.data?.attributes?.toc), hashNav()))
 const contentFetcher = () => refetch()
+
+const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPagination:arg}))
+
 </script>
 
 <template>
@@ -68,13 +79,13 @@ const contentFetcher = () => refetch()
       </main>
 
       <div v-if="result.post.data.attributes.footnotes
-                              && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
+                                        && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
         <DynaPost :content="result.post.data.attributes.footnotes" :imgs="[]" />
       </div>
       <div v-if="result.post.data.attributes.toenotes && result.post.data.attributes.toenotes.replace(/\s*/g, '') !== defaultNote" id="toenote_container" class="footnotes toenotes">
         <DynaPost :content="result.post.data.attributes.toenotes" :imgs="[]" />
       </div>
     </article>
-    <CommentSection :pagination="result.comments?.meta.pagination" :page="1" @fetch="contentFetcher" v-if="result?.post?.data?.attributes?.comments_enabled" :post_id="postId" :comment_data="result.comments?.data ?? []" />
+    <CommentSection @pg="rePage" :pagination="result.comments?.meta.pagination" :page="1" @fetch="contentFetcher" v-if="result?.post?.data?.attributes?.comments_enabled" :post_id="postId" :comment_data="result.comments?.data ?? []" />
   </div>
 </template>

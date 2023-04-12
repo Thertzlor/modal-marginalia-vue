@@ -6,7 +6,7 @@ const surrounding = 2;
 const maxVisible = surrounding * 2 + 1;
 
 const props = defineProps<{page_data: Pagination, base_url?: string, res?: PaginationArg, term?: string}>();
-const emit = defineEmits<{(e: 'pg', arg: any)}>()
+const emit = defineEmits<{(e: 'pg', arg: PaginationArg)}>()
 const term = props.term ?? 'page'
 
 function rePage(target: number | string, base = props.base_url) {

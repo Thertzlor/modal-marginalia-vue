@@ -141,13 +141,14 @@ query postSearch(
   }
 }
 
-query SinglePost($postId: ID) {
-  comments(filters: { post: { id: { eq: $postId } } }) {
+query SinglePost($postId: ID, $commentPagination: PaginationArg) {
+  comments(filters: { post: { id: { eq: $postId } } }, pagination:$commentPagination) {
     meta {
       pagination {
         total
         page
         pageCount
+        pageSize
       }
     }
     data {
@@ -229,6 +230,7 @@ query SinglePost($postId: ID) {
     }
   }
 }
+
 
 query postCheck($postId: ID) {
   post(id: $postId) {

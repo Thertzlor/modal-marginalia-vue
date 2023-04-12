@@ -5,6 +5,7 @@ declare const hljs: any
 export const useGlobals = defineStore('globals',()=>{
   const maxResults = 100
   const perPage = 10
+  const perComment = 20
   const refreshRate = 30000
   const searchSurround = 150
   const daysNew = 12
@@ -155,5 +156,5 @@ export const useGlobals = defineStore('globals',()=>{
     hljs.initLineNumbersOnLoad();
   }
 
-  return {maxResults,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent}
+  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent}
 })
