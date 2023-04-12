@@ -26,41 +26,41 @@ const globals = useGlobals()
 app.config.globalProperties = globals as any
 const httpLink = new HttpLink({uri: globals.graphqlURL});
 
-export const apolloClient = new ApolloClient({
-  cache:new InMemoryCache({
-    typePolicies:{
-      PostEntity:{
-        keyFields:['id'],
-        fields:{
-          attributes:{
-            keyArgs:['slug'],
-            merge:true
+app.provide(DefaultApolloClient,
+  new ApolloClient({
+    cache:new InMemoryCache({
+      typePolicies:{
+        PostEntity:{
+          keyFields:['id'],
+          fields:{
+            attributes:{
+              keyArgs:['slug'],
+              merge:true
+            }
+          }
+        },
+        QuoteEntity:{keyFields:['id']},
+        Query:{
+          fields:{
+            posts:{
+              keyArgs:['id'],
+              merge:true
+            },
+            tags:{keyArgs:['id']}
           }
         }
-      },
-      QuoteEntity:{keyFields:['id']},
-      Query:{
-        fields:{
-          posts:{
-            keyArgs:['id'],
-            merge:true
-          },
-          tags:{keyArgs:['id']}
-        }
+      }
+    }),
+    link:from([errorLink, httpLink]),
+    defaultOptions: {
+      query:{
+        notifyOnNetworkStatusChange:true,
+        errorPolicy: 'all'},
+      watchQuery:{
+        notifyOnNetworkStatusChange: true,
+        fetchPolicy: 'cache-and-network',
+        nextFetchPolicy: 'cache-first'
       }
     }
-  }),
-  link:from([errorLink, httpLink]),
-  defaultOptions: {
-    query:{
-      notifyOnNetworkStatusChange:true,
-      errorPolicy: 'all'},
-    watchQuery:{
-      notifyOnNetworkStatusChange: true,
-      fetchPolicy: 'cache-and-network',
-      nextFetchPolicy: 'cache-first'
-    }
-  }
-})
-
-app.provide(DefaultApolloClient, apolloClient).mount('#app')
+  })
+).mount('#app')

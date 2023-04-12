@@ -4,7 +4,7 @@ import Pagination from "../navigation/Pagination.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import { useGlobals } from '@/stores/globals';
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
-import {usePostListQuery, usePostCountQuery} from '@/graphql/api';
+import {usePostListQuery, usePostCountLazyQuery} from '@/graphql/api';
 import type {CategoryFiltersInput, PaginationArg,PostFiltersInput,TagFiltersInput, UploadFileEntity} from '@/graphql/api';
 const {perPage, unRay, antiNull, refreshRate, newTime, hist} = useGlobals()
 const invisible = ref(true)
@@ -46,6 +46,9 @@ const fetcher = (pg: PaginationArg) => {fetchMore({variables: {pg}})}
 let postCount:number|undefined;
 let inVal:number|undefined
 
+const {onResult:upRes,refetch:upFetch,load} = usePostCountLazyQuery({pg: paginationFilter,pf: postSelection},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'})
+upRes(r=> {if((r.data?.posts?.meta?.pagination.total ?? postCount) !== postCount) refetch();})
+
 onResult(r => {
   document.title = `${sitename.value} - Modal Marginalia`
   if(!r.data?.posts?.meta.pagination.total || !refreshRate) return
@@ -53,8 +56,7 @@ onResult(r => {
   if(!inVal) {
     inVal = 1;
     setTimeout(()=>{
-      const {onResult:upRes,refetch:upFetch} = usePostCountQuery({pg: paginationFilter,pf: postSelection},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'})
-      upRes(r=> {if((r.data?.posts?.meta?.pagination.total ?? postCount) !== postCount) refetch();})
+      load()
       inVal = setInterval(()=>{upFetch()},refreshRate)
     },refreshRate)
   }

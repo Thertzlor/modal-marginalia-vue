@@ -5,7 +5,7 @@ import { useCanvas } from "@/stores/canvas";
 import { useGlobals } from './stores/globals';
 import {onMounted, onBeforeMount, computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
-import { PaginationArg, useInitQuery, useLastPostsQuery } from "@/graphql/api";
+import { PaginationArg, useInitQuery, useLastPostsLazyQuery } from "@/graphql/api";
 const {refreshRate,hist} = useGlobals()
 let relCount = 5;
 const route = useRoute()
@@ -143,8 +143,6 @@ const positionAdjust = computed(() => {
 
 const {result, onError, onResult,refetch} = useInitQuery({pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'})
 
-onError(() => router.push('/ServerError').then(()=>hist('/')))
-
 let numPosts:number|undefined
 let inVal: number|undefined
 
@@ -154,14 +152,15 @@ onResult(r=>{
   if(!inVal) {
     inVal = 1;
     setTimeout(()=>{
-      const {onResult:checkRes,refetch:checkFetch} = useLastPostsQuery()
-      checkRes(r=>{
-        if((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) refetch()
-      })
+      load()
       setInterval(()=>{checkFetch()},refreshRate)
     },refreshRate)
   }
 })
+onError(() => router.push('/ServerError').then(()=>hist('/')))
+
+const {onResult:checkRes,refetch:checkFetch,load} = useLastPostsLazyQuery()
+checkRes(r=>((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) && refetch())
 
 const fallback = {attributes: {text: ""}}
 const quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes?.text ??'')

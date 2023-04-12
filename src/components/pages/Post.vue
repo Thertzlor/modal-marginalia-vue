@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useRouter} from "vue-router";
-import { useSinglePostQuery, usePostCheckQuery } from "@/graphql/api";
+import { useSinglePostQuery, usePostCheckLazyQuery } from "@/graphql/api";
 import ImageContainer from "../containers/ImageContainer.vue";
 import TaxoList from "../containers/TaxoList.vue";
 import CommentSection from "../containers/CommentSection.vue";
@@ -28,6 +28,9 @@ const hashNav = (noDelay = false) => {
 let updated: number|undefined
 let inVal:number|undefined
 
+const {onResult:upRes,refetch:upFetch,load} = usePostCheckLazyQuery({postId:postId.toString(10)},{enabled:true})
+upRes(r=> {if(new Date(r.data?.post?.data?.attributes?.updatedAt ?? updated).getTime() !== updated) refetch();})
+
 const {result, onResult, refetch, onError} = useSinglePostQuery({postId:postId.toString(10)});
 onError(() => router.push('/ServerError').then(()=>hist(origRoute)))
 onResult(r => r.networkStatus !== 4 && (!r.data?.post?.data ? router.push('/NotFound').then(()=>hist(origRoute)) : onResult(rs => {
@@ -37,8 +40,7 @@ onResult(r => r.networkStatus !== 4 && (!r.data?.post?.data ? router.push('/NotF
   if(!inVal) {
     inVal = 1;
     setTimeout(()=>{
-      const {onResult:upRes,refetch:upFetch} = usePostCheckQuery({postId:postId.toString(10)},{enabled:true})
-      upRes(r=> {if(new Date(r.data?.post?.data?.attributes?.updatedAt ?? updated).getTime() !== updated) refetch();})
+      load()
       inVal = setInterval(()=>{upFetch()},refreshRate)
     },refreshRate)
   }
@@ -66,7 +68,7 @@ const contentFetcher = () => refetch()
       </main>
 
       <div v-if="result.post.data.attributes.footnotes
-                && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
+                    && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
         <DynaPost :content="result.post.data.attributes.footnotes" :imgs="[]" />
       </div>
       <div v-if="result.post.data.attributes.toenotes && result.post.data.attributes.toenotes.replace(/\s*/g, '') !== defaultNote" id="toenote_container" class="footnotes toenotes">
