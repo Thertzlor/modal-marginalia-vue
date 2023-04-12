@@ -68,13 +68,13 @@ const contentFetcher = () => refetch()
       </main>
 
       <div v-if="result.post.data.attributes.footnotes
-                        && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
+                              && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
         <DynaPost :content="result.post.data.attributes.footnotes" :imgs="[]" />
       </div>
       <div v-if="result.post.data.attributes.toenotes && result.post.data.attributes.toenotes.replace(/\s*/g, '') !== defaultNote" id="toenote_container" class="footnotes toenotes">
         <DynaPost :content="result.post.data.attributes.toenotes" :imgs="[]" />
       </div>
     </article>
-    <CommentSection @fetch="contentFetcher" v-if="result?.post?.data?.attributes?.comments_enabled" :post_id="postId" :comment_data="result.post.data.attributes.comments?.data ?? []" />
+    <CommentSection :pagination="result.comments?.meta.pagination" :page="1" @fetch="contentFetcher" v-if="result?.post?.data?.attributes?.comments_enabled" :post_id="postId" :comment_data="result.comments?.data ?? []" />
   </div>
 </template>

@@ -1,10 +1,10 @@
 <script lang ="ts" setup>
-import type {CommentEntity} from '@/graphql/api';
+import type {CommentEntity, PaginationArg} from '@/graphql/api';
 import {ref} from "vue";
 import VueHcaptcha from "@hcaptcha/vue3-hcaptcha";
 import {useCommentatorMutation} from '@/graphql/api'
 
-const props = defineProps<{post_id: number, comment_data: CommentEntity[]}>();
+const props = defineProps<{post_id: number, comment_data: CommentEntity[], page?:number, pagination?:PaginationArg}>();
 const emit = defineEmits<{(e: 'fetch', value: true): void}>()
 
 const sitekey = 'bd9d5be4-6fae-4c82-a3af-9c2529b30317' //"10000000-ffff-ffff-ffff-000000000001"

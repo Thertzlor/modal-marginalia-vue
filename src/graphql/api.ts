@@ -1446,7 +1446,7 @@ export type SinglePostQueryVariables = Exact<{
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body: string, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null, comments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', attributes?: { __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', id?: string | null }> } | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null, height?: number | null, caption?: string | null, formats?: any | null } | null }> } | null } | null } | null } | null };
+export type SinglePostQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageCount: number } }, data: Array<{ __typename?: 'CommentEntity', attributes?: { __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', id?: string | null }> } | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body: string, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null, height?: number | null, caption?: string | null, formats?: any | null } | null }> } | null } | null } | null } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId?: InputMaybe<Scalars['ID']>;
@@ -1733,6 +1733,34 @@ export function usePostSearchLazyQuery(variables: PostSearchQueryVariables | Vue
 export type PostSearchQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostSearchQuery, PostSearchQueryVariables>;
 export const SinglePostDocument = gql`
     query SinglePost($postId: ID) {
+  comments(filters: {post: {id: {eq: $postId}}}) {
+    meta {
+      pagination {
+        total
+        page
+        pageCount
+      }
+    }
+    data {
+      attributes {
+        depth
+        subcomments {
+          data {
+            id
+          }
+        }
+        createdAt
+        content
+        author {
+          data {
+            attributes {
+              username
+            }
+          }
+        }
+      }
+    }
+  }
   post(id: $postId) {
     data {
       id
@@ -1773,27 +1801,6 @@ export const SinglePostDocument = gql`
               color
               name
               slug
-            }
-          }
-        }
-        comments {
-          data {
-            attributes {
-              depth
-              subcomments {
-                data {
-                  id
-                }
-              }
-              createdAt
-              content
-              author {
-                data {
-                  attributes {
-                    username
-                  }
-                }
-              }
             }
           }
         }
