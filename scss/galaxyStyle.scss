@@ -890,10 +890,7 @@ h2.home_header {
   @media (hover: none) { perspective-origin: 0 0; }
 
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: -1;
   opacity: 0;
   transform-origin: 100% 100%;
@@ -2096,10 +2093,7 @@ mark {
     content: "";
     display: block;
     position: absolute;
-    top: -.25em;
-    left: -.25em;
-    right: -.25em;
-    bottom: -.25em;
+    inset: -.25em;
     border: .25em solid #fffc;
     box-shadow: 0 0 1vmax .1vmax var(--shadowBg), 0 0 1vmax .1vmax var(--shadowBg) inset;
     z-index: 5;
