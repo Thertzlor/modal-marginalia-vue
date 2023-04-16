@@ -1,3 +1,15 @@
+fragment totalPages on ResponseCollectionMeta{
+  pagination{total}
+}
+fragment fullPage on ResponseCollectionMeta{
+  pagination{
+    total
+    page
+    pageSize
+    pageCount
+    }
+}
+
 query Init($pg: PaginationArg) {
   quotes(pagination: $pg) {
     data {
@@ -17,9 +29,7 @@ query Init($pg: PaginationArg) {
   }
   posts(pagination: { start: 0, limit: 5 }, sort: "publishedAt:desc") {
     meta {
-      pagination {
-        total
-      }
+      ...totalPages
     }
     data {
       id
@@ -35,9 +45,7 @@ query Init($pg: PaginationArg) {
 query lastPosts {
   posts {
     meta {
-      pagination {
-        total
-      }
+      ...totalPages
     }
   }
 }
@@ -96,12 +104,7 @@ query postSearch(
 ) {
   posts(filters: $postFilter, pagination: $pg, sort: $sort) {
     meta {
-      pagination {
-        total
-        page
-        pageSize
-        pageCount
-      }
+      ...fullPage
     }
     data {
       id
@@ -144,12 +147,7 @@ query postSearch(
 query SinglePost($postId: ID, $commentPagination: PaginationArg) {
   comments(filters: { post: { id: { eq: $postId } } }, pagination:$commentPagination) {
     meta {
-      pagination {
-        total
-        page
-        pageCount
-        pageSize
-      }
+      ...fullPage
     }
     data {
       attributes {
@@ -262,12 +260,7 @@ query PostList(
 ) {
   posts(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
     meta {
-      pagination {
-        total
-        page
-        pageSize
-        pageCount
-      }
+      ...fullPage
     }
     data {
       id

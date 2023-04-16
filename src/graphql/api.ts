@@ -1410,6 +1410,10 @@ export type UsersPermissionsUserRelationResponseCollection = {
   data: Array<UsersPermissionsUserEntity>;
 };
 
+export type TotalPagesFragment = { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } };
+
+export type FullPageFragment = { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } };
+
 export type InitQueryVariables = Exact<{
   pg?: InputMaybe<PaginationArg>;
 }>;
@@ -1447,7 +1451,7 @@ export type SinglePostQueryVariables = Exact<{
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageCount: number, pageSize: number } }, data: Array<{ __typename?: 'CommentEntity', attributes?: { __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', id?: string | null }> } | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body: string, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null, height?: number | null, caption?: string | null, formats?: any | null } | null }> } | null } | null } | null } | null };
+export type SinglePostQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'CommentEntity', attributes?: { __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', id?: string | null }> } | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body: string, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null, images?: { __typename?: 'UploadFileRelationResponseCollection', data: Array<{ __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, width?: number | null, height?: number | null, caption?: string | null, formats?: any | null } | null }> } | null } | null } | null } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId?: InputMaybe<Scalars['ID']>;
@@ -1485,7 +1489,23 @@ export type CommentatorMutationVariables = Exact<{
 
 export type CommentatorMutation = { __typename?: 'Mutation', createComment?: { __typename?: 'CommentEntityResponse', data?: { __typename?: 'CommentEntity', id?: string | null } | null } | null };
 
-
+export const TotalPagesFragmentDoc = gql`
+    fragment totalPages on ResponseCollectionMeta {
+  pagination {
+    total
+  }
+}
+    `;
+export const FullPageFragmentDoc = gql`
+    fragment fullPage on ResponseCollectionMeta {
+  pagination {
+    total
+    page
+    pageSize
+    pageCount
+  }
+}
+    `;
 export const InitDocument = gql`
     query Init($pg: PaginationArg) {
   quotes(pagination: $pg) {
@@ -1506,9 +1526,7 @@ export const InitDocument = gql`
   }
   posts(pagination: {start: 0, limit: 5}, sort: "publishedAt:desc") {
     meta {
-      pagination {
-        total
-      }
+      ...totalPages
     }
     data {
       id
@@ -1520,7 +1538,7 @@ export const InitDocument = gql`
     }
   }
 }
-    `;
+    ${TotalPagesFragmentDoc}`;
 
 /**
  * __useInitQuery__
@@ -1548,13 +1566,11 @@ export const LastPostsDocument = gql`
     query lastPosts {
   posts {
     meta {
-      pagination {
-        total
-      }
+      ...totalPages
     }
   }
 }
-    `;
+    ${TotalPagesFragmentDoc}`;
 
 /**
  * __useLastPostsQuery__
@@ -1662,12 +1678,7 @@ export const PostSearchDocument = gql`
     query postSearch($postFilter: PostFiltersInput!, $pg: PaginationArg!, $sort: [String]) {
   posts(filters: $postFilter, pagination: $pg, sort: $sort) {
     meta {
-      pagination {
-        total
-        page
-        pageSize
-        pageCount
-      }
+      ...fullPage
     }
     data {
       id
@@ -1706,7 +1717,7 @@ export const PostSearchDocument = gql`
     }
   }
 }
-    `;
+    ${FullPageFragmentDoc}`;
 
 /**
  * __usePostSearchQuery__
@@ -1736,12 +1747,7 @@ export const SinglePostDocument = gql`
     query SinglePost($postId: ID, $commentPagination: PaginationArg) {
   comments(filters: {post: {id: {eq: $postId}}}, pagination: $commentPagination) {
     meta {
-      pagination {
-        total
-        page
-        pageCount
-        pageSize
-      }
+      ...fullPage
     }
     data {
       attributes {
@@ -1821,7 +1827,7 @@ export const SinglePostDocument = gql`
     }
   }
 }
-    `;
+    ${FullPageFragmentDoc}`;
 
 /**
  * __useSinglePostQuery__
@@ -1921,12 +1927,7 @@ export const PostListDocument = gql`
     query PostList($pf: PostFiltersInput, $tf: TagFiltersInput!, $cf: CategoryFiltersInput, $pg: PaginationArg!) {
   posts(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
     meta {
-      pagination {
-        total
-        page
-        pageSize
-        pageCount
-      }
+      ...fullPage
     }
     data {
       id
@@ -1984,7 +1985,7 @@ export const PostListDocument = gql`
     }
   }
 }
-    `;
+    ${FullPageFragmentDoc}`;
 
 /**
  * __usePostListQuery__
