@@ -1,136 +1,136 @@
 <script lang="ts" setup>
-import SidebarMobile from "./components/navigation/SidebarMobile.vue";
-import Sidebar from "./components/navigation/Sidebar.vue";
-import { useCanvas } from "@/stores/canvas";
-import { useGlobals } from './stores/globals';
+import SidebarMobile from './components/navigation/SidebarMobile.vue';
+import SidebarRegular from './components/navigation/SidebarRegular.vue';
+import {useCanvas} from '@/stores/canvas';
+import {useGlobals} from './stores/globals';
 import {onMounted, onBeforeMount, computed, ref} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
-import { PaginationArg, useInitQuery, useLastPostsLazyQuery } from "@/graphql/api";
-const {refreshRate,hist} = useGlobals()
+import {PaginationArg, useInitQuery, useLastPostsLazyQuery} from '@/graphql/api';
+const {refreshRate,hist} = useGlobals();
 let relCount = 5;
-const route = useRoute()
-const router = useRouter()
-const sizes = new Map<string, string>()
-const qouteSalt = ref(1)
-const menVis = ref(false)
-const slideVal = ref('-200vh')
-const pg: PaginationArg = {pageSize: 100, page: 1}
-const loadedImgs = [] as string[]
+const route = useRoute();
+const router = useRouter();
+const sizes = new Map<string, string>();
+const qouteSalt = ref(1);
+const menVis = ref(false);
+const slideVal = ref('-200vh');
+const pg:PaginationArg = {pageSize: 100, page: 1};
+const loadedImgs = [] as string[];
 const imgList = (['', '_1', '_2'] as const).map((s => `../img/para_2${s}.png` as const));
 const imgListBg = (['', '_1', '_2'] as const).map((s => `../img/para_1${s}.png` as const));
-const [currentImg, currentImgBg] = ([imgList, imgListBg]).map(l => ref(l[0]))
-const opacity = ref('0')
-const opacityBg = ref('0')
-const [backgroundImage, backgroundImageBg] = [currentImg, currentImgBg].map(b => computed(() => `url(${b.value})`))
-let bigImgSwitch = true
-const loadLimit = 1500
-let first = true
-const imgLoader = (url: string, loadFunc: () => any = (() => void 0), execNoLoad = false) => new Promise<boolean>(res => {
+const [currentImg, currentImgBg] = ([imgList, imgListBg]).map(l => ref(l[0]));
+const opacity = ref('0');
+const opacityBg = ref('0');
+const [backgroundImage, backgroundImageBg] = [currentImg, currentImgBg].map(b => computed(() => `url(${b.value})`));
+let bigImgSwitch = true;
+const loadLimit = 1500;
+let first = true;
+const imgLoader = (url:string, loadFunc:() => any = (() => void 0), execNoLoad = false) => new Promise<boolean>(res => {
   if (loadedImgs.includes(url)) {
     execNoLoad && loadFunc();
-    res(true)
+    res(true);
   }
-  const newImg = new Image()
-  newImg.src = url
+  const newImg = new Image();
+  newImg.src = url;
   newImg.onload = () => {
-    loadFunc()
+    loadFunc();
     loadedImgs.push(url);
-    res(true)
-  }
-})
+    res(true);
+  };
+});
 
 onMounted(
   () => {
-    const run = (fun: () => any) => setTimeout(fun, 0);
-    const art = document.getElementsByClassName("article_container")[0];
+    const run = (fun:() => any) => setTimeout(fun, 0);
+    const art = document.getElementsByClassName('article_container')[0];
 
     if (art) {
-      art.classList.add("invisible");
-      run(() => (art.classList.add("vistrans2"), art.classList.remove("invisible")));
+      art.classList.add('invisible');
+      run(() => (art.classList.add('vistrans2'), art.classList.remove('invisible')));
     }
-    ["../img/para_2.png", "../img/para_1.png", ""].map((s) => s ? document.location.href.split("/").slice(4).reduce(a => `../${a}`, s) : s).forEach((u, i) => {
-      const el = document.getElementsByClassName(["p1", "p2", "p3"][i]).item(0) as HTMLElement;
-      el.classList.add("vistrans");
-      const bgImg: HTMLImageElement = (u && new Image()) as HTMLImageElement;
-      const t = Date.now()
+    ['../img/para_2.png', '../img/para_1.png', ''].map((s) => (s ? document.location.href.split('/').slice(4).reduce(a => `../${a}`, s) : s)).forEach((u, i) => {
+      const el = document.getElementsByClassName(['p1', 'p2', 'p3'][i]).item(0) as HTMLElement;
+      el.classList.add('vistrans');
+      const bgImg:HTMLImageElement = (u && new Image()) as HTMLImageElement;
+      const t = Date.now();
       if (u) bgImg.src = u;
       if (u && !bgImg.complete) bgImg.onload = () => {
-        loadedImgs.push(bgImg.src)
-        if (Math.abs((t - Date.now())) > loadLimit) bigImgSwitch = false
-        el.classList.add("vistrans", "visible")
-        if (i == 0) opacity.value = '1'
-        else if (i == 1) opacityBg.value = '1'
+        loadedImgs.push(bgImg.src);
+        if (Math.abs((t - Date.now())) > loadLimit) bigImgSwitch = false;
+        el.classList.add('vistrans', 'visible');
+        if (i === 0) opacity.value = '1';
+        else if (i === 1) opacityBg.value = '1';
       };
-      else run(() => el.classList.add("visible"));
+      else run(() => el.classList.add('visible'));
     });
     useCanvas().activateCanvas();
   }
-)
+);
 
-const bw = ref(document.body.getBoundingClientRect().width)
-const cw = ref(0)
+const bw = ref(document.body.getBoundingClientRect().width);
+const cw = ref(0);
 const res = () => {
-  cw.value = (document.getElementsByClassName('content')[0])?.getBoundingClientRect().width || 0
-  bw.value = document.body.getBoundingClientRect().width
-}
-window.addEventListener('resize', res)
-const delRes = () => window.setTimeout(res, 300)
+  cw.value = (document.getElementsByClassName('content')[0])?.getBoundingClientRect().width || 0;
+  bw.value = document.body.getBoundingClientRect().width;
+};
+window.addEventListener('resize', res);
+const delRes = () => window.setTimeout(res, 300);
 
 //const afterEnter = () => CanvasService.canvasUtilities.refill();
-const isMain = computed(() => ['/', '/home'].includes(route.path))
-const bodyClass = () => ((menVis.value = false), document.body.classList[isMain.value ? "add" as const : "remove" as const]("home"));
+const isMain = computed(() => ['/', '/home'].includes(route.path));
+const bodyClass = () => ((menVis.value = false), document.body.classList[isMain.value ? 'add' as const : 'remove' as const]('home'));
 
 const changeStars = (forceDiff = false) => {
-  const targetList = forceDiff ? imgList.filter((f => f !== currentImg.value)) : imgList
-  const targetListBg = forceDiff ? imgListBg.filter((f => f !== currentImgBg.value)) : imgListBg
-  const [randomImg, randomimgBg] = [targetList, targetListBg].map(l => l[Math.floor(Math.random() * l.length)])
-  const [picEl, picElBg] = ['p3', 'p1'].map(p => document.getElementsByClassName(p)[0] as HTMLDivElement | undefined)
+  const targetList = forceDiff ? imgList.filter((f => f !== currentImg.value)) : imgList;
+  const targetListBg = forceDiff ? imgListBg.filter((f => f !== currentImgBg.value)) : imgListBg;
+  const [randomImg, randomimgBg] = [targetList, targetListBg].map(l => l[Math.floor(Math.random() * l.length)]);
+  const [picEl, picElBg] = ['p3', 'p1'].map(p => document.getElementsByClassName(p)[0] as HTMLDivElement | undefined);
   if (picElBg && randomimgBg !== currentImgBg.value) {
-    opacityBg.value = '0'
+    opacityBg.value = '0';
     setTimeout(() => {
-      currentImgBg.value = randomimgBg
-      setTimeout(() => opacityBg.value = '1', 450)
-    }, 2000)
+      currentImgBg.value = randomimgBg;
+      setTimeout(() => opacityBg.value = '1', 450);
+    }, 2000);
   }
   if (picEl && randomImg !== currentImg.value) {
     opacity.value = '0';
-    const loaded = loadedImgs.includes(randomImg)
-    const loady = loaded ? true : imgLoader(randomImg)
-    setTimeout(async () => {
-      currentImg.value = randomImg
+    const loaded = loadedImgs.includes(randomImg);
+    const loady = loaded ? true : imgLoader(randomImg);
+    setTimeout(async() => {
+      currentImg.value = randomImg;
       await loady;
-      opacity.value = '1'
+      opacity.value = '1';
     }, 2100);
   }
-}
+};
 
 router.beforeEach(g => {
   if (first) {
     first = false;
-    return
+    return;
   }
-  relCount++
-  if(['/', '/home'].includes(g.path)) qouteSalt.value = qouteSalt.value++;
-  if (!bigImgSwitch || relCount < 3 || (Math.random() * 100) <= 70) return
-  relCount = 0
-  changeStars()
-})
+  relCount++;
+  if (['/', '/home'].includes(g.path)) qouteSalt.value = qouteSalt.value++;
+  if (!bigImgSwitch || relCount < 3 || (Math.random() * 100) <= 70) return;
+  relCount = 0;
+  changeStars();
+});
 
 router.afterEach(({fullPath}) => {
-  if (route.name && !['Post', 'Post List'].includes(route.name as string)) document.title = `${String(route.name)} - Modal Marginalia`
-  bodyClass()
-  document.getElementsByClassName('wrapper')[0]?.scrollTo(0, 0)
+  if (route.name && !['Post', 'Post List'].includes(route.name as string)) document.title = `${String(route.name)} - Modal Marginalia`;
+  bodyClass();
+  document.getElementsByClassName('wrapper')[0]?.scrollTo(0, 0);
   setTimeout(() => {
-    const {height = '0'} = (document.getElementsByClassName('article_container')[0]?.getBoundingClientRect() || {})
-    const hVal = `calc(-${height}px - 25vh)`
-    sizes.set(fullPath, hVal)
-    slideVal.value = hVal
-    res()
-  }, 1000)
-})
+    const {height = '0'} = (document.getElementsByClassName('article_container')[0]?.getBoundingClientRect() || {});
+    const hVal = `calc(-${height}px - 25vh)`;
+    sizes.set(fullPath, hVal);
+    slideVal.value = hVal;
+    res();
+  }, 1000);
+});
 
-const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.value.fullPath) || '-200vh'))
-onBeforeMount(bodyClass)
+const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.value.fullPath) || '-200vh'));
+onBeforeMount(bodyClass);
 
 
 const positionAdjust = computed(() => {
@@ -138,38 +138,42 @@ const positionAdjust = computed(() => {
   return [
     {'--fullscr_offset_x': same ? '.5em' : '1em','--fullscr_offset_y': same ? '1em' : '.5em'},
     {'--fullscr_offset_x': same ? '4em' : '3.5em','--fullscr_offset_y': same ? '1.2em' : '.7em'}
-  ]
-})
+  ];
+});
 
-const {result, onError, onResult,refetch} = useInitQuery({pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'})
+const {result, onError, onResult,refetch} = useInitQuery({pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
+const {onResult:checkRes,refetch:checkFetch,load} = useLastPostsLazyQuery();
 
-let numPosts:number|undefined
-let inVal: number|undefined
+let numPosts:number|undefined;
+let inVal:number|undefined;
 
-onResult(r=>{
-  if(!r.data?.posts?.meta.pagination.total || !refreshRate) return
+onResult(r => {
+  if (!r.data?.posts?.meta.pagination.total || !refreshRate) return;
   numPosts = r.data.posts.meta.pagination.total;
-  if(!inVal) {
+  if (!inVal) {
     inVal = 1;
-    setTimeout(()=>{
-      load()
-      setInterval(()=>{checkFetch()},refreshRate)
-    },refreshRate)
+    setTimeout(() => {
+      load();
+      setInterval(() => {checkFetch()?.catch(e => console.log(e));},refreshRate);
+    },refreshRate);
   }
-})
-onError(() => router.push('/ServerError').then(()=>hist('/')))
+});
+onError(() => void router.push('/ServerError').then(() => hist('/')));
 
-const {onResult:checkRes,refetch:checkFetch,load} = useLastPostsLazyQuery()
-checkRes(r=>((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) && refetch())
+checkRes(r => void (((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) && refetch()));
 
-const fallback = {attributes: {text: ""}}
-const quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes?.text ??'')
+const fallback = {attributes: {text: ''}};
+const quote = computed(() => (qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes?.text ??'');
 
 </script>
 
 <template>
-  <input type="button" value="" id="starChanger" title="Change Stars" @click="changeStars(true)">
-  <input @change="delRes" type="checkbox" name="fullscreen" id="fullcheck" />
+  <input
+    id="starChanger" type="button" value=""
+    title="Change Stars" @click="changeStars(true)">
+  <input
+    id="fullcheck" type="checkbox" name="fullscreen"
+    @change="delRes">
   <label :style="positionAdjust[0]" title="fullscreen" for="fullcheck">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <polyline points="5,30 ,5,5 30,5" />
@@ -178,31 +182,27 @@ const quote = computed(()=>(qouteSalt.value !==0 && result.value?.quotes?.data[M
       <polyline points="30,95 ,5,95 5,70" />
     </svg>
   </label>
-  <label v-if="bigImgSwitch" :style="positionAdjust[1]" title="change stars" for="starChanger">
-    <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.981 164.981">
-      <path fill="white" class="b" d="M82.88,0l13.684,47.614,44.054-23.696,.445,.445-23.918,43.276,47.836,14.351v.89l-47.392,13.906,23.473,43.721-.445,.556-44.054-23.696-13.684,47.614h-.89l-14.351-47.614-43.276,23.696-.445-.556,23.474-43.721L0,82.88v-.89l47.392-14.351L23.918,24.363l.445-.445,43.276,23.696L81.99,0h.89Zm-26.811,93.448l26.143-11.013H16.576l39.493,11.013Zm0-21.916l26.143,10.68L36.044,35.933l20.025,35.6Zm15.463,37.379l10.68-26.255-46.168,46.279,35.488-20.024Zm0-52.843l10.902,26.143V16.576l-10.902,39.493Zm21.916,52.843l-11.014-26.255v65.637l11.014-39.382Zm0-52.843l-10.792,26.143,46.279-46.279-35.488,20.136Zm15.463,15.463l-26.255,10.902h65.637l-39.382-10.902Zm0,21.916l-26.255-10.791,46.279,46.279-20.024-35.488Z" />
-    </svg>
+  <label
+    v-if="bigImgSwitch" :style="positionAdjust[1]" title="change stars"
+    for="starChanger">
+    <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.981 164.981"><path fill="white" class="b" d="M82.88,0l13.684,47.614,44.054-23.696,.445,.445-23.918,43.276,47.836,14.351v.89l-47.392,13.906,23.473,43.721-.445,.556-44.054-23.696-13.684,47.614h-.89l-14.351-47.614-43.276,23.696-.445-.556,23.474-43.721L0,82.88v-.89l47.392-14.351L23.918,24.363l.445-.445,43.276,23.696L81.99,0h.89Zm-26.811,93.448l26.143-11.013H16.576l39.493,11.013Zm0-21.916l26.143,10.68L36.044,35.933l20.025,35.6Zm15.463,37.379l10.68-26.255-46.168,46.279,35.488-20.024Zm0-52.843l10.902,26.143V16.576l-10.902,39.493Zm21.916,52.843l-11.014-26.255v65.637l11.014-39.382Zm0-52.843l-10.792,26.143,46.279-46.279-35.488,20.136Zm15.463,15.463l-26.255,10.902h65.637l-39.382-10.902Zm0,21.916l-26.255-10.791,46.279,46.279-20.024-35.488Z" /></svg>
   </label>
-  <input type="checkbox" v-model="menVis" id="menucheck" />
-  <SidebarMobile v-if="result?.categories" :cat_list="result.categories.data" />
-  <label class="menu_label" title="Show Menu" for="menucheck"></label>
+  <input id="menucheck" v-model="menVis" type="checkbox">
+  <SidebarMobile v-if="result?.categories" :cat-list="result.categories.data" />
+  <label class="menu_label" title="Show Menu" for="menucheck" />
   <div class="wrapper">
     <div class="parallax-wrapper">
-      <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1"></div>
-      <canvas class="parallax p2"></canvas>
-      <div :style="{backgroundImage, opacity}" class="parallax p3 invisible"></div>
+      <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
+      <canvas class="parallax p2" />
+      <div :style="{backgroundImage, opacity}" class="parallax p3 invisible" />
       <div class="content">
-        <h1 class="sitename" :class="{main: isMain}">
-          <RouterLink to="/">Modal<br />Marginalia</RouterLink>
-        </h1>
-        <Sidebar :cat_list="result?.categories?.data ?? []" :latest_posts="result?.posts?.data ?? []" />
-        <RouterView :quote="quote" v-slot="{Component, route}">
-          <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter">
-            <component :style="{'--slide_height': slideVal}" :is="Component" :key="route.fullPath" />
-          </Transition>
+        <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal<br>Marginalia</RouterLink></h1>
+        <SidebarRegular :cat-list="result?.categories?.data ?? []" :latest-posts="result?.posts?.data ?? []" />
+        <RouterView v-slot="{Component, route: compRoute}" :quote="quote">
+          <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter"><component :is="Component" :key="compRoute.fullPath" :style="{'--slide_height': slideVal}" /></Transition>
         </RouterView>
       </div>
-      <footer>©{{ new Date().getFullYear()}} Theigno.</footer>
+      <footer>©{{ new Date().getFullYear() }} Theigno.</footer>
     </div>
   </div>
 </template>

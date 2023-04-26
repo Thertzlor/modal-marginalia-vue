@@ -1,9 +1,9 @@
-import { defineStore } from "pinia";
+import {defineStore} from 'pinia';
 
-export const useCanvas = defineStore('canvas',()=>{
-  const canvasUtilities: Record<string, (...args: any) => any> = {}
+export const useCanvas = defineStore('canvas',() => {
+  const canvasUtilities:Record<string, (...args:any) => any> = {};
   function activateCanvas() {
-    function drawCircle(context: CanvasRenderingContext2D, xPos: number, yPos: number, radius: number, color: string) {
+    function drawCircle(context:CanvasRenderingContext2D, xPos:number, yPos:number, radius:number, color:string) {
       context.shadowColor = color;
       context.shadowOffsetX = 0;
       context.shadowOffsetY = 0;
@@ -19,7 +19,7 @@ export const useCanvas = defineStore('canvas',()=>{
       const canvas = document.createElement('canvas');
       canvas.height = 1200;
       canvas.width = 1200;
-      const context = canvas.getContext("2d");
+      const context = canvas.getContext('2d');
       if (!context) return;
       const numCircles = canvas.width / 50;
       const maxRadius = 4;
@@ -28,11 +28,11 @@ export const useCanvas = defineStore('canvas',()=>{
         const xPos = Math.random() * (canvas.width - (maxRadius * 7 * 3));
         const yPos = Math.random() * (canvas.height - (maxRadius * 7 * 3));
         const radius = minRadius + (Math.random() * (maxRadius - minRadius));
-        const [v1, v2, v3] = [0, 50, 50]
+        const [v1, v2, v3] = [0, 50, 50];
         const color = `rgb(${255 - (Math.random() * v1)},${255 - (Math.random() * v2)},${255 - (Math.random() * v3)})`;
         drawCircle(context, xPos, yPos, radius, color);
       }
-      return canvas
+      return canvas;
     })();
 
     (() => {
@@ -46,24 +46,24 @@ export const useCanvas = defineStore('canvas',()=>{
       canvas.height = height;
       const context = canvas.getContext('2d');
       if (!(context && virtualCanvas)) return;
-      const pattern = context.createPattern(virtualCanvas, 'repeat')
-      if (!pattern) return
+      const pattern = context.createPattern(virtualCanvas, 'repeat');
+      if (!pattern) return;
       context.fillStyle = pattern;
       context.fillRect(0, 0, width, height);
 
-      function throttle2(callback: any, limit: number) {
+      function throttle2(callback:any, limit:number) {
         let wait = false;
-        return function () {
+        return function() {
           if (!wait) {
             callback.call();
             wait = true;
-            setTimeout(() => {wait = false}, limit);
+            setTimeout(() => {wait = false;}, limit);
           }
-        }
+        };
       }
-      function debounce(this: any, callback: (...args: any) => any, wait: number) {
-        let timeout: number;
-        return (...args: any[]) => {
+      function debounce(this:any, callback:(...args:any) => any, wait:number) {
+        let timeout:number;
+        return (...args:any[]) => {
           clearTimeout(timeout);
           timeout = setTimeout(() => callback.apply(this, args), wait);
         };
@@ -79,14 +79,14 @@ export const useCanvas = defineStore('canvas',()=>{
         canvas.height = height;
         context.fillStyle = pattern;
         context.fillRect(0, 0, width, height);
-      })
+      });
 
       canvasUtilities.refill = refill;
-      window.addEventListener('resize', debounce(refill, 16))
-      const resizeObserver = new ResizeObserver(throttle2(refill, 16))
-      resizeObserver.observe(wrapElement)
+      window.addEventListener('resize', debounce(refill, 16));
+      const resizeObserver = new ResizeObserver(throttle2(refill, 16));
+      resizeObserver.observe(wrapElement);
     })();
   }
 
-  return {activateCanvas}
-})
+  return {activateCanvas};
+});

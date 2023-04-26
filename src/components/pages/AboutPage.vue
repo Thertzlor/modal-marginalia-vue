@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
-import { useGlobals } from '@/stores/globals';
+import {useGlobals} from '@/stores/globals';
 import {onUpdated} from 'vue';
-import { useAboutQuery } from "@/graphql/api";
+import {useAboutQuery} from '@/graphql/api';
 import DynaPost from '../containers/DynaPost.vue';
-const {processContent,hist} = useGlobals()
-const router = useRouter()
-const origRoute = router.currentRoute.value.fullPath
+const {processContent,hist} = useGlobals();
+const router = useRouter();
+const origRoute = router.currentRoute.value.fullPath;
 
-const {result, onError} = useAboutQuery()//useQuery<{aboutPage: Relation<AboutPage>}>(postQuery);
-onError(() => router.push('/ServerError').then(()=>hist(origRoute)))
-onUpdated(() => processContent(false))
+const {result, onError} = useAboutQuery();//useQuery<{aboutPage: Relation<AboutPage>}>(postQuery);
+onError(() => void router.push('/ServerError').then(() => hist(origRoute)));
+onUpdated(() => processContent(false));
 </script>
 
 <template>
   <div class="article_container">
     <article v-if="result && result.aboutPage?.data" id="main_article" class="text">
-      <h1 class="article_header fadeborder">{{ result.aboutPage.data.attributes?.title ?? ''}}</h1>
+      <h1 class="article_header fadeborder">{{ result.aboutPage.data.attributes?.title ?? '' }}</h1>
       <main>
         <span class="post_text">
           <DynaPost :content="result.aboutPage?.data.attributes?.text ?? ''" :imgs="result.aboutPage.data.attributes?.images?.data ?? []" />
