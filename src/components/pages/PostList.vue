@@ -75,7 +75,7 @@ onResult(r => {
     <PaginationWidget v-if="result?.posts" :page-data="result.posts.meta.pagination" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">
       <TransitionGroup v-if="result?.posts.data.length" :name="transi">
-        <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, teaser, tags: {data: tagData}, category: {data: catData}}} in result.posts.data.filter((f): f is Present<typeof f,'attributes'|'id'> & {attributes:{tags:{}, category:{}, header:{data:UploadFileEntity}}} => !!(f?.attributes && f.attributes.tags?.data && f.attributes.header?.data && f.attributes.category?.data))" :key="id" :class="{listing:true,invisible}">
+        <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, teaser, tags: {data: tagData}, category: {data: catData}}} in result.posts.data.filter((f): f is Present<typeof f,'attributes'|'id'> & {attributes:{tags:{}, category:{}, header:{data?:UploadFileEntity}}} => !!(f?.attributes && f.attributes.tags?.data && f.attributes.header && f.attributes.category?.data))" :key="id" :class="{listing:true,invisible}">
           <div :class="{top_part:true,empty:!img,is_new:(new Date().getTime()-newTime) < (new Date(publishedAt).getTime())}">
             <a v-if="img?.attributes?.formats.medium.url" :href="`/post/${id}-${slug}`">
               <img
