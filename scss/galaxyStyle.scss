@@ -966,7 +966,7 @@ h2.home_header {
   z-index: 2;
   display: inline-block;
   margin-top: -5vw;
-  margin-bottom: 4em;
+  margin-bottom: 3em;
   float: left;
   margin-left: var(--text_offset_l);
   text-align: center;
@@ -1511,6 +1511,7 @@ td.hljs-ln-numbers {
 
     > li {
       list-style: upper-roman;
+      padding-top: .5em;
 
       > ul > li {
         list-style: lower-roman;
