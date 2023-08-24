@@ -10,14 +10,20 @@ const routes:RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*',
     name: 'Not Found',
-    component: () => import('./components/pages/WebError.vue'),
-    props:{error_code:404}
+    props:{errorCode:404},
+    component: () => import('./components/pages/WebError.vue')
+  },
+  {
+    path: '/NotFound',
+    name: 'Not Found',
+    props:{errorCode:404},
+    component: () => import('./components/pages/WebError.vue')
   },
   {
     path: '/ServerError',
     name: 'Server Error',
-    component: () => import('./components/pages/WebError.vue'),
-    props:{error_code:501}
+    props:{errorCode:501},
+    component: () => import('./components/pages/WebError.vue')
   },
   {
     path: '/about',

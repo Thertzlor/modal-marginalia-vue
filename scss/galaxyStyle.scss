@@ -2342,59 +2342,27 @@ mark {
 }
 
 @keyframes jitter {
-  0% { right: 0; }
-  10% { right: 0; }
-  13% { right: calc(var(--jit1) * -1); }
-  15% { right: var(--jit1); }
-  16% { right: calc(var(--jit1) * -1); }
-  17% { right: var(--jit1); }
-  18% { right: 0; }
-  19% { right: calc(var(--jit1) * -1); }
-  20% { right: 0; }
-  21% { right: calc(var(--jit1) * -1); }
-  22% { right: var(--jit1); }
-  23% { right: 0; }
-  27% { right: calc(var(--jit1) * -1); }
-  28% { right: var(--jit2); }
-  29% { right: calc(var(--jit3) * -1); }
-  34% { right: var(--jit3); }
-  38% { right: calc(var(--jit3) * -1); }
-  42% { right: var(--jit5); }
-  48% { right: 0; }
-  52% { right: var(--jit4); }
-  70% { right: 0; }
-  78% { right: 0; }
-  80% { right: var(--jit6); }
+  0%, 10%, 18%, 20%, 23%, 48%, 70%, 78%, 84%, 100% { right: 0; }
+  13%, 16%, 19%, 21%, 27% { right: calc(var(--jit1) * -1); }
+  29%, 38% { right: calc(var(--jit3) * -1); }
   83% { right: calc(var(--jit2) * -1); }
-  84% { right: 0; }
-  100% { right: 0; }
+  15%, 17%, 22% { right: var(--jit1); }
+  28% { right: var(--jit2); }
+  34% { right: var(--jit3); }
+  42% { right: var(--jit5); }
+  52% { right: var(--jit4); }
+  80% { right: var(--jit6); }
 }
 
 @keyframes jitterA {
-  0% { top: 0; }
-  10% { top: 0; }
-  13% { top: calc(var(--jit1) * -1); }
-  15% { top: var(--jit1); }
-  16% { top: calc(var(--jit1) * -1); }
-  17% { top: var(--jit1); }
-  18% { top: 0; }
-  19% { top: calc(var(--jit1) * -1); }
-  20% { top: 0; }
-  21% { top: calc(var(--jit1) * -1); }
-  22% { top: var(--jit1); }
-  23% { top: 0; }
-  27% { top: calc(var(--jit1) * -1); }
+  0%, 10%, 18%, 20%, 23%, 48%, 70%, 78%, 84%, 100% { top: 0; }
+  13%, 16%. 19%, 21%, 27% { top: calc(var(--jit1) * -1); }
+  29%, 38% { top: calc(var(--jit3) * -1); }
+  15%, 17%, 22% { top: var(--jit1); }
   28% { top: var(--jit2); }
-  29% { top: calc(var(--jit3) * -1); }
   34% { top: var(--jit3); }
-  38% { top: calc(var(--jit3) * -1); }
   42% { top: var(--jit5); }
-  48% { top: 0; }
   52% { top: var(--jit4); }
-  70% { top: 0; }
-  78% { top: 0; }
   80% { top: var(--jit6); }
   83% { top: var(--jit2); }
-  84% { top: 0; }
-  100% { top: 0; }
 }
