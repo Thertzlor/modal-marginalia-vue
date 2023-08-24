@@ -40,7 +40,7 @@ const {result, onResult, refetch, onError} = useSinglePostQuery({postId:postId.t
 const {onResult:upRes,refetch:upFetch,load} = usePostCheckLazyQuery({postId:postId.toString(10)},{enabled:true});
 upRes(r => {if (new Date(r.data?.post?.data?.attributes?.updatedAt ?? updated).getTime() !== updated) refetch()?.catch(e => console.log(e));});
 
-onError(() => void router.push('/ServerError').then(() => hist(origRoute)));
+onError(e => void (console.log(JSON.parse(JSON.stringify(e))), router.push((e.message.includes('publishedAt') && !(e.networkError||e.clientErrors.length || e.protocolErrors.length))?'/NotFound':'/ServerError').then(() => hist(origRoute))));
 onResult(r => void (r.networkStatus !== 4 && (!r.data?.post?.data ? router.push('/NotFound').then(() => hist(origRoute)) : onResult(rs => {
   document.title = `${r.data.post?.data?.attributes?.title} - Modal Marginalia`;
   updated = new Date(rs.data.post?.data?.attributes?.updatedAt).getTime();
