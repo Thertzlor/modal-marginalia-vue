@@ -632,12 +632,14 @@ h2.home_header {
       padding-inline-start: var(--side-offset);
 
       li {
-        margin: 0;
+        @media (max-width: $mediaCutoff) { margin: 0; }
+
+        margin: 0 15% 0 0;
         transition: text-shadow .5s, padding-left .5s;
         cursor: pointer;
         padding-left: .1em;
         border-bottom: transparent .15em solid;
-        border-image: linear-gradient(90deg, white 0%, rgb(255 255 255 / 30%) 50%, rgb(255 255 255 / 0%) 90%);
+        border-image: linear-gradient(90deg, white 0%, rgb(255 255 255 / 30%) 50%, rgb(255 255 255 / 0%) 100%);
         border-image-slice: 1;
         text-shadow: var(--subtle_shadow);
 
@@ -1356,6 +1358,7 @@ ul.pagination {
       max-width: var(--text_fullwidth_mobile);
       padding: 2.5em 1.1em 1.2em;
     }
+    i { font-weight: 375; }
 
     position: relative;
     padding: 2.5em 2em 1.2em;
@@ -2356,7 +2359,7 @@ mark {
 
 @keyframes jitterA {
   0%, 10%, 18%, 20%, 23%, 48%, 70%, 78%, 84%, 100% { top: 0; }
-  13%, 16%. 19%, 21%, 27% { top: calc(var(--jit1) * -1); }
+  13%, 16%, 19%, 21%, 27% { top: calc(var(--jit1) * -1); }
   29%, 38% { top: calc(var(--jit3) * -1); }
   15%, 17%, 22% { top: var(--jit1); }
   28% { top: var(--jit2); }
