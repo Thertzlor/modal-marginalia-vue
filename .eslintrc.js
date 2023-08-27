@@ -44,7 +44,6 @@ module.exports = {
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-inferrable-types": 0,
-    "@typescript-eslint/no-duplicate-imports": 1,
     "vue/html-quotes": [1, "double", {"avoidEscape": true}],
     "no-duplicate-imports": 0,
     "vue/no-v-html": 0,
