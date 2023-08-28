@@ -95,12 +95,12 @@ export const useGlobals = defineStore('globals',() => {
   function processContent(doToc:boolean|null=true):void {
     const loadedFocus = document.hasFocus();
     const main = document.getElementById('main_article');
-    if (main?.classList.contains('processed')) return;
-    main?.classList.add('processed');
+    const redoing = main?.classList.contains('processed');
+    if (!redoing) main?.classList.add('processed');
     const foot = main && document.getElementById('footnote_container');
     const toe = foot && document.getElementById('toenote_container');
     codeWrapper();
-    doToc && main && tocGenerator(main);
+    doToc && main && !redoing && tocGenerator(main);
 
     const linkNotes = (origin:HTMLElement, notes:HTMLElement, term:string) => {
       [...origin.getElementsByTagName('sup')].filter(s => /\[\d+\]/.test(s.innerHTML.trim())).forEach((el, i) => {
@@ -110,8 +110,17 @@ export const useGlobals = defineStore('globals',() => {
         element.id = headLink;
         element.href = `#${footLink}`;
         wrap(el, element);
+        const scroller = (f:HTMLTableCellElement|undefined) => f && [element, f].forEach((eli, ii, a) => {
+          const first = ii === 0;
+          const opposing = a[first ? 1 : 0];
+          const opposeLink = first? opposing.getElementsByTagName('a')[0] : opposing;
+          const thisLink = !first? eli.getElementsByTagName('a')[0] : eli;
+          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'), opposing.scrollIntoView(), opposeLink.focus({preventScroll: true})));
+          thisLink.addEventListener('blur', () => eli.classList.remove('highlight'));
+        });
         const counterpart = notes.getElementsByTagName('li')[i];
         if (!counterpart) return;
+        if (redoing) return scroller([...counterpart.getElementsByTagName('td')][0]);
         element.setAttribute('title', counterpart.innerText.trim());
         //counterpart.innerHTML = " " + counterpart.innerHTML;
         const counterHTML = counterpart.innerHTML;
@@ -125,14 +134,7 @@ export const useGlobals = defineStore('globals',() => {
         counterLink.appendChild(document.createElement('sup')).innerHTML = '^';
         counterLink.href = `#${headLink}`;
         counterLink.id = footLink;
-        [element, f].forEach((eli, ii, a) => {
-          const first = ii === 0;
-          const opposing = a[first ? 1 : 0];
-          const opposeLink = first? opposing.getElementsByTagName('a')[0] : opposing;
-          const thisLink = !first? eli.getElementsByTagName('a')[0] : eli;
-          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'), opposing.scrollIntoView(), opposeLink.focus({preventScroll: true})));
-          thisLink.addEventListener('blur', () => eli.classList.remove('highlight'));
-        });
+        scroller(f);
       });
     };
 

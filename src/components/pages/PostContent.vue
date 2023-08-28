@@ -44,9 +44,6 @@ onError(e => void router.push((e.message.includes('publishedAt') && !(e.networkE
 onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.post?.data ? router.push('/NotFound').then(() => hist(origRoute)) : (() => {
   document.title = `${r.data.post?.data?.attributes?.title} - Modal Marginalia`;
   updated = new Date(r.data.post?.data?.attributes?.updatedAt).getTime();
-  // processContent(result.value?.post?.data?.attributes?.toc);
-  // hashNav();
-  console.log(('wum'));
   if (!refreshRate) return;
   if (!inVal) {
     inVal = 1;
