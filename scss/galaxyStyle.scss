@@ -1587,6 +1587,7 @@ td.hljs-ln-numbers {
 
     li {
       list-style-position: outside;
+      margin-top: .5em;
 
       &::marker {
         content: "["counter(list-item) "]";
