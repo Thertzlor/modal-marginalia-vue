@@ -156,6 +156,7 @@ export const useGlobals = defineStore('globals',() => {
     hljs.highlightAll();
     hljs.initLineNumbersOnLoad();
   }
+  function rounder(num:number,dec=2){return +num.toFixed(dec);}
 
-  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent};
+  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,rounder};
 });
