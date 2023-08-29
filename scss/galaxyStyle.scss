@@ -1426,6 +1426,27 @@ td.hljs-ln-numbers {
   }
 }
 
+.upper {
+  @media (max-width: $mediaCutoff) { right: .7vw; }
+
+  line-height: 0;
+  right: 15vw;
+  bottom: .1em;
+  position: fixed;
+  font-weight: 150;
+  font-size: 6rem;
+  text-shadow: white 0 0 .2em;
+  opacity: 0;
+  color: white;
+  text-decoration: none;
+  transition: opacity .2s ease;
+
+  &.visi {
+    opacity: .3;
+    &:hover { opacity: .8; }
+  }
+}
+
 #tocButton {
   display: none;
 
