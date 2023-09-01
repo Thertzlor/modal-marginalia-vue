@@ -1429,6 +1429,7 @@ td.hljs-ln-numbers {
 .upper {
   @media (max-width: $mediaCutoff) { right: .7vw; }
 
+  pointer-events: none;
   line-height: 0;
   right: 15vw;
   bottom: .1em;
@@ -1443,6 +1444,7 @@ td.hljs-ln-numbers {
 
   &.visi {
     opacity: .3;
+    pointer-events: all;
     &:hover { opacity: .8; }
   }
 }
@@ -2131,6 +2133,7 @@ mark {
   &::after {
     pointer-events: none;
     border-radius: .75em;
+    transition: box-shadow .3s ease;
     content: "";
     display: block;
     position: absolute;
@@ -2139,6 +2142,7 @@ mark {
     box-shadow: 0 0 1vmax .1vmax var(--shadowBg), 0 0 1vmax .1vmax var(--shadowBg) inset;
     z-index: 5;
   }
+  &:hover::after { box-shadow: 0 0 1vmax .1vmax var(--shadowBg2), 0 0 1vmax .1vmax var(--shadowBg2) inset; }
   .top_part {
     overflow: hidden;
     margin: 0;

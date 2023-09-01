@@ -72,6 +72,7 @@ export type BooleanFilterInput = {
   lt?:InputMaybe<Scalars['Boolean']['input']>;
   lte?:InputMaybe<Scalars['Boolean']['input']>;
   ne?:InputMaybe<Scalars['Boolean']['input']>;
+  nei?:InputMaybe<Scalars['Boolean']['input']>;
   not?:InputMaybe<BooleanFilterInput>;
   notContains?:InputMaybe<Scalars['Boolean']['input']>;
   notContainsi?:InputMaybe<Scalars['Boolean']['input']>;
@@ -89,6 +90,7 @@ export type Category = {
   description?:Maybe<Scalars['String']['output']>;
   name:Scalars['String']['output'];
   posts?:Maybe<PostRelationResponseCollection>;
+  priority:Scalars['Int']['output'];
   slug:Scalars['String']['output'];
   updatedAt?:Maybe<Scalars['DateTime']['output']>;
 };
@@ -128,6 +130,7 @@ export type CategoryFiltersInput = {
   not?:InputMaybe<CategoryFiltersInput>;
   or?:InputMaybe<InputMaybe<CategoryFiltersInput>[]>;
   posts?:InputMaybe<PostFiltersInput>;
+  priority?:InputMaybe<IntFilterInput>;
   slug?:InputMaybe<StringFilterInput>;
   updatedAt?:InputMaybe<DateTimeFilterInput>;
 };
@@ -137,6 +140,7 @@ export type CategoryInput = {
   description?:InputMaybe<Scalars['String']['input']>;
   name?:InputMaybe<Scalars['String']['input']>;
   posts?:InputMaybe<InputMaybe<Scalars['ID']['input']>[]>;
+  priority?:InputMaybe<Scalars['Int']['input']>;
   slug?:InputMaybe<Scalars['String']['input']>;
 };
 
@@ -222,6 +226,7 @@ export type DateTimeFilterInput = {
   lt?:InputMaybe<Scalars['DateTime']['input']>;
   lte?:InputMaybe<Scalars['DateTime']['input']>;
   ne?:InputMaybe<Scalars['DateTime']['input']>;
+  nei?:InputMaybe<Scalars['DateTime']['input']>;
   not?:InputMaybe<DateTimeFilterInput>;
   notContains?:InputMaybe<Scalars['DateTime']['input']>;
   notContainsi?:InputMaybe<Scalars['DateTime']['input']>;
@@ -252,6 +257,7 @@ export type FloatFilterInput = {
   lt?:InputMaybe<Scalars['Float']['input']>;
   lte?:InputMaybe<Scalars['Float']['input']>;
   ne?:InputMaybe<Scalars['Float']['input']>;
+  nei?:InputMaybe<Scalars['Float']['input']>;
   not?:InputMaybe<FloatFilterInput>;
   notContains?:InputMaybe<Scalars['Float']['input']>;
   notContainsi?:InputMaybe<Scalars['Float']['input']>;
@@ -314,6 +320,7 @@ export type IdFilterInput = {
   lt?:InputMaybe<Scalars['ID']['input']>;
   lte?:InputMaybe<Scalars['ID']['input']>;
   ne?:InputMaybe<Scalars['ID']['input']>;
+  nei?:InputMaybe<Scalars['ID']['input']>;
   not?:InputMaybe<IdFilterInput>;
   notContains?:InputMaybe<Scalars['ID']['input']>;
   notContainsi?:InputMaybe<Scalars['ID']['input']>;
@@ -338,6 +345,7 @@ export type IntFilterInput = {
   lt?:InputMaybe<Scalars['Int']['input']>;
   lte?:InputMaybe<Scalars['Int']['input']>;
   ne?:InputMaybe<Scalars['Int']['input']>;
+  nei?:InputMaybe<Scalars['Int']['input']>;
   not?:InputMaybe<IntFilterInput>;
   notContains?:InputMaybe<Scalars['Int']['input']>;
   notContainsi?:InputMaybe<Scalars['Int']['input']>;
@@ -362,6 +370,7 @@ export type JsonFilterInput = {
   lt?:InputMaybe<Scalars['JSON']['input']>;
   lte?:InputMaybe<Scalars['JSON']['input']>;
   ne?:InputMaybe<Scalars['JSON']['input']>;
+  nei?:InputMaybe<Scalars['JSON']['input']>;
   not?:InputMaybe<JsonFilterInput>;
   notContains?:InputMaybe<Scalars['JSON']['input']>;
   notContainsi?:InputMaybe<Scalars['JSON']['input']>;
@@ -374,6 +383,7 @@ export type JsonFilterInput = {
 
 export type Mutation = {
   __typename?:'Mutation';
+  /** Change user password. Confirm with the current password. */
   changePassword?:Maybe<UsersPermissionsLoginPayload>;
   createCategory?:Maybe<CategoryEntityResponse>;
   createComment?:Maybe<CommentEntityResponse>;
@@ -382,7 +392,9 @@ export type Mutation = {
   createTag?:Maybe<TagEntityResponse>;
   createUploadFile?:Maybe<UploadFileEntityResponse>;
   createUploadFolder?:Maybe<UploadFolderEntityResponse>;
+  /** Create a new role */
   createUsersPermissionsRole?:Maybe<UsersPermissionsCreateRolePayload>;
+  /** Create a new user */
   createUsersPermissionsUser:UsersPermissionsUserEntityResponse;
   deleteAboutPage?:Maybe<AboutPageEntityResponse>;
   deleteCategory?:Maybe<CategoryEntityResponse>;
@@ -392,14 +404,20 @@ export type Mutation = {
   deleteTag?:Maybe<TagEntityResponse>;
   deleteUploadFile?:Maybe<UploadFileEntityResponse>;
   deleteUploadFolder?:Maybe<UploadFolderEntityResponse>;
+  /** Delete an existing role */
   deleteUsersPermissionsRole?:Maybe<UsersPermissionsDeleteRolePayload>;
+  /** Delete an existing user */
   deleteUsersPermissionsUser:UsersPermissionsUserEntityResponse;
+  /** Confirm an email users email address */
   emailConfirmation?:Maybe<UsersPermissionsLoginPayload>;
+  /** Request a reset password token */
   forgotPassword?:Maybe<UsersPermissionsPasswordPayload>;
   login:UsersPermissionsLoginPayload;
   multipleUpload:Maybe<UploadFileEntityResponse>[];
+  /** Register a user */
   register:UsersPermissionsLoginPayload;
   removeFile?:Maybe<UploadFileEntityResponse>;
+  /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?:Maybe<UsersPermissionsLoginPayload>;
   updateAboutPage?:Maybe<AboutPageEntityResponse>;
   updateCategory?:Maybe<CategoryEntityResponse>;
@@ -410,7 +428,9 @@ export type Mutation = {
   updateTag?:Maybe<TagEntityResponse>;
   updateUploadFile?:Maybe<UploadFileEntityResponse>;
   updateUploadFolder?:Maybe<UploadFolderEntityResponse>;
+  /** Update an existing role */
   updateUsersPermissionsRole?:Maybe<UsersPermissionsUpdateRolePayload>;
+  /** Update an existing user */
   updateUsersPermissionsUser:UsersPermissionsUserEntityResponse;
   upload:UploadFileEntityResponse;
 };
@@ -712,6 +732,7 @@ export type PostFiltersInput = {
   id?:InputMaybe<IdFilterInput>;
   not?:InputMaybe<PostFiltersInput>;
   or?:InputMaybe<InputMaybe<PostFiltersInput>[]>;
+  progress?:InputMaybe<FloatFilterInput>;
   publishedAt?:InputMaybe<DateTimeFilterInput>;
   slug?:InputMaybe<StringFilterInput>;
   tags?:InputMaybe<TagFiltersInput>;
@@ -731,6 +752,7 @@ export type PostInput = {
   footnotes?:InputMaybe<Scalars['String']['input']>;
   header?:InputMaybe<Scalars['ID']['input']>;
   images?:InputMaybe<InputMaybe<Scalars['ID']['input']>[]>;
+  progress?:InputMaybe<Scalars['Float']['input']>;
   publishedAt?:InputMaybe<Scalars['DateTime']['input']>;
   slug?:InputMaybe<Scalars['String']['input']>;
   tags?:InputMaybe<InputMaybe<Scalars['ID']['input']>[]>;
@@ -954,6 +976,7 @@ export type StringFilterInput = {
   lt?:InputMaybe<Scalars['String']['input']>;
   lte?:InputMaybe<Scalars['String']['input']>;
   ne?:InputMaybe<Scalars['String']['input']>;
+  nei?:InputMaybe<Scalars['String']['input']>;
   not?:InputMaybe<StringFilterInput>;
   notContains?:InputMaybe<Scalars['String']['input']>;
   notContainsi?:InputMaybe<Scalars['String']['input']>;
@@ -1421,7 +1444,7 @@ export type InitQueryVariables = Exact<{
 }>;
 
 
-export type InitQuery = { __typename?:'Query', quotes?:{ __typename?:'QuoteEntityResponseCollection', data:{ __typename?:'QuoteEntity', id?:string | null, attributes?:{ __typename?:'Quote', text:string } | null }[] } | null, categories?:{ __typename?:'CategoryEntityResponseCollection', data:{ __typename?:'CategoryEntity', attributes?:{ __typename?:'Category', name:string, slug:string } | null }[] } | null, posts?:{ __typename?:'PostEntityResponseCollection', meta:{ __typename?:'ResponseCollectionMeta', pagination:{ __typename?:'Pagination', total:number } }, data:{ __typename?:'PostEntity', id?:string | null, attributes?:{ __typename?:'Post', publishedAt?:any | null, title:string, slug:string } | null }[] } | null };
+export type InitQuery = { __typename?:'Query', quotes?:{ __typename?:'QuoteEntityResponseCollection', data:{ __typename?:'QuoteEntity', id?:string | null, attributes?:{ __typename?:'Quote', text:string } | null }[] } | null, categories?:{ __typename?:'CategoryEntityResponseCollection', data:{ __typename?:'CategoryEntity', attributes?:{ __typename?:'Category', name:string, slug:string, priority:number } | null }[] } | null, posts?:{ __typename?:'PostEntityResponseCollection', meta:{ __typename?:'ResponseCollectionMeta', pagination:{ __typename?:'Pagination', total:number } }, data:{ __typename?:'PostEntity', id?:string | null, attributes?:{ __typename?:'Post', publishedAt?:any | null, title:string, slug:string } | null }[] } | null };
 
 export type LastPostsQueryVariables = Exact<{ [key:string]:never; }>;
 
@@ -1523,6 +1546,7 @@ export const InitDocument = gql`
       attributes {
         name
         slug
+        priority
       }
     }
   }
