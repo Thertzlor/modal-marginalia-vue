@@ -6,7 +6,7 @@ import {useGlobals} from '@/stores/globals';
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
 import {usePostListQuery, usePostCountLazyQuery} from '@/graphql/api';
 import type {CategoryFiltersInput, PaginationArg,PostFiltersInput,TagFiltersInput, UploadFileEntity} from '@/graphql/api';
-const {perPage, unRay, antiNull, refreshRate, newTime, hist} = useGlobals();
+const {perPage, unRay, antiNull, refreshRate, newTime, hist,isEmpty} = useGlobals();
 const invisible = ref(true);
 const transi = ref('none');
 onMounted(() => setTimeout(() => {invisible.value = false; transi.value = 'v-page';} , 260));
@@ -34,8 +34,8 @@ const tagFilter:TagFiltersInput = tagQuery ? (tagSelection) : noneFilter;
 const catFilter:CategoryFiltersInput = catQuery ? catSelection : noneFilter;
 
 const postSelection:PostFiltersInput = {};
-if (catSelection) postSelection.category = catSelection;
-if (tagSelection) postSelection.tags = tagSelection;
+if (catSelection && !isEmpty(catSelection)) postSelection.category = catSelection;
+if (tagSelection && !isEmpty(tagSelection)) postSelection.tags = tagSelection;
 
 
 const {result, onError, fetchMore, onResult,refetch} = usePostListQuery(() => ({pg: paginationFilter,pf: postSelection,tf: tagFilter,cf: catFilter}));

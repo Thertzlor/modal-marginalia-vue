@@ -158,5 +158,9 @@ export const useGlobals = defineStore('globals',() => {
   }
   function rounder(num:number,dec=2){return +num.toFixed(dec);}
 
-  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,rounder};
+  function isEmpty(obj:Record<any,any>):obj is {}{
+    return !Object.keys(obj).length;
+  }
+
+  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,rounder,isEmpty};
 });
