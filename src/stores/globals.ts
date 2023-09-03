@@ -50,6 +50,8 @@ export const useGlobals = defineStore('globals',() => {
     [...document.getElementsByTagName('code')].
       forEach((el) => (el?.parentElement?.tagName !== 'PRE') && wrap(el, document.createElement('pre')));
   }
+  const unHash = (l:Location) => l.href.slice(0,-l.hash.length);
+
   function tocGenerator(main:HTMLElement,redo=false) {
     const posty = main.getElementsByClassName('post_text')[0] as HTMLElement;
     if (!posty) return;
@@ -78,7 +80,7 @@ export const useGlobals = defineStore('globals',() => {
       const currentEntry = tocTarget.appendChild(document.createElement('li'));
       const currentLink = currentEntry.appendChild(document.createElement('a'));
       currentLink.href = `#${e.id}`;
-      currentLink.addEventListener('click', ev => (ev.preventDefault(), e.scrollIntoView()));
+      currentLink.addEventListener('click', ev => (ev.preventDefault(),history.pushState({}, '',`${unHash(window.location)}#${e.id}`), e.scrollIntoView()));
 
       currentLink.innerHTML = e.innerHTML;
       if (next && next.tagName !== e.tagName) {
@@ -95,7 +97,7 @@ export const useGlobals = defineStore('globals',() => {
     });
     if (!redo) main.insertBefore(enclosure, main.getElementsByTagName('main')[0]);
   }
-  function processContent(doToc:boolean|null=true):void {
+  function processContent(doToc:boolean|null=true,redo=false):void {
     const loadedFocus = document.hasFocus();
     const main = document.getElementById('main_article');
     const redoing = main?.classList.contains('processed');
@@ -118,7 +120,7 @@ export const useGlobals = defineStore('globals',() => {
           const opposing = a[first ? 1 : 0];
           const opposeLink = first? opposing.getElementsByTagName('a')[0] : opposing;
           const thisLink = !first? eli.getElementsByTagName('a')[0] : eli;
-          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'), opposing.scrollIntoView(), opposeLink.focus({preventScroll: true})));
+          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'),history.pushState({}, '',`${unHash(window.location)}#${opposeLink.id}`), opposing.scrollIntoView(), opposeLink.focus({preventScroll: true})));
           thisLink.addEventListener('blur', () => eli.classList.remove('highlight'));
         });
         const counterpart = notes.getElementsByTagName('li')[i];
@@ -148,7 +150,7 @@ export const useGlobals = defineStore('globals',() => {
       if (el.href?.includes('#_')) {el.href = el.href.replace('#_', '#');}
       const sliceJump = () => {
         if (el.id.startsWith('_')) el.id = el.id.slice(1);
-        if (window.location.hash === `#${el.id}`) el.scrollIntoView();
+        if (window.location.hash === `#${el.id}` && !redo) el.scrollIntoView();
       };
       if (loadedFocus) sliceJump();
       else {// eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -4,7 +4,6 @@ import {useSinglePostQuery, usePostCheckLazyQuery, type PaginationArg} from '@/g
 import ImageContainer from '../containers/ImageContainer.vue';
 import TaxoList from '../containers/TaxoList.vue';
 import CommentSection from '../containers/CommentSection.vue';
-import {onUpdated} from 'vue';
 import {useGlobals} from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
 const {processContent, defaultNote, refreshRate, hist, unRay, perComment} = useGlobals();
@@ -44,7 +43,9 @@ onError(e => void router.push((e.message.includes('publishedAt') && !(e.networkE
 onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.post?.data ? router.push('/NotFound').then(() => hist(origRoute)) : (() => {
   document.title = `${r.data.post?.data?.attributes?.title} - Modal Marginalia`;
   updated = new Date(r.data.post?.data?.attributes?.updatedAt).getTime();
+  processContent(result.value?.post?.data?.attributes?.toc,navd);
   if (!refreshRate) return;
+  hashNav();
   if (!inVal) {
     inVal = 1;
     setTimeout(() => {
@@ -53,7 +54,7 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.post?.data ?
     },refreshRate);
   }
 })())));
-onUpdated(() => (processContent(result.value?.post?.data?.attributes?.toc), hashNav()));
+// onUpdated(() => (processContent(result.value?.post?.data?.attributes?.toc), hashNav()));
 const contentFetcher = () => refetch();
 
 const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPagination:arg}));
