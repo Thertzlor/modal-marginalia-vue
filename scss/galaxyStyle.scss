@@ -1297,7 +1297,7 @@ ul.pagination {
       font-style: italic;
       color: white;
 
-      &.h-qoute {
+      &.h-quote {
         background: none;
         widows: 0;
         border-left: none;
@@ -1305,6 +1305,7 @@ ul.pagination {
         font-size: 1.5em;
         border-image: linear-gradient(to left, rgb(255 255 255 / 0%), white);
         border-image-slice: 1 0;
+        margin: 1em -.5em;
         padding: .3em;
         border: .15em solid;
       }
@@ -1361,7 +1362,7 @@ ul.pagination {
     i { font-weight: 375; }
 
     position: relative;
-    padding: 2.5em 2em 1.2em;
+    padding: 2.5em 2em 2em;
     background: var(--text_back);
     border-radius: 1.5em;
     border: .25em solid #fffc;
