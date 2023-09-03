@@ -21,7 +21,7 @@ const imageTransform = (imageStr:string) => {
 };
 
 const linkTransform = (linkStr:string) => ((linkStr[1] === '/') ? '</CustomLink>' : `<CustomLink className="image" :noBlank="${!linkStr.includes('target="_blank"')}" to="${(/href="([^"]+)"/.exec(linkStr))?.[1]}">` as const);
-const hToQuote = (_:string,first?:string,second?:string) => ((first === '/') ? '</blockquote>' : `<blockquote class="h-qoute" ${second}>` as const);
+const hToQuote = (_:string,first?:string,second?:string) => ((first === '/') ? '</blockquote>' : `<blockquote class="h-quote" ${second}>` as const);
 
 const dynamicComponent = computed(() => (
   {

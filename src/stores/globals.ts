@@ -50,12 +50,15 @@ export const useGlobals = defineStore('globals',() => {
     [...document.getElementsByTagName('code')].
       forEach((el) => (el?.parentElement?.tagName !== 'PRE') && wrap(el, document.createElement('pre')));
   }
-  function tocGenerator(main:HTMLElement) {
+  function tocGenerator(main:HTMLElement,redo=false) {
     const posty = main.getElementsByClassName('post_text')[0] as HTMLElement;
     if (!posty) return;
     const headers = [...posty.querySelectorAll('h1, h2, h3, h4, h5, h6')] as HTMLElement[];
     if (!headers.length) return;
-    const enclosure = document.createElement('div');
+    const enclosure = redo? document.getElementById('tabcont'):document.createElement('div');
+    if (!enclosure) return;
+    if (redo) enclosure.innerHTML ='';
+    else enclosure.id='tabcont';
     const tocBut = enclosure.appendChild(document.createElement('input'));
     tocBut.type = 'checkbox';
     tocBut.id = 'tocButton';
@@ -90,7 +93,7 @@ export const useGlobals = defineStore('globals',() => {
         }
       }
     });
-    main.insertBefore(enclosure, main.getElementsByTagName('main')[0]);
+    if (!redo) main.insertBefore(enclosure, main.getElementsByTagName('main')[0]);
   }
   function processContent(doToc:boolean|null=true):void {
     const loadedFocus = document.hasFocus();
@@ -100,7 +103,7 @@ export const useGlobals = defineStore('globals',() => {
     const foot = main && document.getElementById('footnote_container');
     const toe = foot && document.getElementById('toenote_container');
     codeWrapper();
-    doToc && main && !redoing && tocGenerator(main);
+    doToc && main && tocGenerator(main,redoing);
 
     const linkNotes = (origin:HTMLElement, notes:HTMLElement, term:string) => {
       [...origin.getElementsByTagName('sup')].filter(s => /\[\d+\]/.test(s.innerHTML.trim())).forEach((el, i) => {
