@@ -1,4 +1,5 @@
 import {defineStore} from 'pinia';
+import slugify from 'slugify';
 import {UploadFile,TagEntity, CategoryEntity} from '@/graphql/api';
 declare const hljs:any;
 
@@ -75,7 +76,7 @@ export const useGlobals = defineStore('globals',() => {
     let tocTarget = tocTargetOrig;
 
     headers.forEach((e, i, a) => {
-      e.id = e.id || `_toc_heading_${i+1}`;
+      e.id = e.id || slugify(e.innerText,{lower:true,replacement:'_',strict:true,trim:true});
       const next = a[i + 1];
       const currentEntry = tocTarget.appendChild(document.createElement('li'));
       const currentLink = currentEntry.appendChild(document.createElement('a'));
@@ -125,8 +126,8 @@ export const useGlobals = defineStore('globals',() => {
         });
         const counterpart = notes.getElementsByTagName('li')[i];
         if (!counterpart) return;
-        if (redoing) return scroller([...counterpart.getElementsByTagName('td')][0]);
         element.setAttribute('title', counterpart.innerText.trim());
+        if (redoing) return scroller([...counterpart.getElementsByTagName('td')][0]);
         //counterpart.innerHTML = " " + counterpart.innerHTML;
         const counterHTML = counterpart.innerHTML;
         counterpart.textContent='';
@@ -161,11 +162,10 @@ export const useGlobals = defineStore('globals',() => {
     hljs.highlightAll();
     hljs.initLineNumbersOnLoad();
   }
-  function rounder(num:number,dec=2){return +num.toFixed(dec);}
 
   function isEmpty(obj:Record<any,any>):obj is {}{
     return !Object.keys(obj).length;
   }
 
-  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,rounder,isEmpty};
+  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty};
 });

@@ -19,14 +19,14 @@ onUpdated(() => processContent(false));
       <h1 class="article_header fadeborder">{{ result.aboutPage.data.attributes?.title ?? '' }}</h1>
       <main>
         <span class="post_text">
-          <DynaPost :content="result.aboutPage?.data.attributes?.text ?? ''" :imgs="result.aboutPage.data.attributes?.images?.data ?? []" />
+          <DynaPost :content="result.aboutPage?.data.attributes?.text ?? ''" />
         </span>
       </main>
       <div v-if="result.aboutPage.data.attributes?.footnotes" id="footnote_container" class="footnotes">
-        <DynaPost :content="result.aboutPage.data.attributes.footnotes" :imgs="[]" />
+        <DynaPost :content="result.aboutPage.data.attributes.footnotes" />
       </div>
       <div v-if="result.aboutPage.data.attributes?.toenotes" id="toenote_container" class="footnotes toenotes">
-        <DynaPost :content="result.aboutPage.data.attributes.toenotes" :imgs="[]" />
+        <DynaPost :content="result.aboutPage.data.attributes.toenotes" />
       </div>
     </article>
   </div>

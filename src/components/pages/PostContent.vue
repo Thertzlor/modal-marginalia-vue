@@ -45,8 +45,8 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.post?.data ?
   updated = new Date(r.data.post?.data?.attributes?.updatedAt).getTime();
   processContent(result.value?.post?.data?.attributes?.toc,navd);
   if (!refreshRate) return;
-  hashNav();
   if (!inVal) {
+    hashNav();
     inVal = 1;
     setTimeout(() => {
       load();
@@ -71,15 +71,15 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
         custom-size="60vw" />
       <main>
         <span class="datespan">Posted {{ gerDate(result.post.data.attributes.publishedAt) }}</span>
-        <span class="post_text"><DynaPost :content="result.post.data.attributes.body" :imgs="result.post.data.attributes.images?.data ?? []" /></span>
+        <span class="post_text"><DynaPost :content="result.post.data.attributes.body_vue ?? ''" /></span>
       </main>
       <div
         v-if="result.post.data.attributes.footnotes
           && result.post.data.attributes.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
-        <DynaPost :content="result.post.data.attributes.footnotes" :imgs="[]" />
+        <DynaPost :content="result.post.data.attributes.footnotes" />
       </div>
       <div v-if="result.post.data.attributes.toenotes && result.post.data.attributes.toenotes.replace(/\s*/g, '') !== defaultNote" id="toenote_container" class="footnotes toenotes">
-        <DynaPost :content="result.post.data.attributes.toenotes" :imgs="[]" />
+        <DynaPost :content="result.post.data.attributes.toenotes" />
       </div>
     </article>
     <CommentSection

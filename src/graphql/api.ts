@@ -665,13 +665,13 @@ export type Post = {
   __typename?:'Post';
   body:Scalars['String']['output'];
   body_searchable?:Maybe<Scalars['String']['output']>;
+  body_vue?:Maybe<Scalars['String']['output']>;
   category?:Maybe<CategoryEntityResponse>;
   comments?:Maybe<CommentRelationResponseCollection>;
   comments_enabled:Scalars['Boolean']['output'];
   createdAt?:Maybe<Scalars['DateTime']['output']>;
   footnotes:Scalars['String']['output'];
   header?:Maybe<UploadFileEntityResponse>;
-  images?:Maybe<UploadFileRelationResponseCollection>;
   publishedAt?:Maybe<Scalars['DateTime']['output']>;
   slug:Scalars['String']['output'];
   tags?:Maybe<TagRelationResponseCollection>;
@@ -685,13 +685,6 @@ export type Post = {
 
 export type PostCommentsArgs = {
   filters?:InputMaybe<CommentFiltersInput>;
-  pagination?:InputMaybe<PaginationArg>;
-  sort?:InputMaybe<InputMaybe<Scalars['String']['input']>[]>;
-};
-
-
-export type PostImagesArgs = {
-  filters?:InputMaybe<UploadFileFiltersInput>;
   pagination?:InputMaybe<PaginationArg>;
   sort?:InputMaybe<InputMaybe<Scalars['String']['input']>[]>;
 };
@@ -724,6 +717,7 @@ export type PostFiltersInput = {
   and?:InputMaybe<InputMaybe<PostFiltersInput>[]>;
   body?:InputMaybe<StringFilterInput>;
   body_searchable?:InputMaybe<StringFilterInput>;
+  body_vue?:InputMaybe<StringFilterInput>;
   category?:InputMaybe<CategoryFiltersInput>;
   comments?:InputMaybe<CommentFiltersInput>;
   comments_enabled?:InputMaybe<BooleanFilterInput>;
@@ -746,6 +740,7 @@ export type PostFiltersInput = {
 export type PostInput = {
   body?:InputMaybe<Scalars['String']['input']>;
   body_searchable?:InputMaybe<Scalars['String']['input']>;
+  body_vue?:InputMaybe<Scalars['String']['input']>;
   category?:InputMaybe<Scalars['ID']['input']>;
   comments?:InputMaybe<InputMaybe<Scalars['ID']['input']>[]>;
   comments_enabled?:InputMaybe<Scalars['Boolean']['input']>;
@@ -1454,7 +1449,7 @@ export type LastPostsQuery = { __typename?:'Query', posts?:{ __typename?:'PostEn
 export type AboutQueryVariables = Exact<{ [key:string]:never; }>;
 
 
-export type AboutQuery = { __typename?:'Query', aboutPage?:{ __typename?:'AboutPageEntityResponse', data?:{ __typename?:'AboutPageEntity', attributes?:{ __typename?:'AboutPage', text?:string | null, title?:string | null, footnotes?:string | null, toenotes?:string | null, images?:{ __typename?:'UploadFileRelationResponseCollection', data:{ __typename?:'UploadFileEntity', attributes?:{ __typename?:'UploadFile', url:string, width?:number | null, height?:number | null, caption?:string | null, formats?:any | null } | null }[] } | null } | null } | null } | null };
+export type AboutQuery = { __typename?:'Query', aboutPage?:{ __typename?:'AboutPageEntityResponse', data?:{ __typename?:'AboutPageEntity', attributes?:{ __typename?:'AboutPage', text?:string | null, title?:string | null, footnotes?:string | null, toenotes?:string | null } | null } | null } | null };
 
 export type TagListQueryVariables = Exact<{ [key:string]:never; }>;
 
@@ -1476,7 +1471,7 @@ export type SinglePostQueryVariables = Exact<{
 }>;
 
 
-export type SinglePostQuery = { __typename?:'Query', comments?:{ __typename?:'CommentEntityResponseCollection', meta:{ __typename?:'ResponseCollectionMeta', pagination:{ __typename?:'Pagination', total:number, page:number, pageSize:number, pageCount:number } }, data:{ __typename?:'CommentEntity', attributes?:{ __typename?:'Comment', depth:number, createdAt?:any | null, content:string, subcomments?:{ __typename?:'CommentRelationResponseCollection', data:{ __typename?:'CommentEntity', id?:string | null }[] } | null, author?:{ __typename?:'UsersPermissionsUserEntityResponse', data?:{ __typename?:'UsersPermissionsUserEntity', attributes?:{ __typename?:'UsersPermissionsUser', username:string } | null } | null } | null } | null }[] } | null, post?:{ __typename?:'PostEntityResponse', data?:{ __typename?:'PostEntity', id?:string | null, attributes?:{ __typename?:'Post', title:string, body:string, slug:string, toc?:boolean | null, publishedAt?:any | null, updatedAt?:any | null, comments_enabled:boolean, footnotes:string, toenotes:string, header?:{ __typename?:'UploadFileEntityResponse', data?:{ __typename?:'UploadFileEntity', attributes?:{ __typename?:'UploadFile', url:string, caption?:string | null, width?:number | null, height?:number | null, alternativeText?:string | null, formats?:any | null } | null } | null } | null, category?:{ __typename?:'CategoryEntityResponse', data?:{ __typename?:'CategoryEntity', attributes?:{ __typename?:'Category', color?:string | null, name:string, slug:string } | null } | null } | null, tags?:{ __typename?:'TagRelationResponseCollection', data:{ __typename?:'TagEntity', attributes?:{ __typename?:'Tag', color?:string | null, name:string, slug:string } | null }[] } | null, images?:{ __typename?:'UploadFileRelationResponseCollection', data:{ __typename?:'UploadFileEntity', attributes?:{ __typename?:'UploadFile', url:string, width?:number | null, height?:number | null, caption?:string | null, formats?:any | null } | null }[] } | null } | null } | null } | null };
+export type SinglePostQuery = { __typename?:'Query', comments?:{ __typename?:'CommentEntityResponseCollection', meta:{ __typename?:'ResponseCollectionMeta', pagination:{ __typename?:'Pagination', total:number, page:number, pageSize:number, pageCount:number } }, data:{ __typename?:'CommentEntity', attributes?:{ __typename?:'Comment', depth:number, createdAt?:any | null, content:string, subcomments?:{ __typename?:'CommentRelationResponseCollection', data:{ __typename?:'CommentEntity', id?:string | null }[] } | null, author?:{ __typename?:'UsersPermissionsUserEntityResponse', data?:{ __typename?:'UsersPermissionsUserEntity', attributes?:{ __typename?:'UsersPermissionsUser', username:string } | null } | null } | null } | null }[] } | null, post?:{ __typename?:'PostEntityResponse', data?:{ __typename?:'PostEntity', id?:string | null, attributes?:{ __typename?:'Post', title:string, body_vue?:string | null, slug:string, toc?:boolean | null, publishedAt?:any | null, updatedAt?:any | null, comments_enabled:boolean, footnotes:string, toenotes:string, header?:{ __typename?:'UploadFileEntityResponse', data?:{ __typename?:'UploadFileEntity', attributes?:{ __typename?:'UploadFile', url:string, caption?:string | null, width?:number | null, height?:number | null, alternativeText?:string | null, formats?:any | null } | null } | null } | null, category?:{ __typename?:'CategoryEntityResponse', data?:{ __typename?:'CategoryEntity', attributes?:{ __typename?:'Category', color?:string | null, name:string, slug:string } | null } | null } | null, tags?:{ __typename?:'TagRelationResponseCollection', data:{ __typename?:'TagEntity', attributes?:{ __typename?:'Tag', color?:string | null, name:string, slug:string } | null }[] } | null } | null } | null } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId?:InputMaybe<Scalars['ID']['input']>;
@@ -1626,17 +1621,6 @@ export const AboutDocument = gql`
         title
         footnotes
         toenotes
-        images {
-          data {
-            attributes {
-              url
-              width
-              height
-              caption
-              formats
-            }
-          }
-        }
       }
     }
   }
@@ -1812,7 +1796,7 @@ export const SinglePostDocument = gql`
             }
           }
         }
-        body
+        body_vue
         slug
         toc
         publishedAt
@@ -1835,17 +1819,6 @@ export const SinglePostDocument = gql`
               color
               name
               slug
-            }
-          }
-        }
-        images {
-          data {
-            attributes {
-              url
-              width
-              height
-              caption
-              formats
             }
           }
         }
