@@ -1,7 +1,6 @@
 import {defineStore} from 'pinia';
 import slugify from 'slugify';
 import {UploadFile,TagEntity, CategoryEntity} from '@/graphql/api';
-declare const hljs:any;
 
 export const useGlobals = defineStore('globals',() => {
   const maxResults = 100;
@@ -159,8 +158,6 @@ export const useGlobals = defineStore('globals',() => {
       }
       el.addEventListener('click', e => (e.preventDefault(), false));
     });
-    hljs.highlightAll();
-    hljs.initLineNumbersOnLoad();
   }
 
   function isEmpty(obj:Record<any,any>):obj is {}{
