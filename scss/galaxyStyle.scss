@@ -1287,6 +1287,15 @@ ul.pagination {
       max-width: 100%;
       overflow: auto;
       padding: .1em;
+
+      .lang {
+        user-select: none;
+        position: absolute;
+        right: .3em;
+        top: .1em;
+        opacity: .2;
+        font-size: .9em;
+      }
     }
     .align-justify { text-align: justify; }
     .align-right { text-align: right; }
@@ -1395,6 +1404,7 @@ ul.pagination {
   border-spacing: 0;
   font-family: "Fira Code";
   font-size: .9em;
+  tab-size: 4ch;
 
   tr {
     &::before {
@@ -1423,7 +1433,8 @@ td.hljs-ln-code div {
 
 td.hljs-ln-numbers {
   opacity: .5;
-  text-align: center;
+  user-select: none;
+  text-align: right;
   border-right: .05em solid rgb(255 255 255 / 55.5%);
   font-weight: 300;
   width: 0;
