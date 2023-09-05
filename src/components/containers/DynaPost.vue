@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {computed} from 'vue';
+import {type Component, computed} from 'vue';
 import CustomLink from '../navigation/CustomLink.vue';
 import ImageContainer from '../containers/ImageContainer.vue';
 const props = defineProps<{content:string}>();
-const dynamicComponent = computed(() => (
+const dynamicComponent = computed(():Component => (
   {
     template: props.content,
     components: {CustomLink, ImageContainer}
@@ -11,6 +11,6 @@ const dynamicComponent = computed(() => (
 ));
 </script>
 
-<template><!-- @vue-ignore -->
+<template>
   <component :is="dynamicComponent" />
 </template>
