@@ -1,4 +1,5 @@
 @import "https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap";
+@import "https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap";
 
 $mediaCutoff: 1100px;
 
@@ -1391,6 +1392,9 @@ ul.pagination {
 
 .hljs-ln {
   width: 100%;
+  border-spacing: 0;
+  font-family: "Fira Code";
+  font-size: .9em;
 
   tr {
     &::before {
@@ -1412,7 +1416,10 @@ ul.pagination {
   }
 }
 
-td.hljs-ln-code div { padding-left: .25em; }
+td.hljs-ln-code div {
+  padding-left: .25em;
+  line-height: 0;
+}
 
 td.hljs-ln-numbers {
   opacity: .5;
