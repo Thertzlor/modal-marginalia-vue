@@ -25,6 +25,7 @@ export const useGlobals = defineStore('globals',() => {
   const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],null|undefined>[]:T => (Array.isArray(arr)?arr.filter(f => f) as any:arr);
   const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f => f)),something);
   const hist = (url:string):void => window.history.pushState({}, '',url);
+  const isEmpty = (obj:Record<any,any>):obj is {} => !Object.keys(obj).length;
 
   const ct = '4b14c42a63fb8f0c62e816faf32c5ed5578bd3ec9a5b46eced32f66d47d1430cc54896eeecec06f87a1a355fd4921097c387556930b6527616ba1d8dc1f3da2d790d2a745365f8f73eaeba07d69fbea98c065f00b04a3e170f57fdfce054504d7e15dcc266c70c7ca3edba0b6023840c82380f5d4849d58bb7b15c930220b40b';
   const imgload = (e:Event,parSelect=0):void => {
@@ -40,7 +41,7 @@ export const useGlobals = defineStore('globals',() => {
   const selectKey = <T extends Record<string,any>, K extends keyof T>(obj:T,...keys:K[]) => keys.reduce((p,k) => ((p[k] = obj[k]),p) ,{} as Pick<T,K>);
 
 
-  function codeWrapper() {
+  const codeWrapper = () => {
     [...document.getElementsByTagName('pre')].filter(f => !f.getElementsByTagName('code').length).forEach(pr => {
       const coder = document.createElement('code');
       coder.className = pr.className;
@@ -52,7 +53,7 @@ export const useGlobals = defineStore('globals',() => {
 
     [...document.getElementsByTagName('code')].
       forEach((el) => (el?.parentElement?.tagName !== 'PRE') && wrap(el, document.createElement('pre')));
-  }
+  };
   const unHash = (l:Location) => l.href.slice(0,-l.hash.length);
 
   function tocGenerator(main:HTMLElement,redo=false) {
@@ -161,10 +162,6 @@ export const useGlobals = defineStore('globals',() => {
       }
       el.addEventListener('click', e => (e.preventDefault(), false));
     });
-  }
-
-  function isEmpty(obj:Record<any,any>):obj is {}{
-    return !Object.keys(obj).length;
   }
 
   return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey};
