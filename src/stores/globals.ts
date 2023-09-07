@@ -37,6 +37,8 @@ export const useGlobals = defineStore('globals',() => {
   };
 
   const wrap = (el:HTMLElement, wrapper:HTMLElement) => (el.parentNode?.insertBefore(wrapper, el) && wrapper.appendChild(el));
+  const selectKey = <T extends Record<string,any>, K extends keyof T>(obj:T,...keys:K[]) => keys.reduce((p,k) => ((p[k] = obj[k]),p) ,{} as Pick<T,K>);
+
 
   function codeWrapper() {
     [...document.getElementsByTagName('pre')].filter(f => !f.getElementsByTagName('code').length).forEach(pr => {
@@ -165,5 +167,5 @@ export const useGlobals = defineStore('globals',() => {
     return !Object.keys(obj).length;
   }
 
-  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption};
+  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey};
 });

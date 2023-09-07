@@ -72,7 +72,6 @@ onMounted(
 );
 
 const letsCook = () => ((cookVisible.value = true),new Promise<boolean>((res) => ((cookieConfirms.c = (b:boolean) => ((cookVisible.value = false),res(b))))));
-const selectKey = <T extends Record<string,any>, K extends keyof T>(obj:T,k:K) => ({[k]:obj[k]}) as {[key in K]:T[key]};
 const scrollini = (r:Ref<number>,{deltaY}:WheelEvent) => (r.value += (1*((deltaY < 1)?1:-1)));
 const matcher = (path:RegExp) => computed(() => path.test(route.fullPath));
 const sToN = (s:string,unit='',mult=100) => parseFloat(s.slice(0,unit.length*-1||s.length)) * mult;
@@ -104,8 +103,6 @@ const finalStyle = computed(() => {
   for (const o of cssObject) st[`--${o.name}`] = o.output.value;
   return st;
 });
-
-const bgOnly = computed(() => selectKey(finalStyle.value,'--p_opacity'));
 
 const resetCss = () => {
   for (const k of cssObject) k.input.value = sToN(window.getComputedStyle(document.body).getPropertyValue(`--${k.name}`)??'',k.unit,k.mult);
@@ -268,7 +265,7 @@ const scrollcheck = s => {
   </div>
   <CookieWarning :visible="cookVisible" @confirm="c=>cookieConfirms.c?.(c)" />
   <label class="menu_label" title="Show Menu" for="menucheck" />
-  <div class="wrapper" :style="bgOnly" @scroll="scrollcheck">
+  <div class="wrapper" :style="selectKey(finalStyle,'--p_opacity')" @scroll="scrollcheck">
     <div class="parallax-wrapper">
       <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
       <canvas class="parallax p2" />
