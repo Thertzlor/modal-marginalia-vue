@@ -17,7 +17,7 @@ $mediaCutoff: 1100px;
   --frame_color: rgb(237 241 243);
   --mobile_min: 200px;
   --zero_transform: translateZ(0);
-  --side_padding: 2em;
+  --side_padding: 5em;
   --text_multiplier: 1em;
   --sup_color: #3292b3;
   --glow_color: rgb(63 199 165);
@@ -73,7 +73,7 @@ $mediaCutoff: 1100px;
   --text_offset_r: 20vw;
   --text_offset_l: 1.5vw;
   --article_fullwidth: 90vw;
-  --text_fullwidth: 60vw;
+  --text_fullwidth: 55vw;
   --text_fullwidth_mobile: 98vw;
   --scroll_w: .6em;
   --slide_height: -200vh;
@@ -81,9 +81,7 @@ $mediaCutoff: 1100px;
   --mag_color: rgb(206 206 206);
 }
 
-:root, .content, .listing .bottom_part, #settings {
-  --text_back: rgb(13 13 13 / var(--bg_opacity, 86.7%));
-}
+:root, .content, .listing .bottom_part, #settings { --text_back: rgb(13 13 13 / var(--bg_opacity, 86.7%)); }
 
 #cookie-warning {
   position: fixed;
