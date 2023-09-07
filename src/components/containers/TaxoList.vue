@@ -7,7 +7,7 @@ defineProps<{list:(TagEntity|SomeOf<CategoryEntity>|null|undefined)[], taxType:s
   <template v-if="list.length">
     <RouterLink
       v-for="{attributes: {slug, color, name}} in list.filter((f) :f is Present<NonNullable<typeof f>,'attributes'> => !!f?.attributes)" :key="slug" class="tag hoverglow taxonomy-tag"
-      :to="`/post-list?${taxType}=${slug}`" :style="({['--glow-color']: color})">{{ name }}</RouterLink>
+      :to="`/post-list?${taxType}=${slug}`" :style="({['--glow_color']: color})">{{ name }}</RouterLink>
   </template>
   <a v-else class="tag hoverglow taxonomy-tag" href="#">None</a>
 </template>

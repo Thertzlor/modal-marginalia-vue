@@ -85,11 +85,11 @@ type VarRef<T extends string=string> = {input:Ref<number>, output:ComputedRef<st
 type Cd = typeof cssData;
 const cssObject = [] as any as {[K in Extract<keyof Cd,number>]:VarRef<Cd[K]['name']>} & VarRef[];
 const cssData = [
-  {name:'text-multiplier',unit:'em',min:0,max:250,description:'Font Size',condition:matcher(/\/post\/|\/search\b|\/post-list\b|\/about$/)},
-  {name:'side-padding',unit:'em',min:0,max:1400,description:'Side Padding',condition:matcher(/\/post\/|\/about$/)},
+  {name:'text_multiplier',unit:'em',min:0,max:250,description:'Font Size',condition:matcher(/\/post\/|\/search\b|\/post-list\b|\/about$/)},
+  {name:'side_padding',unit:'em',min:0,max:1400,description:'Side Padding',condition:matcher(/\/post\/|\/about$/)},
   {name:'text_fullwidth',unit:'vw',mult:1,min:20,max:60,description:'Article Width',condition:matcher(/\/post\/|\/about$/)},
-  {name:'bg-opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
-  {name:'p-opacity',min:0,max:100,description:'Nebula Opacity',unit:''}
+  {name:'bg_opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
+  {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:''}
 ] as const;
 
 for (const v of cssData) {
@@ -105,7 +105,7 @@ const finalStyle = computed(() => {
   return st;
 });
 
-const bgOnly = computed(() => selectKey(finalStyle.value,'--p-opacity'));
+const bgOnly = computed(() => selectKey(finalStyle.value,'--p_opacity'));
 
 const resetCss = () => {
   for (const k of cssObject) k.input.value = sToN(window.getComputedStyle(document.body).getPropertyValue(`--${k.name}`)??'',k.unit,k.mult);
