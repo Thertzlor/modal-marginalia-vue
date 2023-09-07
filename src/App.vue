@@ -1,13 +1,16 @@
 <script lang="ts" setup>
 import SidebarMobile from './components/navigation/SidebarMobile.vue';
 import SidebarRegular from './components/navigation/SidebarRegular.vue';
+import CookieWarning from './components/messages/CookieWarning.vue';
 import {useCanvas} from '@/stores/canvas';
 import {useGlobals} from './stores/globals';
-import {onMounted, onBeforeMount, computed, ref} from 'vue';
+import {onMounted, onBeforeMount, computed, ref, type Ref, type ComputedRef} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {PaginationArg, useInitQuery, useLastPostsLazyQuery} from '@/graphql/api';
 const {refreshRate,hist} = useGlobals();
 let relCount = 5;
+const lVar = 'modal-marginalia-css-vars';
+const lCook = 'modal-marginalia-cookie-confirmation';
 const route = useRoute();
 const router = useRouter();
 const sizes = new Map<string, string>();
@@ -19,9 +22,11 @@ const loadedImgs = [] as string[];
 const imgList = (['', '_1', '_2'] as const).map((s => `../img/para_2${s}.png` as const));
 const imgListBg = (['', '_1', '_2'] as const).map((s => `../img/para_1${s}.png` as const));
 const [currentImg, currentImgBg] = ([imgList, imgListBg]).map(l => ref(l[0]));
-const opacity = ref('0');
+const opacity = ref(0);
 const opacityBg = ref('0');
 const [backgroundImage, backgroundImageBg] = [currentImg, currentImgBg].map(b => computed(() => `url(${b.value})`));
+const cookieConfirms = {} as {c?:(b:boolean) => void};
+const cookVisible = ref(false);
 let bigImgSwitch = true;
 const loadLimit = 1500;
 let first = true;
@@ -43,7 +48,6 @@ onMounted(
   () => {
     const run = (fun:() => any) => setTimeout(fun, 0);
     const art = document.getElementsByClassName('article_container')[0];
-
     if (art) {
       art.classList.add('invisible');
       run(() => (art.classList.add('vistrans2'), art.classList.remove('invisible')));
@@ -58,7 +62,7 @@ onMounted(
         loadedImgs.push(bgImg.src);
         if (Math.abs((t - Date.now())) > loadLimit) bigImgSwitch = false;
         el.classList.add('vistrans', 'visible');
-        if (i === 0) opacity.value = '1';
+        if (i === 0) opacity.value = 1;
         else if (i === 1) opacityBg.value = '1';
       };
       else run(() => el.classList.add('visible'));
@@ -66,6 +70,56 @@ onMounted(
     useCanvas().activateCanvas();
   }
 );
+
+const letsCook = () => ((cookVisible.value = true),new Promise<boolean>((res) => ((cookieConfirms.c = (b:boolean) => ((cookVisible.value = false),res(b))))));
+const selectKey = <T extends Record<string,any>, K extends keyof T>(obj:T,k:K) => ({[k]:obj[k]}) as {[key in K]:T[key]};
+const scrollini = (r:Ref<number>,{deltaY}:WheelEvent) => (r.value += (1*((deltaY < 1)?1:-1)));
+const matcher = (path:RegExp) => computed(() => path.test(route.fullPath));
+const sToN = (s:string,unit='',mult=100) => parseFloat(s.slice(0,unit.length*-1||s.length)) * mult;
+const nToS = (n:number,unit='',mult=100) => `${n/mult}${unit}`;
+const savedVars = JSON.parse(localStorage.getItem(lVar)??'{}');
+
+type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>};
+type VarRef<T extends string=string> = {input:Ref<number>, output:ComputedRef<string>,name:T} & VarData;
+
+type Cd = typeof cssData;
+const cssObject = [] as any as {[K in Extract<keyof Cd,number>]:VarRef<Cd[K]['name']>} & VarRef[];
+const cssData = [
+  {name:'text-multiplier',unit:'em',min:0,max:250,description:'Font Size',condition:matcher(/\/post\/|\/search\b|\/post-list\b|\/about$/)},
+  {name:'side-padding',unit:'em',min:0,max:1400,description:'Side Padding',condition:matcher(/\/post\/|\/about$/)},
+  {name:'text_fullwidth',unit:'vw',mult:1,min:20,max:60,description:'Article Width',condition:matcher(/\/post\/|\/about$/)},
+  {name:'bg-opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
+  {name:'p-opacity',min:0,max:100,description:'Nebula Opacity',unit:''}
+] as const;
+
+for (const v of cssData) {
+  const {name,unit,mult} = v as VarData;
+  const input = ref(sToN(savedVars[`--${name}`] ?? window.getComputedStyle(document.body).getPropertyValue(`--${name}`),unit,mult));
+  const output = computed(() => nToS(input.value,unit,mult));
+  cssObject.push({input,output,...v});
+}
+
+const finalStyle = computed(() => {
+  const st = {} as {-readonly[K in `--${(typeof cssObject)[number]['name']}`]:string};
+  for (const o of cssObject) st[`--${o.name}`] = o.output.value;
+  return st;
+});
+
+const bgOnly = computed(() => selectKey(finalStyle.value,'--p-opacity'));
+
+const resetCss = () => {
+  for (const k of cssObject) k.input.value = sToN(window.getComputedStyle(document.body).getPropertyValue(`--${k.name}`)??'',k.unit,k.mult);
+  localStorage.removeItem(lVar);
+};
+
+const saveCss = async() => {
+  if (cookVisible.value) return;
+  if (!localStorage.getItem(lCook)){
+    if (!await letsCook().catch(() => false)) return;
+    localStorage.setItem(lCook, 'YES');
+  }
+  localStorage.setItem(lVar,JSON.stringify(finalStyle.value));
+};
 
 const bw = ref(document.body.getBoundingClientRect().width);
 const cw = ref(0);
@@ -93,13 +147,13 @@ const changeStars = (forceDiff = false) => {
     }, 2000);
   }
   if (picEl && randomImg !== currentImg.value) {
-    opacity.value = '0';
+    opacity.value = 0;
     const loaded = loadedImgs.includes(randomImg);
     const loady = loaded ? true : imgLoader(randomImg);
     setTimeout(async() => {
       currentImg.value = randomImg;
       await loady;
-      opacity.value = '1';
+      opacity.value = 1;
     }, 2100);
   }
 };
@@ -132,12 +186,12 @@ router.afterEach(({fullPath}) => {
 const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.value.fullPath) || '-200vh'));
 onBeforeMount(bodyClass);
 
-
 const positionAdjust = computed(() => {
   const same = bw.value === cw.value;
   return [
     {'--fullscr_offset_x': same ? '.5em' : '1em','--fullscr_offset_y': same ? '1em' : '.5em'},
-    {'--fullscr_offset_x': same ? '4em' : '3.5em','--fullscr_offset_y': same ? '1.2em' : '.7em'}
+    {'--fullscr_offset_x': same ? '4em' : '3.5em','--fullscr_offset_y': same ? '1.2em' : '.7em'},
+    {'--fullscr_offset_x': same ? '7.5em' : '5.5em','--fullscr_offset_y': same ? '1.2em' : '.62em'}
   ];
 });
 
@@ -158,8 +212,9 @@ onResult(r => {
     },refreshRate);
   }
 });
-onError(() => void router.push('/ServerError').then(() => hist('/')));
 
+const cl = () => document.getElementById('options')?.click();
+onError(() => void router.push('/ServerError').then(() => hist('/')));
 checkRes(r => void (((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) && refetch()));
 
 const fallback = {attributes: {text: ''}};
@@ -180,9 +235,10 @@ const scrollcheck = s => {
 </script>
 
 <template>
+  <input id="options" type="checkbox">
   <input
     id="starChanger" type="button" value=""
-    title="Change Stars" @click="changeStars(true)">
+    @click="changeStars(true)">
   <input
     id="fullcheck" type="checkbox" name="fullscreen"
     @change="delRes">
@@ -199,15 +255,29 @@ const scrollcheck = s => {
     for="starChanger">
     <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.981 164.981"><path fill="white" class="b" d="M82.88,0l13.684,47.614,44.054-23.696,.445,.445-23.918,43.276,47.836,14.351v.89l-47.392,13.906,23.473,43.721-.445,.556-44.054-23.696-13.684,47.614h-.89l-14.351-47.614-43.276,23.696-.445-.556,23.474-43.721L0,82.88v-.89l47.392-14.351L23.918,24.363l.445-.445,43.276,23.696L81.99,0h.89Zm-26.811,93.448l26.143-11.013H16.576l39.493,11.013Zm0-21.916l26.143,10.68L36.044,35.933l20.025,35.6Zm15.463,37.379l10.68-26.255-46.168,46.279,35.488-20.024Zm0-52.843l10.902,26.143V16.576l-10.902,39.493Zm21.916,52.843l-11.014-26.255v65.637l11.014-39.382Zm0-52.843l-10.792,26.143,46.279-46.279-35.488,20.136Zm15.463,15.463l-26.255,10.902h65.637l-39.382-10.902Zm0,21.916l-26.255-10.791,46.279,46.279-20.024-35.488Z" /></svg>
   </label>
+  <label :style="positionAdjust[2]" for="options" title="Show Options" />
   <input id="menucheck" v-model="menVis" type="checkbox">
   <SidebarMobile v-if="result?.categories" :cat-list="result.categories.data" />
+  <div id="settings" :style="finalStyle" class="grayborder">
+    <button id="close" @click="cl">x</button>
+    <template v-for="{input,min,max,description,condition,output,name} of cssObject" :key="name">
+      <label v-if="!condition || condition.value" :title="output.value">
+        {{ description }}
+        <input
+          v-model.number="input.value" :min="min" :max="max"
+          type="range" @wheel.passive="e=>scrollini(input,e)">
+      </label>
+    </template>
+    <button class="hoverglow grayborder" @click="saveCss">Save</button><button class="grayborder hoverglow" @click="resetCss">Reset</button>
+  </div>
+  <CookieWarning :visible="cookVisible" @confirm="c=>cookieConfirms.c?.(c)" />
   <label class="menu_label" title="Show Menu" for="menucheck" />
-  <div class="wrapper" @scroll="scrollcheck">
+  <div class="wrapper" :style="bgOnly" @scroll="scrollcheck">
     <div class="parallax-wrapper">
       <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
       <canvas class="parallax p2" />
-      <div :style="{backgroundImage, opacity}" class="parallax p3 invisible" />
-      <div class="content">
+      <div :style="{backgroundImage, opacity:`calc(var(--p-opacity) * ${opacity})`}" class="parallax p3 invisible" />
+      <div :style="finalStyle" class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal<br>Marginalia</RouterLink></h1>
         <SidebarRegular :cat-list="result?.categories?.data ?? []" :latest-posts="result?.posts?.data ?? []" />
         <RouterView v-slot="{Component, route: compRoute}" :quote="quote">
