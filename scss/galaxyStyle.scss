@@ -3,7 +3,6 @@
 
 $mediaCutoff: 1100px;
 
-
 :root {
   --search_image_background: rgb(204 204 204);
   --subtle_shadow: 0 0 .3em #000000db;
@@ -91,7 +90,7 @@ $mediaCutoff: 1100px;
   transform: translate(-50%, -50%);
   width: 20%;
   height: 20%;
-  background: red;
+  background: black;
 }
 
 #options {
@@ -197,17 +196,14 @@ html, body {
   background-color: black;
 }
 
-body { transform: var(--zero_transform); }
-
 footer {
   opacity: .25;
   display: block;
-  text-align: left;
+  text-align: center;
   position: absolute;
   bottom: var(--footer_margin);
-  right: var(--footer_margin);
-  font-size: .7rem;
-
+  width: 100vw;
+  font-size: .7em;
   a { color: var(--link_color); }
 }
 
@@ -500,6 +496,7 @@ label[for="starChanger"] {
         }
       }
     }
+    ~ div #searchform-main { margin-top: 2.5em; }
     ~ div {
       .banner img { max-height: 45vh; }
       h1.sitename { margin-top: -11vw; }
@@ -951,9 +948,7 @@ h2.home_header {
 }
 
 .parallax-wrapper {
-  @media (max-width: $mediaCutoff) {
-    min-width: var(--mobile-width);
-  }
+  @media (max-width: $mediaCutoff) { min-width: var(--mobile-width); }
 
   position: relative;
   min-height: 100%;
@@ -966,8 +961,6 @@ h2.home_header {
   overflow: hidden;
   padding-top: 2vh;
   padding-bottom: .3em;
-
-  //min-height: 100vh;
 }
 
 .parallax {
@@ -1137,9 +1130,7 @@ ul.pagination {
       border-radius: 1em 0 0 1em;
       border: none;
     }
-    &:last-child {
-      border-radius: 0 1em 1em 0;
-    }
+    &:last-child { border-radius: 0 1em 1em 0; }
   }
 }
 
@@ -1529,7 +1520,6 @@ td.hljs-ln-numbers {
   font-weight: 300;
   width: 0;
 
-
   div {
     margin: 0;
     padding-right: .35em;
@@ -1541,7 +1531,7 @@ td.hljs-ln-numbers {
 
   pointer-events: none;
   line-height: 0;
-  right: 15vw;
+  right: .3em;
   bottom: .1em;
   position: fixed;
   font-weight: 150;
@@ -2182,9 +2172,7 @@ mark {
     }
 
     mark { background: var(--mark_color); }
-    &:first-child {
-      p { margin-bottom: .5em; }
-    }
+    &:first-child p { margin-bottom: .5em; }
     h2 {
       margin: .25em;
       display: block;

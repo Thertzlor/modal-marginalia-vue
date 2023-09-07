@@ -226,10 +226,6 @@ const scrollcheck = s => {
   if (!toppi || !hidi) return;
   if (toppi > 500) hidi.classList.add('visi');
   else hidi.classList.remove('visi');
-  const arty = document.getElementById('main_article') as HTMLElement;
-  if (!arty) return;
-  const [b1,b2] = [document.body,arty].map(x => x.getBoundingClientRect().bottom);
-  hidi.style.bottom = (b1 > b2)?`${b1-b2}px`:'.1em';
 };
 
 </script>
@@ -276,7 +272,7 @@ const scrollcheck = s => {
     <div class="parallax-wrapper">
       <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
       <canvas class="parallax p2" />
-      <div :style="{backgroundImage, opacity:`calc(var(--p-opacity) * ${opacity})`}" class="parallax p3 invisible" />
+      <div :style="{backgroundImage, opacity:`calc(var(--p_opacity) * ${opacity})`}" class="parallax p3 invisible" />
       <div :style="finalStyle" class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal<br>Marginalia</RouterLink></h1>
         <SidebarRegular :cat-list="result?.categories?.data ?? []" :latest-posts="result?.posts?.data ?? []" />

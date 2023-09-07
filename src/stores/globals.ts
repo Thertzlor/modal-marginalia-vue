@@ -3,6 +3,7 @@ import slugify from 'slugify';
 import {UploadFile,TagEntity, CategoryEntity} from '@/graphql/api';
 
 export const useGlobals = defineStore('globals',() => {
+  const scrollOption:ScrollIntoViewOptions ={behavior:'smooth'};
   const maxResults = 100;
   const perPage = 10;
   const perComment = 20;
@@ -80,7 +81,7 @@ export const useGlobals = defineStore('globals',() => {
       const currentEntry = tocTarget.appendChild(document.createElement('li'));
       const currentLink = currentEntry.appendChild(document.createElement('a'));
       currentLink.href = `#${e.id}`;
-      currentLink.addEventListener('click', ev => (ev.preventDefault(),history.pushState({}, '',`${unHash(window.location)}#${e.id}`), e.scrollIntoView()));
+      currentLink.addEventListener('click', ev => (ev.preventDefault(),history.pushState({}, '',`${unHash(window.location)}#${e.id}`), e.scrollIntoView(scrollOption)));
 
       currentLink.innerHTML = e.innerHTML;
       if (next && next.tagName !== e.tagName) {
@@ -120,7 +121,7 @@ export const useGlobals = defineStore('globals',() => {
           const opposing = a[first ? 1 : 0];
           const opposeLink = first? opposing.getElementsByTagName('a')[0] : opposing;
           const thisLink = !first? eli.getElementsByTagName('a')[0] : eli;
-          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'),history.pushState({}, '',`${unHash(window.location)}#${opposeLink.id}`), opposing.scrollIntoView(), opposeLink.focus({preventScroll: true})));
+          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'),history.pushState({}, '',`${unHash(window.location)}#${opposeLink.id}`), opposing.scrollIntoView(scrollOption), opposeLink.focus({preventScroll: true})));
           thisLink.addEventListener('blur', () => eli.classList.remove('highlight'));
         });
         const counterpart = notes.getElementsByTagName('li')[i];
@@ -150,7 +151,7 @@ export const useGlobals = defineStore('globals',() => {
       if (el.href?.includes('#_')) {el.href = el.href.replace('#_', '#');}
       const sliceJump = () => {
         if (el.id.startsWith('_')) el.id = el.id.slice(1);
-        if (window.location.hash === `#${el.id}` && !redo) el.scrollIntoView();
+        if (window.location.hash === `#${el.id}` && !redo) el.scrollIntoView(scrollOption);
       };
       if (loadedFocus) sliceJump();
       else {// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -164,5 +165,5 @@ export const useGlobals = defineStore('globals',() => {
     return !Object.keys(obj).length;
   }
 
-  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty};
+  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption};
 });

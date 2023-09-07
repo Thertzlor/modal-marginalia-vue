@@ -6,7 +6,7 @@ import TaxoList from '../containers/TaxoList.vue';
 import CommentSection from '../containers/CommentSection.vue';
 import {useGlobals} from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
-const {processContent, defaultNote, refreshRate, hist, unRay, perComment} = useGlobals();
+const {processContent, defaultNote, refreshRate, hist, unRay, perComment,scrollOption} = useGlobals();
 
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
@@ -28,7 +28,7 @@ const hashNav = (noDelay = false) => {
   if (navd) return;
   navd = true;
   const hashy = router.currentRoute.value.hash;
-  hashy && window.setTimeout(() => document.getElementById(hashy.slice(1))?.scrollIntoView(), noDelay ? 0 : 1000);
+  hashy && window.setTimeout(() => document.getElementById(hashy.slice(1))?.scrollIntoView(scrollOption), noDelay ? 0 : 1000);
 };
 
 let updated:number|undefined;
