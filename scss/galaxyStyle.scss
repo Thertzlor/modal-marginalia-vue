@@ -95,18 +95,25 @@ $mediaCutoff: 1100px;
 
 #options {
   display: none;
-  &:checked ~ #settings { transform: none; }
+
+  &:checked ~ #settings {
+    transform: rotateY(0deg);
+    opacity: 1;
+    pointer-events: all;
+  }
 }
 
 #settings {
   background: var(--text_back);
-  transition: transform .3s ease-in;
+  transition: transform .2s ease-in, opacity .2s ease-in;
+  pointer-events: none;
   text-align: center;
   position: absolute;
   width: 15vw;
   min-width: 200px;
   border-radius: 1em;
-  transform: translateX(200%);
+  transform: rotateY(90deg);
+  opacity: 0;
   right: 2.5vw;
   z-index: 500;
   top: 30vh;
@@ -421,6 +428,7 @@ label[for="starChanger"] {
     }
     &::after {
       transition: transform linear .3s;
+      font-weight: bold;
       position: absolute;
       line-height: 0;
       content: "⚙";

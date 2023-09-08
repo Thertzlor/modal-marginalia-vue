@@ -229,13 +229,9 @@ const scrollcheck = s => {
 
 <template>
   <input id="options" type="checkbox">
-  <input
-    id="starChanger" type="button" value=""
-    @click="changeStars(true)">
-  <input
-    id="fullcheck" type="checkbox" name="fullscreen"
-    @change="delRes">
-  <label :style="positionAdjust[0]" title="fullscreen" for="fullcheck">
+  <input id="starChanger" type="button" @click="changeStars(true)">
+  <input id="fullcheck" type="checkbox" @change="delRes">
+  <label :style="positionAdjust[0]" title="Hide Sidebar" for="fullcheck">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
       <polyline points="5,30 ,5,5 30,5" />
       <polyline points="70,5 ,95,5 95,30" />
@@ -244,7 +240,7 @@ const scrollcheck = s => {
     </svg>
   </label>
   <label
-    v-if="bigImgSwitch" :style="positionAdjust[1]" title="change stars"
+    v-if="bigImgSwitch" :style="positionAdjust[1]" title="Change Stars"
     for="starChanger">
     <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164.981 164.981"><path fill="white" class="b" d="M82.88,0l13.684,47.614,44.054-23.696,.445,.445-23.918,43.276,47.836,14.351v.89l-47.392,13.906,23.473,43.721-.445,.556-44.054-23.696-13.684,47.614h-.89l-14.351-47.614-43.276,23.696-.445-.556,23.474-43.721L0,82.88v-.89l47.392-14.351L23.918,24.363l.445-.445,43.276,23.696L81.99,0h.89Zm-26.811,93.448l26.143-11.013H16.576l39.493,11.013Zm0-21.916l26.143,10.68L36.044,35.933l20.025,35.6Zm15.463,37.379l10.68-26.255-46.168,46.279,35.488-20.024Zm0-52.843l10.902,26.143V16.576l-10.902,39.493Zm21.916,52.843l-11.014-26.255v65.637l11.014-39.382Zm0-52.843l-10.792,26.143,46.279-46.279-35.488,20.136Zm15.463,15.463l-26.255,10.902h65.637l-39.382-10.902Zm0,21.916l-26.255-10.791,46.279,46.279-20.024-35.488Z" /></svg>
   </label>
@@ -263,7 +259,7 @@ const scrollcheck = s => {
     </template>
     <button class="hoverglow grayborder" @click="saveCss">Save</button><button class="grayborder hoverglow" @click="resetCss">Reset</button>
   </div>
-  <CookieWarning :visible="cookVisible" @confirm="c=>cookieConfirms.c?.(c)" />
+  <CookieWarning v-if="cookVisible" @confirm="c=>cookieConfirms.c?.(c)" />
   <label class="menu_label" title="Show Menu" for="menucheck" />
   <div class="wrapper" :style="selectKey(finalStyle,'--p_opacity')" @scroll="scrollcheck">
     <div class="parallax-wrapper">

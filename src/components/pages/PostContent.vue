@@ -65,13 +65,17 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
   <div class="article_container">
     <article v-if="result?.post?.data?.attributes" id="main_article" class="text">
       <h1 class="article_header fadeborder">{{ result.post.data.attributes.title }}</h1>
-      <div class="tag_container"><TaxoList :list="taxoSort([...result.post.data.attributes.tags?.data ?? []])" :tax-type="'tag'" /></div>
+      <div class="tag_container">
+        <TaxoList :list="taxoSort([...result.post.data.attributes.tags?.data ?? []])" :tax-type="'tag'" />
+      </div>
       <ImageContainer
         v-if="result.post.data.attributes.header?.data?.attributes" :img-data="result.post.data.attributes.header.data.attributes" :class-name="'banner'"
         custom-size="60vw" />
       <main>
         <span class="datespan">Posted {{ gerDate(result.post.data.attributes.publishedAt) }}</span>
-        <span class="post_text"><DynaPost :content="result.post.data.attributes.body_vue ?? ''" /></span>
+        <span class="post_text">
+          <DynaPost :content="result.post.data.attributes.body_vue ?? ''" />
+        </span>
       </main>
       <div
         v-if="result.post.data.attributes.footnotes
