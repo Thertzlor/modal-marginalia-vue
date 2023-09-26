@@ -23,7 +23,7 @@ const imgList = (['', '_1', '_2'] as const).map((s => `../img/para_2${s}.png` as
 const imgListBg = (['', '_1', '_2'] as const).map((s => `../img/para_1${s}.png` as const));
 const [currentImg, currentImgBg] = ([imgList, imgListBg]).map(l => ref(l[0]));
 const opacity = ref(0);
-const opacityBg = ref('0');
+const opacityBg = ref(0);
 const [backgroundImage, backgroundImageBg] = [currentImg, currentImgBg].map(b => computed(() => `url(${b.value})`));
 const cookieConfirms = {} as {c?:(b:boolean) => void};
 const cookVisible = ref(false);
@@ -63,7 +63,7 @@ onMounted(
         if (Math.abs((t - Date.now())) > loadLimit) bigImgSwitch = false;
         el.classList.add('vistrans', 'visible');
         if (i === 0) opacity.value = 1;
-        else if (i === 1) opacityBg.value = '1';
+        else if (i === 1) opacityBg.value = 1;
       };
       else run(() => el.classList.add('visible'));
     });
@@ -137,10 +137,10 @@ const changeStars = (forceDiff = false) => {
   const [randomImg, randomimgBg] = [targetList, targetListBg].map(l => l[Math.floor(Math.random() * l.length)]);
   const [picEl, picElBg] = ['p3', 'p1'].map(p => document.getElementsByClassName(p)[0] as HTMLDivElement | undefined);
   if (picElBg && randomimgBg !== currentImgBg.value) {
-    opacityBg.value = '0';
+    opacityBg.value = 0;
     setTimeout(() => {
       currentImgBg.value = randomimgBg;
-      setTimeout(() => opacityBg.value = '1', 450);
+      setTimeout(() => opacityBg.value = 1, 450);
     }, 2000);
   }
   if (picEl && randomImg !== currentImg.value) {
