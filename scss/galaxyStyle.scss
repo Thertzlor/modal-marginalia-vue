@@ -85,7 +85,8 @@ $mediaCutoff: 1100px;
 button { cursor: pointer; }
 
 
-#cookie-warning {
+.modal-message {
+  white-space: pre-wrap;
   position: fixed;
   z-index: 600;
   top: 50%;
@@ -95,7 +96,6 @@ button { cursor: pointer; }
   width: 30%;
   text-align: center;
   box-shadow: .7em .6em 1em .7em rgb(0 0 0 / 50%);
-  color: red;
   border: .2em solid white;
   background: black;
 
@@ -107,6 +107,7 @@ button { cursor: pointer; }
     padding: .5em 1em;
     margin-bottom: -1em;
   }
+  &#cookie-warning { color: red; }
 }
 
 #options {
@@ -136,6 +137,11 @@ button { cursor: pointer; }
   padding: 1em;
   padding-top: 1.5em;
 
+  #a-sucker-is-born-every-minute {
+    display: inline-block;
+    width: auto;
+    margin-right: 1em;
+  }
   #close {
     font-size: 1.1em;
     cursor: pointer;
@@ -164,6 +170,14 @@ button { cursor: pointer; }
     padding: .25em .5em;
     color: white;
     background: black;
+  }
+  div {
+    margin-bottom: 1.5em;
+    font-weight: bold;
+
+    &:last-of-type {
+      margin-top: 1.5em;
+    }
   }
 }
 

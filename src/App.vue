@@ -2,6 +2,7 @@
 import SidebarMobile from './components/navigation/SidebarMobile.vue';
 import SidebarRegular from './components/navigation/SidebarRegular.vue';
 import CookieWarning from './components/messages/CookieWarning.vue';
+import GenericMessage from './components/messages/GenericMessage.vue';
 import {useCanvas} from '@/stores/canvas';
 import {useGlobals} from './stores/globals';
 import {onMounted, onBeforeMount, computed, ref, type Ref, type ComputedRef} from 'vue';
@@ -11,10 +12,13 @@ const {refreshRate,hist} = useGlobals();
 let relCount = 5;
 const lVar = 'modal-marginalia-css-vars';
 const lCook = 'modal-marginalia-cookie-confirmation';
+const bCook = 'modal-marginalia-a-sucker-is-born-every-minute';
+const noPriv = ref(!!localStorage.getItem(bCook));
 const route = useRoute();
 const router = useRouter();
 const sizes = new Map<string, string>();
 const qouteSalt = ref(1);
+const showMsg = ref('');
 const menVis = ref(false);
 const slideVal = ref('-200vh');
 const pg:PaginationArg = {pageSize: 100, page: 1};
@@ -27,6 +31,9 @@ const opacityBg = ref(0);
 const [backgroundImage, backgroundImageBg] = [currentImg, currentImgBg].map(b => computed(() => `url(${b.value})`));
 const cookieConfirms = {} as {c?:(b:boolean) => void};
 const cookVisible = ref(false);
+const cookMsg = ref('');
+const cookYes = ref('');
+const cookNo = ref('');
 let bigImgSwitch = true;
 const loadLimit = 1500;
 let first = true;
@@ -71,7 +78,7 @@ onMounted(
   }
 );
 
-const letsCook = () => ((cookVisible.value = true),new Promise<boolean>((res) => ((cookieConfirms.c = (b:boolean) => ((cookVisible.value = false),res(b))))));
+const letsCook = (msg:string,yes:string,no:string) => ((cookVisible.value = true,cookMsg.value=msg,cookNo.value=no,cookYes.value=yes),new Promise<boolean>((res) => ((cookieConfirms.c = (b:boolean) => ((cookVisible.value = false),res(b))))));
 const scrollini = (r:Ref<number>,{deltaY}:WheelEvent) => (r.value += (1*((deltaY < 1)?1:-1)));
 const matcher = (path:RegExp) => computed(() => path.test(route.fullPath));
 const sToN = (s:string,unit='',mult=100) => parseFloat(s.slice(0,unit.length*-1||s.length)) * mult;
@@ -89,6 +96,9 @@ const cssData = [
   {name:'text_fullwidth',unit:'vw',mult:1,min:20,max:60,description:'Article Width',condition:matcher(/\/post\/|\/about$/)},
   {name:'bg_opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
   {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:''}
+] as const;
+const miscData = [
+  {name:'reading speed',unit:'wpm',min:0,max:800,description:'Reading Speed'}
 ] as const;
 
 for (const v of cssData) {
@@ -112,10 +122,40 @@ const resetCss = () => {
 const saveCss = async() => {
   if (cookVisible.value) return;
   if (!localStorage.getItem(lCook)){
-    if (!await letsCook().catch(() => false)) return;
+    if (!await letsCook('To save your preferences this site needs to save a COOKIE on this device.\nDo you consent?','Spoken like a true warrior.\nNow go in peace.','That\'s understandable.\nOne can never be too careful these days.').catch(() => false)) return;
     localStorage.setItem(lCook, 'YES');
   }
   localStorage.setItem(lVar,JSON.stringify(finalStyle.value));
+};
+
+const delCook = () => {
+  if (![lCook,bCook].some(c => localStorage.getItem(c)))showMsg.value='Can\'t delete cookies, because no cookies are set. Duh.';
+  localStorage.clear();
+  noPriv.value=false;
+};
+
+const myPrivacyIsYourBitch = async(e:Event) => {
+  if (cookVisible.value) return;
+  const chk = (e.target as HTMLInputElement|undefined)?.checked;
+  if (chk){
+    if (!await letsCook(`You are making a mistake.
+
+    By confirming this message you consent that your site preferences and browsing behavior on this website may be monitored and saved on an external server.
+
+    You have nothing to gain from this.
+    All the customization and features on this site work fine with local cookies that are saved on your browser, staying on your PC without me knowing anything about you. In fact that's enough for most things and many sites/services that claim that they "need" your private data on THEIR servers to enable features are lying to you.
+
+    But here we are... surrender your data to me and it will let me analyze user behavior such as seeing who is a big enough idiot to click the 'I hate my Privacy' switch.
+    I could claim something like "Your data is essential for improving user experience in the future" but it's not. I can't guarantee anything useful and in reality all this will mostly serve to satisfy my voyeristic tendencies.
+    I will still not sell your info to ad-companies.
+
+    Do you still want this?`,'What has the world come to?','A most wise decision.').catch(() => false)) return void (noPriv.value=false);
+    localStorage.setItem(lCook, 'YES');
+    return localStorage.setItem(bCook, 'YES');
+  }
+  showMsg.value = 'Thank goodness you came to your senses.';
+  localStorage.removeItem(bCook);
+  noPriv.value=false;
 };
 
 const bw = ref(document.body.getBoundingClientRect().width);
@@ -249,6 +289,7 @@ const scrollcheck = s => {
   <SidebarMobile v-if="result?.categories" :cat-list="result.categories.data" />
   <div id="settings" :style="finalStyle" class="grayborder">
     <button id="close" @click="cl">x</button>
+    <div>Style Settings</div>
     <template v-for="{input,min,max,description,condition,output,name} of cssObject" :key="name">
       <label v-if="!condition || condition.value" :title="output.value">
         {{ description }}
@@ -257,9 +298,18 @@ const scrollcheck = s => {
           type="range" @wheel.passive="e=>scrollini(input,e)">
       </label>
     </template>
-    <button class="hoverglow grayborder" @click="saveCss">Save</button><button class="grayborder hoverglow" @click="resetCss">Reset</button>
+    <div>Other Settings</div>
+    <label><input
+      id="a-sucker-is-born-every-minute" v-model="noPriv" type="checkbox"
+      @change="e=> myPrivacyIsYourBitch(e)">I hate my privacy.</label>
+    <button class="hoverglow grayborder" @click="saveCss">Save</button>
+    <button class="grayborder hoverglow" @click="resetCss">Reset</button>
+    <button class="grayborder hoverglow" @click="delCook">Delete Cookies</button>
   </div>
-  <CookieWarning v-if="cookVisible" @confirm="c=>cookieConfirms.c?.(c)" />
+  <CookieWarning
+    v-if="cookVisible" :msg="cookMsg" :yes="cookYes"
+    :no="cookNo" @confirm="c=>cookieConfirms.c?.(c)" />
+  <GenericMessage v-if="showMsg" :msg="showMsg" @confirm="()=> (showMsg='')" />
   <label class="menu_label" title="Show Menu" for="menucheck" />
   <div class="wrapper" :style="selectKey(finalStyle,'--p_opacity')" @scroll="scrollcheck">
     <div class="parallax-wrapper">
