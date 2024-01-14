@@ -98,8 +98,8 @@ onResult(r => {
       </TransitionGroup>
       <PaginationWidget v-if="result?.posts?.data?.length" :page-data="result.posts.meta.pagination" @pg="fetcher" />
       <article v-else class="noresult">
-        <h2>Not found</h2>
-        <p>Unfortunately, no content could be found. Try another page, or go to the <RouterLink to="/">Homepage</RouterLink></p>
+        <h2>Nothing found.</h2>
+        <p>Unfortunately, no content could be found. Try another page or go to the <RouterLink to="/">Homepage</RouterLink></p>
       </article>
     </main>
   </div>
