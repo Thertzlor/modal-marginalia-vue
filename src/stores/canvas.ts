@@ -41,7 +41,8 @@ export const useCanvas = defineStore('canvas',() => {
       let height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
       let width = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
 
-      const canvas = document.getElementsByTagName('canvas')[0];
+      const canvas = document.getElementsByTagName('canvas').item(0);
+      if (!canvas) return;
       canvas.width = width;
       canvas.height = height;
       const context = canvas.getContext('2d');

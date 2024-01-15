@@ -71,7 +71,6 @@ export const useGlobals = defineStore('globals',() => {
     const tocLabel = enclosure.appendChild(document.createElement('label'));
     tocLabel.setAttribute('for', 'tocButton');
     tocLabel.title = 'table of contents';
-    tocLabel.innerHTML = '˄';
     const toctainer = enclosure.appendChild(document.createElement('div'));
     toctainer.classList.add('toc');
     const listType = 'UL';
@@ -99,11 +98,11 @@ export const useGlobals = defineStore('globals',() => {
         }
       }
     });
-    if (!redo) main.insertBefore(enclosure, main.getElementsByTagName('main')[0]);
+    if (!redo) main.insertBefore(enclosure, main.getElementsByTagName('main').item(0));
   }
   function processContent(doToc:boolean|null=true,redo=false):void {
     const loadedFocus = document.hasFocus();
-    const main = document.getElementById('main_article');
+    const main = document.getElementById('main_article')?.getElementsByTagName('main').item(0);
     const redoing = main?.classList.contains('processed');
     if (!redoing) main?.classList.add('processed');
     const foot = main && document.getElementById('footnote_container');
@@ -111,26 +110,26 @@ export const useGlobals = defineStore('globals',() => {
     codeWrapper();
     doToc && main && tocGenerator(main,redoing);
 
-    const linkNotes = (origin:HTMLElement, notes:HTMLElement, term:string) => {
-      [...origin.getElementsByTagName('sup')].filter(s => /\[\d+\]/.test(s.innerHTML.trim())).forEach((el, i) => {
+    const linkNotes = (origin:HTMLElement|null, notes:HTMLElement, term:string) => {
+      [...origin?.getElementsByTagName('sup') ?? []].filter(s => /\[\d+\]/.test(s.innerHTML.trim())).forEach((el, i) => {
         const footLink = `_${term}_${i+1}`;
         const headLink = `_${term}_${i+1}_head`;
         const element = document.createElement('a');
         element.id = headLink;
         element.href = `#${footLink}`;
         wrap(el, element);
-        const scroller = (f:HTMLTableCellElement|undefined) => f && [element, f].forEach((eli, ii, a) => {
+        const scroller = (f:HTMLTableCellElement|undefined|null) => f && [element, f].forEach((eli, ii, a) => {
           const first = ii === 0;
           const opposing = a[first ? 1 : 0];
-          const opposeLink = first? opposing.getElementsByTagName('a')[0] : opposing;
-          const thisLink = !first? eli.getElementsByTagName('a')[0] : eli;
-          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'),history.pushState({}, '',`${unHash(window.location)}#${opposeLink.id}`), opposing.scrollIntoView(scrollOption), opposeLink.focus({preventScroll: true})));
-          thisLink.addEventListener('blur', () => eli.classList.remove('highlight'));
+          const opposeLink = first? opposing.getElementsByTagName('a').item(0) : opposing;
+          const thisLink = !first? eli.getElementsByTagName('a').item(0) : eli;
+          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'),history.pushState({}, '',`${unHash(window.location)}#${opposeLink?.id??''}`), opposing.scrollIntoView(scrollOption), opposeLink?.focus({preventScroll: true})));
+          thisLink?.addEventListener('blur', () => eli.classList.remove('highlight'));
         });
-        const counterpart = notes.getElementsByTagName('li')[i];
+        const counterpart = notes.getElementsByTagName('li').item(i);
         if (!counterpart) return;
         element.setAttribute('title', counterpart.innerText.trim());
-        if (redoing) return scroller([...counterpart.getElementsByTagName('td')][0]);
+        if (redoing) return scroller(counterpart.getElementsByTagName('td').item(0));
         //counterpart.innerHTML = " " + counterpart.innerHTML;
         const counterHTML = counterpart.innerHTML;
         counterpart.textContent='';
@@ -147,7 +146,7 @@ export const useGlobals = defineStore('globals',() => {
       });
     };
 
-    if (main && foot) linkNotes(main.getElementsByTagName('main')[0], foot, 'ref');
+    if (main?.parentElement && foot) linkNotes(main.parentElement.getElementsByTagName('main').item(0), foot, 'ref');
     if (foot && toe) linkNotes(foot, toe, 'toe');
 
     ([...document.querySelectorAll('[id^="_"],[href^="#_"]')] as HTMLAnchorElement[]).forEach(el => {
