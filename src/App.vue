@@ -259,7 +259,27 @@ const quote = computed(() => (qouteSalt.value !==0 && result.value?.quotes?.data
 
 const scrollcheck = s => {
   const toppi = s.target?.scrollTop;
-  const hidi = [...document.getElementsByClassName('upper')][0] as HTMLElement;
+  const hidi = document.getElementsByClassName('upper').item(0);
+  const foli = document.getElementById('tabcont') as HTMLElement;
+  const labi = document.querySelector('#tocButton + label') as HTMLElement|undefined;
+  if (foli){
+    const maynard = document.querySelector('#main_article main')?.getBoundingClientRect();
+    if (maynard && maynard.y < 0){
+      const h = foli.getBoundingClientRect().height;
+      const p =foli.getElementsByTagName('input').item(0);
+      if ((maynard.y+maynard.height - (h + (h/5)))>0){
+        foli.style.transform=`translateY(${-maynard.y}px)`;
+        labi && (labi.style.transform=`translateY(${-maynard.y}px)`);
+
+
+      }
+      else if (p) p.checked=false;
+    } else {
+
+      foli.style.transform='';
+      labi && (labi.style.transform='');
+    }
+  }
   if (!toppi || !hidi) return;
   if (toppi > 500) hidi.classList.add('visi');
   else hidi.classList.remove('visi');
