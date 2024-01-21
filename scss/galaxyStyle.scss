@@ -917,7 +917,7 @@ h2.home_header {
   ~ .wrapper .main + .menu_centered {
     @media (max-width: $mediaCutoff) {
       visibility: visible;
-      left: .5vmax;
+      left: calc(var(--menu_size) / 20);
     }
 
     vertical-align: top;
@@ -1071,8 +1071,8 @@ h2.home_header {
     margin-top: 5rem;
     margin-top: 6vmax;
     width: 95%;
-    width: calc(100% - var(--menu_size) * 2);
-    margin-left: var(--menu_size);
+    width: calc(100% - var(--menu_size) * 2.2);
+    margin-left: calc(var(--menu_size) * 1.1);
   }
 
   will-change: margin-top, opacity;
@@ -1594,8 +1594,14 @@ td.hljs-ln-numbers {
   display: none;
 
   + label {
+    @media (max-width: $mediaCutoff) {
+      left: .1em;
+      margin-top: 1.5em;
+      opacity: .3;
+    }
+
     font-size: 2.5em;
-    left: calc(var(--side_width) - .25em);
+    left: calc(48vw - var(--text_fullwidth) / 2);
     margin-top: .05em;
     opacity: .1;
     position: absolute;
@@ -1632,18 +1638,13 @@ td.hljs-ln-numbers {
 }
 
 .toc {
-  @media (max-width: $mediaCutoff) {
-    min-width: 40vw;
-    max-width: calc(var(--text_fullwidth_mobile) * .75);
-  }
-
   transition: box-shadow .5s linear, transform .3s ease, opacity .3s ease;
   overflow: hidden;
   background: rgb(0 0 0 / 97%);
   display: block;
   transform: translateX(-100%);
   margin: 0;
-  padding: 1em;
+  padding: 0 1em;
   opacity: 0;
   border-radius: 0 .5em .5em 0;
   border: .25em solid #cdcfd2;
@@ -1678,7 +1679,6 @@ td.hljs-ln-numbers {
   }
   ul {
     margin-left: .7em;
-    margin-top: .7em;
     margin-bottom: .7em;
 
     ul {

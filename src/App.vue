@@ -270,12 +270,9 @@ const scrollcheck = s => {
       if ((maynard.y+maynard.height - (h + (h/5)))>0){
         foli.style.transform=`translateY(${-maynard.y}px)`;
         labi && (labi.style.transform=`translateY(${-maynard.y}px)`);
-
-
       }
       else if (p) p.checked=false;
     } else {
-
       foli.style.transform='';
       labi && (labi.style.transform='');
     }
