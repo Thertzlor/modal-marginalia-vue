@@ -51,8 +51,7 @@ export const useGlobals = defineStore('globals',() => {
       pr.appendChild(coder);
     });
 
-    [...document.getElementsByTagName('code')].
-      forEach((el) => (el?.parentElement?.tagName !== 'PRE') && wrap(el, document.createElement('pre')));
+    [...document.getElementsByTagName('code')].forEach(el => (el?.parentElement?.tagName !== 'PRE') && wrap(el, document.createElement('pre')));
   };
   const unHash = (l:Location) => l.href.slice(0,-l.hash.length);
 
