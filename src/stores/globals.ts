@@ -56,23 +56,15 @@ export const useGlobals = defineStore('globals',() => {
   };
   const unHash = (l:Location) => l.href.slice(0,-l.hash.length);
 
-  function tocGenerator(main:HTMLElement,art:HTMLElement,redo=false) {
+  function tocGenerator(main:HTMLElement,redo=false) {
     const posty = main.getElementsByClassName('post_text')[0] as HTMLElement;
     if (!posty) return;
     const headers = [...posty.querySelectorAll('h1, h2, h3, h4, h5, h6')] as HTMLElement[];
-    if (!headers.length) return;
+    if (!headers.length) return void document.getElementById('tocLabel')?.style.setProperty('display', 'none');
     const enclosure = redo? document.getElementById('tabcont'):document.createElement('div');
     if (!enclosure) return;
     if (redo) enclosure.innerHTML ='';
     else enclosure.id='tabcont';
-    const tocBut = art.insertBefore(document.createElement('input'),art.getElementsByTagName('main').item(0));
-    tocBut.type = 'checkbox';
-    tocBut.id = 'tocButton';
-    const tocLabel = art.insertBefore(document.createElement('label'),art.getElementsByTagName('main').item(0));
-    console.log(main.tagName);
-    tocLabel.setAttribute('for', 'tocButton');
-    tocLabel.title = 'table of contents';
-    tocLabel.innerHTML='⩸';
     const toctainer = enclosure.appendChild(document.createElement('div'));
     toctainer.classList.add('toc');
     const listType = 'UL';
@@ -85,7 +77,8 @@ export const useGlobals = defineStore('globals',() => {
       const currentEntry = tocTarget.appendChild(document.createElement('li'));
       const currentLink = currentEntry.appendChild(document.createElement('a'));
       currentLink.href = `#${e.id}`;
-      currentLink.addEventListener('click', ev => (ev.preventDefault(),history.pushState({}, '',`${unHash(window.location)}#${e.id}`),(tocBut.checked = false), e.scrollIntoView(scrollOption)));
+      const tocBut = document.getElementById('tocButton') as HTMLInputElement|null;
+      currentLink.addEventListener('click', ev => (ev.preventDefault(),history.pushState({}, '',`${unHash(window.location)}#${e.id}`),(tocBut!.checked = false), e.scrollIntoView(scrollOption)));
 
       currentLink.innerHTML = e.innerHTML;
       if (next && next.tagName !== e.tagName) {
@@ -104,15 +97,13 @@ export const useGlobals = defineStore('globals',() => {
   }
   function processContent(doToc:boolean|null=true,redo=false):void {
     const loadedFocus = document.hasFocus();
-    const mainArt =document.getElementById('main_article');
-    const main = mainArt?.getElementsByTagName('main').item(0);
+    const main = document.getElementById('main_article')?.getElementsByTagName('main').item(0);
     const redoing = main?.classList.contains('processed');
     if (!redoing) main?.classList.add('processed');
     const foot = main && document.getElementById('footnote_container');
     const toe = foot && document.getElementById('toenote_container');
     codeWrapper();
-    doToc && main && tocGenerator(main,mainArt!,redoing);
-
+    doToc && main && tocGenerator(main,redoing);
     const linkNotes = (origin:HTMLElement|null, notes:HTMLElement, term:string) => {
       [...origin?.getElementsByTagName('sup') ?? []].filter(s => /\[\d+\]/.test(s.innerHTML.trim())).forEach((el, i) => {
         const footLink = `_${term}_${i+1}`;

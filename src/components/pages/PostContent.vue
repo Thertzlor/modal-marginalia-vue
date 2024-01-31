@@ -71,6 +71,8 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
       <ImageContainer
         v-if="result.post.data.attributes.header?.data?.attributes" :img-data="result.post.data.attributes.header.data.attributes" :class-name="'banner'"
         custom-size="60vw" />
+      <input id="tocButton" type="checkbox">
+      <label id="tocLabel" for="tocButton" title="table of contents">⩸</label>
       <main>
         <span class="datespan">Posted {{ gerDate(result.post.data.attributes.publishedAt) }}</span>
         <span class="post_text">
