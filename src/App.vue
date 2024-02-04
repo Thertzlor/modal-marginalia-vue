@@ -244,7 +244,7 @@ onResult(r => {
   if (!inVal) {
     inVal = 1;
     setTimeout(() => {
-      load();
+      void load();
       setInterval(() => {checkFetch()?.catch(e => console.log(e));},refreshRate);
     },refreshRate);
   }

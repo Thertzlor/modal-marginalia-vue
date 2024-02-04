@@ -49,7 +49,7 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.post?.data ?
     hashNav();
     inVal = 1;
     setTimeout(() => {
-      load();
+      void load();
       inVal = setInterval(() => {upFetch()?.catch(e => console.log(e));},refreshRate);
     },refreshRate);
   }

@@ -58,7 +58,7 @@ onResult(r => {
   if (!inVal) {
     inVal = 1;
     setTimeout(() => {
-      load();
+      void load();
       inVal = setInterval(() => {upFetch()?.catch(e => console.log(e));},refreshRate);
     },refreshRate);
   }
