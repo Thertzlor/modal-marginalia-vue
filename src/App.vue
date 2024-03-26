@@ -331,7 +331,7 @@ const scrollcheck = s => {
   <div class="wrapper" :style="selectKey(finalStyle,'--p_opacity')" @scroll="scrollcheck">
     <div class="parallax-wrapper">
       <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
-      <canvas class="parallax p2" />
+      <div class="parallax p2" ></div>
       <div :style="{backgroundImage, opacity:`calc(var(--p_opacity) * ${opacity})`}" class="parallax p3 invisible" />
       <div :style="finalStyle" class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal<br>Marginalia</RouterLink></h1>

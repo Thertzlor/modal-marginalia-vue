@@ -17,8 +17,8 @@ export const useCanvas = defineStore('canvas',() => {
 
     const virtualCanvas = (() => {
       const canvas = document.createElement('canvas');
-      canvas.height = 1200;
-      canvas.width = 1200;
+      canvas.width = 1920;
+      canvas.height = 1080;
       const context = canvas.getContext('2d');
       if (!context) return;
       const numCircles = canvas.width / 50;
@@ -32,60 +32,13 @@ export const useCanvas = defineStore('canvas',() => {
         const color = `rgb(${255 - (Math.random() * v1)},${255 - (Math.random() * v2)},${255 - (Math.random() * v3)})`;
         drawCircle(context, xPos, yPos, radius, color);
       }
-      return canvas;
+      return canvas.toDataURL();
     })();
 
     (() => {
-      const body = document.body;
-      const html = document.documentElement;
-      let height = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-      let width = Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
-
-      const canvas = document.getElementsByTagName('canvas').item(0);
-      if (!canvas) return;
-      canvas.width = width;
-      canvas.height = height;
-      const context = canvas.getContext('2d');
-      if (!(context && virtualCanvas)) return;
-      const pattern = context.createPattern(virtualCanvas, 'repeat');
-      if (!pattern) return;
-      context.fillStyle = pattern;
-      context.fillRect(0, 0, width, height);
-
-      function throttle2(callback:any, limit:number) {
-        let wait = false;
-        return function() {
-          if (!wait) {
-            callback.call();
-            wait = true;
-            setTimeout(() => {wait = false;}, limit);
-          }
-        };
-      }
-      function debounce(this:any, callback:(...args:any) => any, wait:number) {
-        let timeout:number;
-        return (...args:any[]) => {
-          clearTimeout(timeout);
-          timeout = setTimeout(() => callback.apply(this, args), wait);
-        };
-      }
-
-      const wrapElement = document.getElementsByClassName('parallax-wrapper').item(0) as HTMLElement;
-      if (!wrapElement) return;
-
-      const refill = () => requestAnimationFrame(() => {
-        height = Math.max(wrapElement.scrollHeight, wrapElement.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
-        width = Math.max(wrapElement.scrollWidth, wrapElement.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
-        canvas.width = width;
-        canvas.height = height;
-        context.fillStyle = pattern;
-        context.fillRect(0, 0, width, height);
-      });
-
-      canvasUtilities.refill = refill;
-      window.addEventListener('resize', debounce(refill, 16));
-      const resizeObserver = new ResizeObserver(throttle2(refill, 16));
-      resizeObserver.observe(wrapElement);
+      const paral = document.getElementsByClassName('p2').item(0) as HTMLDivElement;
+      if (!paral) return;
+      paral.style.background = `url(${virtualCanvas ?? ''})`
     })();
   }
 
