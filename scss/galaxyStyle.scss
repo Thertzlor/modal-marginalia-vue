@@ -416,6 +416,7 @@ h1 {
       content: "Tags:";
       position: absolute;
       right: calc(100% + .7em);
+      font-weight: normal !important;
     }
     &:link, &:visited { color: white; }
   }
