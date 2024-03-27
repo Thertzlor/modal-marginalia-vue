@@ -18,7 +18,7 @@ $mediaCutoff: 1100px;
   --mobile_min: 200px;
   --zero_transform: translateZ(0);
   --side_padding: 5em;
-  --text_multiplier: 1em;
+  --text_multiplier: .98em;
   --sup_color: #3292b3;
   --glow_color: rgb(63 199 165);
   --search_border_color: #fffb;
@@ -1471,7 +1471,7 @@ ul.pagination {
   figure.banner {
     text-align: center;
     position: relative;
-    margin: 2em auto 0;
+    margin: 1em auto 2em;
     pointer-events: none;
     transition: var(--img_transition);
     font-size: var(--text_multiplier);
@@ -1487,7 +1487,7 @@ ul.pagination {
       z-index: -1;
       height: auto;
       margin: 0 auto;
-      margin-bottom: 1em;
+      margin-bottom: 2em;
       padding: 0;
       display: block;
       background: var(--img_border);

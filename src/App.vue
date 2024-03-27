@@ -3,12 +3,11 @@ import SidebarMobile from './components/navigation/SidebarMobile.vue';
 import SidebarRegular from './components/navigation/SidebarRegular.vue';
 import CookieWarning from './components/messages/CookieWarning.vue';
 import GenericMessage from './components/messages/GenericMessage.vue';
-import {useCanvas} from '@/stores/canvas';
 import {useGlobals} from './stores/globals';
 import {onMounted, onBeforeMount, computed, ref, type Ref, type ComputedRef} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {PaginationArg, useInitQuery, useLastPostsLazyQuery} from '@/graphql/api';
-const {refreshRate,hist} = useGlobals();
+const {refreshRate,hist,activateCanvas} = useGlobals();
 let relCount = 5;
 const lVar = 'modal-marginalia-css-vars';
 const lCook = 'modal-marginalia-cookie-confirmation';
@@ -74,7 +73,7 @@ onMounted(
       };
       else run(() => el.classList.add('visible'));
     });
-    useCanvas().activateCanvas();
+    activateCanvas()
   }
 );
 
