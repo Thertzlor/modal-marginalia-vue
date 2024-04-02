@@ -19,7 +19,7 @@ query Init($pg: PaginationArg) {
       }
     }
   }
-  categories {
+  categories(filters:{posts:{publishedAt:{notNull:true}}}) {
     data {
       attributes {
         name
