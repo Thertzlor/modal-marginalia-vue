@@ -1,6 +1,0 @@
-node_modules
-dist
-public/js
-.eslintrc.js
-vite.config.js
-babel.config.js
