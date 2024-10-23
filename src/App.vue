@@ -73,7 +73,7 @@ onMounted(
       };
       else run(() => el.classList.add('visible'));
     });
-    activateCanvas()
+    activateCanvas();
   }
 );
 
@@ -96,7 +96,7 @@ const cssData = [
   {name:'bg_opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
   {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:''}
 ] as const;
-const miscData = [
+const _miscData = [
   {name:'reading speed',unit:'wpm',min:0,max:800,description:'Reading Speed'}
 ] as const;
 
@@ -330,7 +330,7 @@ const scrollcheck = s => {
   <div class="wrapper" :style="selectKey(finalStyle,'--p_opacity')" @scroll="scrollcheck">
     <div class="parallax-wrapper">
       <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
-      <div class="parallax p2" ></div>
+      <div class="parallax p2" />
       <div :style="{backgroundImage, opacity:`calc(var(--p_opacity) * ${opacity})`}" class="parallax p3 invisible" />
       <div :style="finalStyle" class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal<br>Marginalia</RouterLink></h1>
