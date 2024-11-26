@@ -155,7 +155,7 @@ export const useGlobals = defineStore('globals',() => {
         });
         const counterpart = notes.getElementsByTagName('li').item(i);
         if (!counterpart) return;
-        element.setAttribute('title', counterpart.innerText.trim());
+        element.setAttribute('title', counterpart.innerText.replace(/^\^/,'').replaceAll(/\[\d+\]/g,'').trim());
         if (redoing) return scroller(counterpart.getElementsByTagName('td').item(0));
         //counterpart.innerHTML = " " + counterpart.innerHTML;
         const counterHTML = counterpart.innerHTML;
