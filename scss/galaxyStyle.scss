@@ -3,7 +3,6 @@
 
 $mediaCutoff: 1100px;
 
-
 :root {
   --default_fonts: "Rubik", "Calibri", sans-serif;
   --search_image_background: rgb(204 204 204);
@@ -155,9 +154,7 @@ button { cursor: pointer; }
     background: none;
     top: -.6em;
 
-    &:hover {
-      text-shadow: 0 0 .3em var(--glow_color);
-    }
+    &:hover { text-shadow: 0 0 .3em var(--glow_color); }
   }
   label {
     margin-bottom: .8em;
@@ -179,9 +176,7 @@ button { cursor: pointer; }
     margin-bottom: 1.5em;
     font-weight: bold;
 
-    &:last-of-type {
-      margin-top: 1.5em;
-    }
+    &:last-of-type { margin-top: 1.5em; }
   }
 }
 
@@ -458,9 +453,7 @@ label[for="starChanger"] {
   display: none;
 
   + label + label + label {
-    &:hover::after {
-      transform: rotate(90deg);
-    }
+    &:hover::after { transform: rotate(90deg); }
     &::after {
       transition: transform linear .3s;
       font-weight: bold;
@@ -888,12 +881,8 @@ h2.home_header {
         outline: solid var(--mobile_border) .25em;
       }
 
-      &::before {
-        box-shadow: 0 calc((var(--menu_size) / 2) * .6) 0 0 white, 0 calc((var(--menu_size) / 2) * -.6) 0 0 white;
-      }
-      &:hover::before {
-        box-shadow: 0 calc((var(--menu_size) / 2) * .4) 0 0 white, 0 calc((var(--menu_size) / 2) * -.4) 0 0 white;
-      }
+      &::before { box-shadow: 0 calc((var(--menu_size) / 2) * .6) 0 0 white, 0 calc((var(--menu_size) / 2) * -.6) 0 0 white; }
+      &:hover::before { box-shadow: 0 calc((var(--menu_size) / 2) * .4) 0 0 white, 0 calc((var(--menu_size) / 2) * -.4) 0 0 white; }
     }
 
     @media (max-width: $mediaCutoff) {
@@ -952,17 +941,13 @@ h2.home_header {
     &:hover {
       opacity: 1;
 
-      &::before {
-        box-shadow: 0 calc((var(--menu_size) / 2) * .6) 0 0 white, 0 calc((var(--menu_size) / 2) * -.6) 0 0 white;
-      }
+      &::before { box-shadow: 0 calc((var(--menu_size) / 2) * .6) 0 0 white, 0 calc((var(--menu_size) / 2) * -.6) 0 0 white; }
     }
   }
 }
 
 .wrapper {
-  @media (max-width: $mediaCutoff) {
-    min-width: var(--mobile-width);
-  }
+  @media (max-width: $mediaCutoff) { min-width: var(--mobile-width); }
 
   @media (hover: none) {
     perspective: none;
