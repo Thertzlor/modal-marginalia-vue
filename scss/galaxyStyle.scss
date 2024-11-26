@@ -1654,7 +1654,7 @@ td.hljs-ln-numbers {
   display: block;
   transform: translateX(-100%);
   margin: 0;
-  padding: 0 1em;
+  padding-right: .5em;
   opacity: 0;
   border-radius: 0 .5em .5em 0;
   border: .25em solid #cdcfd2;
@@ -1668,17 +1668,17 @@ td.hljs-ln-numbers {
     text-align: left;
     display: inline-block;
     line-height: 1.6;
-    list-style-position: outside;
+    list-style-position: inside;
 
+    li { margin-left: .5em; }
     > li {
-      list-style: upper-roman;
+      list-style: upper-roman inside;
       padding-top: .5em;
-      margin-left: 1em;
 
       > ul > li {
-        list-style: lower-roman;
+        list-style: lower-roman inside;
 
-        > ul > li { list-style: circle; }
+        > ul > li { list-style: circle inside; }
       }
     }
     a {
@@ -2180,6 +2180,7 @@ mark {
       margin: 0 auto;
     }
 
+    font-weight: var(--text_weight);
     font-size: var(--text_multiplier);
     flex-shrink: 10;
     border: .25em solid var(--search_image_background);
