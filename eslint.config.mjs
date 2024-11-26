@@ -171,6 +171,7 @@ export default [{
         "block-scoped-var": 1,
         eqeqeq: 1,
         "@typescript-eslint/class-literal-property-style": 1,
+        "@typescript-eslint/no-empty-oject-type": [1, {allowInterfaces: 'with-single-extends'}],
         "no-extra-label": 1,
         "no-eq-null": 1,
         "@typescript-eslint/no-empty-function": 1,
