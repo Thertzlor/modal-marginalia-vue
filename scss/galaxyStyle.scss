@@ -3,6 +3,7 @@
 
 $mediaCutoff: 1100px;
 
+
 :root {
   --default_fonts: "Rubik", "Calibri", sans-serif;
   --search_image_background: rgb(204 204 204);
@@ -19,6 +20,7 @@ $mediaCutoff: 1100px;
   --zero_transform: translateZ(0);
   --side_padding: 5em;
   --text_multiplier: .98em;
+  --text_weight: 320;
   --sup_color: #3292b3;
   --glow_color: rgb(63 199 165);
   --search_border_color: #fffb;
@@ -1199,10 +1201,12 @@ ul.pagination {
   }
   .post_text {
     font-size: var(--text_multiplier);
+    font-weight: var(--text_weight);
 
     sup {
-      font-weight: 650;
       font-size: .65em;
+
+      &::before { content: "⁠"; }
     }
 
     .text-big { font-size: 1.5rem; }
@@ -1288,16 +1292,20 @@ ul.pagination {
     }
 
     .text-tiny { font-size: .5em; }
+    strong { font-weight: calc(var(--text_weight) * 2); }
     h1 {
       font-size: 2em;
-      font-weight: bold;
+      font-weight: calc(var(--text_weight) * 2);
       line-height: 1;
       margin: 1em auto;
 
       &:first-child { margin-top: 0; }
     }
     h2, h3 { font-style: italic; }
-    h2 { margin: 1em 0 .25em; }
+    h2 {
+      margin: 1em 0 .25em;
+      font-weight: calc(var(--text_weight) * 1.7);
+    }
     h3 { text-decoration: underline; }
     figcaption {
       text-align: center;
@@ -1504,7 +1512,7 @@ ul.pagination {
     i { font-weight: 375; }
 
     position: relative;
-    overflow: hidden hidden;
+    overflow: hidden;
     padding: 2.5em var(--side_padding) 2em;
     background: var(--text_back);
     border-radius: 1.5em;
@@ -1722,7 +1730,7 @@ td.hljs-ln-numbers {
   margin: 0 auto;
   border-radius: 0 0 .6em .6em;
   top: 100%;
-  padding: .6em calc(var(--side_padding) / 4) .6em;
+  padding: .6em calc(var(--side_padding) / 4);
   width: 90%;
   z-index: 1;
   max-width: calc(var(--text_fullwidth) * .9);
