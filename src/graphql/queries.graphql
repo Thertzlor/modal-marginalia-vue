@@ -67,8 +67,9 @@ query about {
 query TagList {
   tags(
     filters: {
-      posts: { id: { notNull: true }, publishedAt: { notNull: true } }
+      posts: { id: { notNull: true }, publishedAt: { notNull: true } },
     }
+          pagination : {pageSize:100}
   ) {
     data {
       attributes {

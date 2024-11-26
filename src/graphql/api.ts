@@ -1822,7 +1822,10 @@ export function useAboutLazyQuery(options: VueApolloComposable.UseQueryOptions<A
 export type AboutQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AboutQuery, AboutQueryVariables>;
 export const TagListDocument = gql`
     query TagList {
-  tags(filters: {posts: {id: {notNull: true}, publishedAt: {notNull: true}}}) {
+  tags(
+    filters: {posts: {id: {notNull: true}, publishedAt: {notNull: true}}}
+    pagination: {pageSize: 100}
+  ) {
     data {
       attributes {
         name
@@ -1923,7 +1926,7 @@ export const PostSearchDocument = gql`
 export function usePostSearchQuery(variables: PostSearchQueryVariables | VueCompositionApi.Ref<PostSearchQueryVariables> | ReactiveFunction<PostSearchQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> = {}) {
   return VueApolloComposable.useQuery<PostSearchQuery, PostSearchQueryVariables>(PostSearchDocument, variables, options);
 }
-export function usePostSearchLazyQuery(variables: PostSearchQueryVariables | VueCompositionApi.Ref<PostSearchQueryVariables> | ReactiveFunction<PostSearchQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> = {}) {
+export function usePostSearchLazyQuery(variables?: PostSearchQueryVariables | VueCompositionApi.Ref<PostSearchQueryVariables> | ReactiveFunction<PostSearchQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostSearchQuery, PostSearchQueryVariables>> = {}) {
   return VueApolloComposable.useLazyQuery<PostSearchQuery, PostSearchQueryVariables>(PostSearchDocument, variables, options);
 }
 export type PostSearchQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostSearchQuery, PostSearchQueryVariables>;
@@ -2092,7 +2095,7 @@ export const PostCountDocument = gql`
 export function usePostCountQuery(variables: PostCountQueryVariables | VueCompositionApi.Ref<PostCountQueryVariables> | ReactiveFunction<PostCountQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> = {}) {
   return VueApolloComposable.useQuery<PostCountQuery, PostCountQueryVariables>(PostCountDocument, variables, options);
 }
-export function usePostCountLazyQuery(variables: PostCountQueryVariables | VueCompositionApi.Ref<PostCountQueryVariables> | ReactiveFunction<PostCountQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> = {}) {
+export function usePostCountLazyQuery(variables?: PostCountQueryVariables | VueCompositionApi.Ref<PostCountQueryVariables> | ReactiveFunction<PostCountQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCountQuery, PostCountQueryVariables>> = {}) {
   return VueApolloComposable.useLazyQuery<PostCountQuery, PostCountQueryVariables>(PostCountDocument, variables, options);
 }
 export type PostCountQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostCountQuery, PostCountQueryVariables>;
@@ -2181,7 +2184,7 @@ export const PostListDocument = gql`
 export function usePostListQuery(variables: PostListQueryVariables | VueCompositionApi.Ref<PostListQueryVariables> | ReactiveFunction<PostListQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> = {}) {
   return VueApolloComposable.useQuery<PostListQuery, PostListQueryVariables>(PostListDocument, variables, options);
 }
-export function usePostListLazyQuery(variables: PostListQueryVariables | VueCompositionApi.Ref<PostListQueryVariables> | ReactiveFunction<PostListQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> = {}) {
+export function usePostListLazyQuery(variables?: PostListQueryVariables | VueCompositionApi.Ref<PostListQueryVariables> | ReactiveFunction<PostListQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostListQuery, PostListQueryVariables>> = {}) {
   return VueApolloComposable.useLazyQuery<PostListQuery, PostListQueryVariables>(PostListDocument, variables, options);
 }
 export type PostListQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostListQuery, PostListQueryVariables>;
