@@ -25,7 +25,7 @@ export const useGlobals = defineStore('globals',() => {
   const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],null|undefined>[]:T => (Array.isArray(arr)?arr.filter(f => f) as any:arr);
   const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f => f)),something);
   const hist = (url:string):void => window.history.pushState({}, '',url);
-  const isEmpty = (obj:Record<any,any>):obj is {} => !Object.keys(obj).length;
+  const isEmpty = (obj:Record<any,any>):obj is Record<any,never> => !Object.keys(obj).length;
 
   const ct = '4b14c42a63fb8f0c62e816faf32c5ed5578bd3ec9a5b46eced32f66d47d1430cc54896eeecec06f87a1a355fd4921097c387556930b6527616ba1d8dc1f3da2d790d2a745365f8f73eaeba07d69fbea98c065f00b04a3e170f57fdfce054504d7e15dcc266c70c7ca3edba0b6023840c82380f5d4849d58bb7b15c930220b40b';
   const imgload = (e:Event,parSelect=0):void => {
@@ -67,26 +67,26 @@ export const useGlobals = defineStore('globals',() => {
       context.fill();
       context.fill();
     }
-      const canvas = document.createElement('canvas');
-      canvas.width = 1920;
-      canvas.height = 1080;
-      const context = canvas.getContext('2d');
-      if (!context) return;
-      const numCircles = canvas.width / 50;
-      const maxRadius = 4;
-      const minRadius = 1;
-      for (let n = 0; n < numCircles; n++) {
-        const xPos = Math.random() * (canvas.width - (maxRadius * 7 * 3));
-        const yPos = Math.random() * (canvas.height - (maxRadius * 7 * 3));
-        const radius = minRadius + (Math.random() * (maxRadius - minRadius));
-        const [v1, v2, v3] = [0, 50, 50];
-        const color = `rgb(${255 - (Math.random() * v1)},${255 - (Math.random() * v2)},${255 - (Math.random() * v3)})`;
-        drawCircle(context, xPos, yPos, radius, color);
-      }
-      const virtualCanvas = canvas.toDataURL();
-      const paral = document.getElementsByClassName('p2').item(0) as HTMLDivElement;
-      if (!paral) return;
-      paral.style.background = `url(${virtualCanvas ?? ''})`
+    const canvas = document.createElement('canvas');
+    canvas.width = 1920;
+    canvas.height = 1080;
+    const context = canvas.getContext('2d');
+    if (!context) return;
+    const numCircles = canvas.width / 50;
+    const maxRadius = 4;
+    const minRadius = 1;
+    for (let n = 0; n < numCircles; n++) {
+      const xPos = Math.random() * (canvas.width - (maxRadius * 7 * 3));
+      const yPos = Math.random() * (canvas.height - (maxRadius * 7 * 3));
+      const radius = minRadius + (Math.random() * (maxRadius - minRadius));
+      const [v1, v2, v3] = [0, 50, 50];
+      const color = `rgb(${255 - (Math.random() * v1)},${255 - (Math.random() * v2)},${255 - (Math.random() * v3)})`;
+      drawCircle(context, xPos, yPos, radius, color);
+    }
+    const virtualCanvas = canvas.toDataURL();
+    const paral = document.getElementsByClassName('p2').item(0) as HTMLDivElement;
+    if (!paral) return;
+    paral.style.background = `url(${virtualCanvas ?? ''})`;
   }
 
   function tocGenerator(main:HTMLElement,redo=false) {
