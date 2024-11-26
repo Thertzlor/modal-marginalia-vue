@@ -145,7 +145,7 @@ function locatePreview(text:string, queryValue:string[]) {
       v-if="result?.posts" :page-data="result.posts.meta.pagination" :base-url="href"
       @pg="a => {pg = a; searchSubmit()}" />
     <TransitionGroup name="v-page">
-      <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, body_searchable, tags: {data: tagData}, category: {data: catData}}} in result.posts.data?.filter((f): f is Present<typeof f,'id'|'attributes'> & {attributes:{tags:{data:{}}, category:{data:{}}, header:{data:{attributes:UploadFile}}}} => !!(f?.id && f.attributes?.header?.data && f.attributes.category?.data)) ?? []" :key="id" class="search_result">
+      <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, body_searchable, tags: {data: tagData}, category: {data: catData}}} in result.posts.data?.filter((f): f is Present<typeof f,'id'|'attributes'> & {attributes:{tags:{data:{}}, category:{data:{}}, header:{data:{attributes:UploadFile}}}} => !!(f?.id && f.attributes?.category?.data)) ?? []" :key="id" class="search_result">
         <RouterLink v-if="img?.attributes" :to="`/post/${id}-${slug}`">
           <img
             :srcset="getSrcSet(getImageData(img.attributes))" :src="img.attributes.url" :width="img.attributes.width ?? ''"
