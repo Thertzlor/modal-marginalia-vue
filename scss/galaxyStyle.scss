@@ -1449,6 +1449,7 @@ ul.pagination {
       &.h-quote {
         background: none;
         widows: 0;
+        border: .15em solid;
         border-left: none;
         max-width: 65%;
         font-size: 1.5em;
@@ -1456,7 +1457,6 @@ ul.pagination {
         border-image-slice: 1 0;
         margin: 1em -.5em;
         padding: .3em;
-        border: .15em solid;
       }
 
       p { margin: 0; }
