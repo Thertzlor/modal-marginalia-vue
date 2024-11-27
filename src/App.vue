@@ -271,7 +271,8 @@ const scrollcheck = s => {
 </script>
 
 <template>
-<BgMenu @stars="changeStars(true)" @vis="v => menVis=v" @res="delRes()" :bw="bw" :men-vis="menVis" :cw="cw" :big-img-switch="bigImgSwitch"/>
+<BgMenu @stars="changeStars(true)" @res="delRes()" :bw="bw" :cw="cw" :big-img-switch="bigImgSwitch"/>
+  <input id="menucheck" v-model="menVis" type="checkbox">
   <SidebarMobile v-if="result?.categories" :cat-list="result.categories.data" />
   <div id="settings" :style="finalStyle" class="grayborder">
     <button id="close" @click="cl">x</button>
