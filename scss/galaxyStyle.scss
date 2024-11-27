@@ -1201,6 +1201,7 @@ ul.pagination {
 
     sup {
       font-size: .65em;
+      font-weight: calc(var(--text_weight) * 2);
 
       &::before { content: "⁠"; }
     }
@@ -1294,6 +1295,7 @@ ul.pagination {
       font-weight: calc(var(--text_weight) * 2);
       line-height: 1;
       margin: 1em auto;
+      i { font-weight: calc(var(--text_weight) * 1.5); }
 
       &:first-child { margin-top: 0; }
     }
@@ -1301,12 +1303,18 @@ ul.pagination {
     h2 {
       margin: 1em 0 .25em;
       font-weight: calc(var(--text_weight) * 1.7);
+      i { font-weight: calc(var(--text_weight) * 1.3); }
     }
     h3 { text-decoration: underline; }
     figcaption {
       text-align: center;
       font-size: .8rem;
       font-weight: calc(var(--text_weight) * 1.5);
+    }
+    a {
+      font-weight: calc(var(--text_weight) * 1.2);
+
+      i { font-weight: calc(var(--text_weight) * 1.1); }
     }
     figure.image {
       position: relative;
@@ -1736,6 +1744,7 @@ td.hljs-ln-numbers {
     font-size: .8em;
     vertical-align: baseline;
     line-height: 1.4;
+    font-weight: var(--text_weight);
 
     &:first-child {
       + td { padding: 0 .2em; }
@@ -1762,6 +1771,7 @@ td.hljs-ln-numbers {
       &::marker {
         content: "["counter(list-item) "]";
         margin-right: 4em;
+        font-size: .85em;
         display: block;
       }
     }
