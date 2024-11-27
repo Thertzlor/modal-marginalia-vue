@@ -12,7 +12,8 @@ const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(query.val
 <template>
   <aside class="sidebar_mobile">
     <RouterLink class="homelink" to="/">Home</RouterLink>
-    <NavMenu :main-categories="catList" />
+    <NavMenu :main-categories="catList"/>
+    <label title="Options" for="options">⚙</label>
     <form id="search_form_mobile" enctype="text/plain" @submit.stop.prevent="searchSubmit">
       <input
         id="search_input_mobile" v-model="query" required

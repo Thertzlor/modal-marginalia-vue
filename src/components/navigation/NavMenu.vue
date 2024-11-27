@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {CategoryEntity} from '@/graphql/api';
 import CustomLink from './CustomLink.vue';
-defineProps<{mainCategories:CategoryEntity[] | undefined}>();
+defineProps<{mainCategories?:CategoryEntity[]}>();
 const categories = [
   {name: 'About', url: '/about'},
   {name: 'All Posts', url: '/post-list'},

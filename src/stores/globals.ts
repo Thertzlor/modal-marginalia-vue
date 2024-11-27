@@ -183,9 +183,7 @@ export const useGlobals = defineStore('globals',() => {
         if (window.location.hash === `#${el.id}` && !redo) el.scrollIntoView(scrollOption);
       };
       if (loadedFocus) sliceJump();
-      else {// eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const jumper = () => (sliceJump(), window.removeEventListener('focus', jumper));
-      }
+      else {const jumper = () => (sliceJump(), window.removeEventListener('focus', jumper));}
       el.addEventListener('click', e => (e.preventDefault(), false));
     });
   }
