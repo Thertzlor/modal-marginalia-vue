@@ -12,12 +12,13 @@ const sizeText = [...sizeList, `${data.value.width}w`].join(', ');
 const iml = ref(false);
 </script>
 
+
 <template>
   <figure v-if="imgData" :class="className" class="invisible">
     <a :href="data.url">
       <img
         :srcset="imgSrcList" :src="data.url" :alt="data.alternativeText??undefined"
-        :style="{aspectRatio: `${data.width} / ${data.height}`, width: iml ? 'auto' : ''}" :sizes="customSize || sizeText" :height="data.height??undefined"
+        :style="{aspectRatio: `${data.width} / ${data.height}`, width: iml ? 'auto' : '', maxHeight:className.includes('banner')?undefined:`${data.height}px`}" :sizes="customSize || sizeText" :height="data.height??undefined"
         :width="data.width??undefined" @load="e => ((iml = true), imgload(e, 2))">
     </a>
     <figcaption v-if="data.caption">{{ data.caption }}</figcaption>
