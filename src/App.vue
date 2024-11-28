@@ -3,7 +3,7 @@ import SidebarMobile from './components/navigation/SidebarMobile.vue';
 import SidebarRegular from './components/navigation/SidebarRegular.vue';
 import CookieWarning from './components/messages/CookieWarning.vue';
 import GenericMessage from './components/messages/GenericMessage.vue';
-import BgMenu from "./components/containers/BgMenu.vue";
+import BgMenu from './components/containers/BgMenu.vue';
 import {useGlobals} from './stores/globals';
 import {onMounted, onBeforeMount, computed, ref, type Ref, type ComputedRef} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
@@ -217,7 +217,6 @@ const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.val
 onBeforeMount(bodyClass);
 
 
-
 const {result, onError, onResult,refetch} = useInitQuery({pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
 const {onResult:checkRes,refetch:checkFetch,load} = useLastPostsLazyQuery();
 
@@ -271,7 +270,9 @@ const scrollcheck = s => {
 </script>
 
 <template>
-<BgMenu @stars="changeStars(true)" @res="delRes()" :bw="bw" :cw="cw" :big-img-switch="bigImgSwitch"/>
+  <BgMenu
+    :bw="bw" :cw="cw" :big-img-switch="bigImgSwitch"
+    @stars="changeStars(true)" @res="delRes()" />
   <input id="menucheck" v-model="menVis" type="checkbox">
   <SidebarMobile v-if="result?.categories" :cat-list="result.categories.data" />
   <div id="settings" :style="finalStyle" class="grayborder">

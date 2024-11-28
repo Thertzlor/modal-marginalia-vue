@@ -40,7 +40,6 @@ export const useGlobals = defineStore('globals',() => {
   const wrap = (el:HTMLElement, wrapper:HTMLElement) => (el.parentNode?.insertBefore(wrapper, el) && wrapper.appendChild(el));
   const selectKey = <T extends Record<string,any>, K extends keyof T>(obj:T,...keys:K[]) => keys.reduce((p,k) => ((p[k] = obj[k]),p) ,{} as Pick<T,K>);
 
-
   const codeWrapper = () => {
     [...document.getElementsByTagName('pre')].filter(f => !f.getElementsByTagName('code').length).forEach(pr => {
       const coder = document.createElement('code');
@@ -76,9 +75,9 @@ export const useGlobals = defineStore('globals',() => {
     const maxRadius = 4;
     const minRadius = 1;
     for (let n = 0; n < numCircles; n++) {
-      const xPos = Math.random() * (canvas.width - (maxRadius * 7 * 3));
-      const yPos = Math.random() * (canvas.height - (maxRadius * 7 * 3));
       const radius = minRadius + (Math.random() * (maxRadius - minRadius));
+      const xPos = Math.max(Math.random() * (canvas.width - radius * 7), radius*7);
+      const yPos = Math.max(Math.random() * (canvas.height - radius * 7),radius*7);
       const [v1, v2, v3] = [0, 50, 50];
       const color = `rgb(${255 - (Math.random() * v1)},${255 - (Math.random() * v2)},${255 - (Math.random() * v3)})`;
       drawCircle(context, xPos, yPos, radius, color);
@@ -183,6 +182,7 @@ export const useGlobals = defineStore('globals',() => {
         if (window.location.hash === `#${el.id}` && !redo) el.scrollIntoView(scrollOption);
       };
       if (loadedFocus) sliceJump();
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       else {const jumper = () => (sliceJump(), window.removeEventListener('focus', jumper));}
       el.addEventListener('click', e => (e.preventDefault(), false));
     });
