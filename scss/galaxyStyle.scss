@@ -2487,11 +2487,11 @@ mark {
       transform: translateX(0);
     }
     polyline { opacity: .4; }
-    .cube {
+    .c {
       transition: opacity var(--transform_time);
       opacity: .4;
     }
-    .cube._t {
+    .c._t {
       opacity: 1;
       transition: opacity calc(var(--transform_time) / 3);
 
