@@ -32,6 +32,7 @@ $mediaCutoff: 1100px;
   --mobile_border: #848484;
   --bg_solid: rgb(15 15 15);
   --img_bg: rgb(96 171 126);
+  --stroke_color: rgb(255 255 255 / 45%);
   --main_search_offset: 2%;
   --main_search_width: 80%;
   --menu_search_width: 52%;
@@ -494,7 +495,7 @@ label[for="starChanger"] {
       polyline {
         fill: none;
         transition: transform .2s;
-        stroke: white;
+        stroke: var(--stroke_color);
         stroke-width: .5em;
         transform: translate(var(--fs_transform), var(--fs_transform));
 
@@ -2471,15 +2472,15 @@ mark {
     }
     * {
       stroke-width: 2;
-      stroke: white;
+      stroke: var(--stroke_color);
     }
     .st3, .st4 {
       fill: url("#sgrad");
-      stroke: white;
+      stroke: var(--stroke_color);
     }
     .st0, .st1, .st2 {
       fill: transparent;
-      stroke: white;
+      stroke: var(--stroke_color);
     }
     .st0 { transition: transform var(--transform_time); }
     clipPath {
