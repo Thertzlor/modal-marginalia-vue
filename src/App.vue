@@ -88,7 +88,8 @@ const cssData = [
   {name:'text_weight', mult:1, min:50,max:1000,description:'Font Weight',condition:matcher(/\/post\/|\/about$/)},
   {name:'text_fullwidth',unit:'vw',mult:1,min:20,max:60,description:'Article Width',condition:matcher(/\/post\/|\/about$/)},
   {name:'bg_opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
-  {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:''}
+  {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:''},
+  {name:'cubeTransform',min:0,max:10,mult:1,description:'Rectangle Growth',unit:'em',condition:matcher(/^\/$/)}
 ] as const;
 const _miscData = [
   {name:'reading speed',unit:'wpm',min:0,max:800,description:'Reading Speed'}
