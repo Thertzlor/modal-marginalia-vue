@@ -1760,6 +1760,7 @@ td.hljs-ln-numbers {
   a sup {
     font-family: "Arial Black", sans-serif;
     font-weight: bolder;
+    font-size: .65em;
   }
   ol {
     margin: .5em .5em .3em 1.7em;
@@ -1772,7 +1773,7 @@ td.hljs-ln-numbers {
       &::marker {
         content: "["counter(list-item) "]";
         margin-right: 4em;
-        font-size: .85em;
+        font-size: .75em;
         display: block;
       }
     }
