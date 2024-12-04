@@ -7,8 +7,7 @@ import CommentSection from '../containers/CommentSection.vue';
 import {useGlobals} from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
 import {ref} from 'vue';
-const {processContent, defaultNote, refreshRate, hist, unRay, perComment,scrollOption} = useGlobals();
-
+const {processContent, defaultNote, postRefreshRate, hist, unRay, perComment,scrollOption} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 const selector = router.currentRoute.value.params.select;
@@ -45,14 +44,14 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connec
   post.value = r.data.posts_connection.nodes[0];
   document.title = `${post.value.title} - Modal Marginalia`;
   updated = new Date(post.value.updatedAt).getTime();
-  if (!refreshRate) return;
   if (!inVal) {
     hashNav();
     inVal = 1;
+    if (!postRefreshRate) return;
     setTimeout(() => {
       void load();
-      inVal = setInterval(() => {upFetch()?.catch(e => console.log(e));},refreshRate);
-    },refreshRate);
+      inVal = setInterval(() => {upFetch()?.catch(e => console.log(e));},postRefreshRate);
+    },postRefreshRate);
   }
 })())));
 // onUpdated(() => (processContent(result.value?.post?.data?.attributes?.toc), hashNav()));

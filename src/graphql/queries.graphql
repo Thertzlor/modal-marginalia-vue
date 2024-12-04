@@ -185,6 +185,7 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
 query postCheck($postId: ID!) {
   post(documentId: $postId) {
     human_id
+    publishedAt
     documentId
     updatedAt
   }

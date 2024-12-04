@@ -1746,7 +1746,7 @@ export type PostCheckQueryVariables = Exact<{
 }>;
 
 
-export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'Post', human_id: number, documentId: string, updatedAt?: any | null } | null };
+export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'Post', human_id: number, publishedAt?: any | null, documentId: string, updatedAt?: any | null } | null };
 
 export type PostCountQueryVariables = Exact<{
   pf?: InputMaybe<PostFiltersInput>;
@@ -2091,6 +2091,7 @@ export const PostCheckDocument = gql`
     query postCheck($postId: ID!) {
   post(documentId: $postId) {
     human_id
+    publishedAt
     documentId
     updatedAt
   }
