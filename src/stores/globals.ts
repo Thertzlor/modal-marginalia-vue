@@ -8,6 +8,7 @@ export const useGlobals = defineStore('globals',() => {
   const perPage = 10;
   const perComment = 20;
   const refreshRate = 30000;
+  const postRefreshRate = 0;
   const searchSurround = 150;
   const daysNew = 12;
   const newTime = daysNew * 24 * 60 * 60 * 1000;
@@ -188,5 +189,5 @@ export const useGlobals = defineStore('globals',() => {
     });
   }
 
-  return {maxResults,perComment,perPage,refreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas};
 });

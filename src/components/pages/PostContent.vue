@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {useRouter} from 'vue-router';
+import {useRouter} from 'vue-router';// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {useSinglePostQuery, usePostCheckLazyQuery, type PaginationArg,Comment} from '@/graphql/api';
 import ImageContainer from '../containers/ImageContainer.vue';
 import TaxoList from '../containers/TaxoList.vue';
