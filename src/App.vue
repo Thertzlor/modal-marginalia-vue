@@ -225,8 +225,8 @@ let numPosts:number|undefined;
 let inVal:number|undefined;
 
 onResult(r => {
-  if (!r.data?.posts?.meta.pagination.total || !refreshRate) return;
-  numPosts = r.data.posts.meta.pagination.total;
+  if (!r.data?.posts_connection?.pageInfo.total || !refreshRate) return;
+  numPosts = r.data.posts_connection.pageInfo.total;
   if (!inVal) {
     inVal = 1;
     setTimeout(() => {
@@ -238,10 +238,10 @@ onResult(r => {
 
 const cl = () => document.getElementById('options')?.click();
 onError(() => void router.push('/ServerError').then(() => hist('/')));
-checkRes(r => void (((numPosts || numPosts === 0) && r.data?.posts?.meta.pagination.total !== numPosts) && refetch()));
+checkRes(r => void (((numPosts || numPosts === 0) && r.data?.posts_connection?.pageInfo.total !== numPosts) && refetch()));
 
-const fallback = {attributes: {text: ''}};
-const quote = computed(() => (qouteSalt.value !==0 && result.value?.quotes?.data[Math.floor(Math.random() * result.value.quotes.data.length)] || fallback).attributes?.text ??'');
+const fallback = {text: ''};
+const quote = computed(() => (qouteSalt.value !==0 && result.value?.quotes_connection?.nodes[Math.floor(Math.random() * result.value.quotes_connection.nodes.length)] || fallback).text ??'');
 
 const scrollcheck = s => {
   const toppi = s.target?.scrollTop;
@@ -275,7 +275,7 @@ const scrollcheck = s => {
     :bw="bw" :cw="cw" :big-img-switch="bigImgSwitch"
     @stars="changeStars(true)" @res="delRes()" />
   <input id="menucheck" v-model="menVis" type="checkbox">
-  <SidebarMobile v-if="result?.categories" :cat-list="result.categories.data" />
+  <SidebarMobile v-if="result?.categories_connection" :cat-list="result.categories_connection.nodes" />
   <div id="settings" :style="finalStyle" class="grayborder">
     <button id="close" @click="cl">x</button>
     <div>Style Settings</div>
@@ -307,7 +307,7 @@ const scrollcheck = s => {
       <div :style="{backgroundImage, opacity:`calc(var(--p_opacity) * ${opacity})`}" class="parallax p3 invisible" />
       <div :style="finalStyle" class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal<br>Marginalia</RouterLink></h1>
-        <SidebarRegular :cat-list="result?.categories?.data ?? []" :latest-posts="result?.posts?.data ?? []" />
+        <SidebarRegular :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="result?.posts_connection?.nodes ?? []" />
         <RouterView v-slot="{Component, route: compRoute}" :quote="quote">
           <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter"><component :is="Component" :key="compRoute.fullPath" :style="{'--slide_height': slideVal}" /></Transition>
         </RouterView>

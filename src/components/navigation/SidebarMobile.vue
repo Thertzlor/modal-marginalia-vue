@@ -2,9 +2,9 @@
 import NavMenu from './NavMenu.vue';
 import {useRouter} from 'vue-router';
 import {ref} from 'vue';
-import type {CategoryEntity} from '@/graphql/api';
+import type {Category} from '@/graphql/api';
 const router = useRouter();
-defineProps<{catList:CategoryEntity[]}>();
+defineProps<{catList:Partial<Category>[]}>();
 const query = ref('');
 const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(query.value)}`);
 </script>
@@ -12,7 +12,7 @@ const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(query.val
 <template>
   <aside class="sidebar_mobile">
     <RouterLink class="homelink" to="/">Home</RouterLink>
-    <NavMenu :main-categories="catList"/>
+    <NavMenu :main-categories="catList" />
     <label title="Options" for="options">⚙</label>
     <form id="search_form_mobile" enctype="text/plain" @submit.stop.prevent="searchSubmit">
       <input

@@ -1,11 +1,11 @@
 <script lang ="ts" setup>
-import type {CommentEntity, Pagination, PaginationArg} from '@/graphql/api';
+import type {Comment, Pagination, PaginationArg} from '@/graphql/api';
 import {ref} from 'vue';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
 import {useCommentatorMutation} from '@/graphql/api';
 import PaginationWidget from '../navigation/PaginationWidget.vue';
 
-const props = defineProps<{postId:number, commentData:CommentEntity[], page?:number, pagination?:Pagination}>();
+const props = defineProps<{postId:number, commentData:Comment[], page?:number, pagination?:Pagination}>();
 const emit = defineEmits<{
   (e:'pg', arg:PaginationArg)
   (e:'fetch', value:true):void
@@ -71,7 +71,7 @@ function commentSubmit(challengeToken) {
       v-if="pagination" term="p" :page-data="pagination"
       @pg="propagate" />
     <ul v-if="commentData.length">
-      <li v-for="{attributes: {author: {data: {attributes: {username}}}, createdAt, content}, id} in commentData.filter((f):f is Present<NonNullable<typeof f>> & {attributes:{author:{data:{attributes:{}}}}} => !!(f.attributes?.author?.data?.attributes))" :key="id">
+      <li v-for="{ author: {username}, createdAt, content, documentId} in commentData.filter((f):f is Present<NonNullable<typeof f>> & {author:{}} => !!(f?.author))" :key="documentId">
         <span class="commentitle">{{ username }}</span>
         <span class="commentStats">posted {{ gerDate(createdAt??new Date(0)) }}</span>
         <hr>

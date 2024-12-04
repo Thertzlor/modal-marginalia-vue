@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type {TagEntity, CategoryEntity} from '@/graphql/api';
-defineProps<{list:(TagEntity|SomeOf<CategoryEntity>|null|undefined)[], taxType:string}>();
+import type {Tag, Category} from '@/graphql/api';
+defineProps<{list:(Partial<Tag>|SomeOf<Partial<Category>>|null|undefined)[], taxType:string}>();
 </script>
 
 <template>
   <template v-if="list.length">
     <RouterLink
-      v-for="{attributes: {slug, color, name}} in list.filter((f) :f is Present<NonNullable<typeof f>,'attributes'> => !!f?.attributes)" :key="slug" class="tag hoverglow taxonomy-tag"
+      v-for="{slug, color, name} in list.filter((f) :f is Present<NonNullable<typeof f>,'attributes'> => !!f)" :key="slug" class="tag hoverglow taxonomy-tag"
       :to="`/post-list?${taxType}=${slug}`" :style="({['--glow_color']: color})">{{ name }}</RouterLink>
   </template>
   <a v-else class="tag hoverglow taxonomy-tag" href="#">None</a>

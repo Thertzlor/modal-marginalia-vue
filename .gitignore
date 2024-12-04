@@ -4,6 +4,7 @@ node_modules
 
 theigstyle
 .got
+*_todo.txt
 
 run_dev.lnk
 .stylelintrc

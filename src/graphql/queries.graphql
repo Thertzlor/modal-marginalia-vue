@@ -103,6 +103,9 @@ query postSearch(
       slug
       header {
         formats
+        height
+        width
+        url
       }
       tags_connection {
         nodes {

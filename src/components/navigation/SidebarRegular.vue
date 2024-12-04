@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type {CategoryEntity, PostEntity} from '@/graphql/api';
+import type {Category, Post} from '@/graphql/api';
 import NavMenu from './NavMenu.vue';
 import {useRouter} from 'vue-router';
 import {ref} from 'vue';
-defineProps<{catList:CategoryEntity[], latestPosts:(SomeOf<PostEntity>)[]|undefined}>();
+defineProps<{catList:Partial<Category>[], latestPosts:(Partial<Post>)[]|undefined}>();
 const router = useRouter();
 const searchQuery = ref('');
 const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(searchQuery.value)}`);
@@ -23,9 +23,9 @@ const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(searchQue
     </form>
     <div v-if="latestPosts?.length" class="misc">
       <ul>
-        <li v-for="{attributes: {slug, publishedAt, title}, id} in latestPosts?.filter((p): p is Present<typeof p,'id'|'attributes'>=>!!(p && p.attributes)) ?? []" :key="id">
+        <li v-for="{slug, publishedAt, title, id} in latestPosts?.filter((p): p is Present<typeof p,'id'>=>!!p) ?? []" :key="id">
           <RouterLink :to="`/post/${id}-${slug}`">{{ title }}</RouterLink><br>
-          <span>{{ gerDate(publishedAt ?? new Date(0)) }}</span>
+          <span>{{ gerDate(publishedAt as Date|undefined ?? new Date(0)) }}</span>
         </li>
       </ul>
     </div>

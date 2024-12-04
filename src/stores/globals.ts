@@ -1,6 +1,6 @@
 import {defineStore} from 'pinia';
 import slugify from 'slugify';
-import {UploadFile,TagEntity, CategoryEntity} from '@/graphql/api';
+import {UploadFile,Tag, Category} from '@/graphql/api';
 
 export const useGlobals = defineStore('globals',() => {
   const scrollOption:ScrollIntoViewOptions ={behavior:'smooth'};
@@ -17,7 +17,7 @@ export const useGlobals = defineStore('globals',() => {
   const graphqlURL=`${apiBase}/graphql`;
   const gerDate = (date:Date):string => new Date(date).toLocaleString('de-DE', {month: '2-digit',day: '2-digit',year: 'numeric'});
   const col = new Intl.Collator('en');
-  const taxoSort = (l:(TagEntity | CategoryEntity)[]) => l.sort((a,b) => col.compare(a.attributes?.name ?? '', b.attributes?.name ?? '')).sort((a,b) => (((a.attributes && 'tier' in a.attributes)? a.attributes.tier ?? 0 : 0) > ((b.attributes && 'tier' in b.attributes)? b.attributes.tier ?? 0 : 0) ? -1 : 1));
+  const taxoSort = (l:(Partial<Tag> | Partial<Category>)[]) => l.sort((a,b) => col.compare(a?.name ?? '', b?.name ?? '')).sort((a,b) => (((a && 'tier' in a)? a.tier ?? 0 : 0) > ((b && 'tier' in b)? b.tier ?? 0 : 0) ? -1 : 1));
   type SimpleImg = {url:string;width:number;height:number};
   const getImageData = (imgData:UploadFile):SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => (s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height})).filter(f => f);
   const getSrcSet = (imgs:SimpleImg[]):string => imgs.filter(i => i.url).map(({url, width}) => `${url} ${width}w`).join(',');

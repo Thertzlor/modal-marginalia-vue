@@ -15,18 +15,18 @@ onUpdated(() => processContent(false));
 
 <template>
   <div class="article_container">
-    <article v-if="result && result.aboutPage?.data" id="main_article" class="text">
-      <h1 class="article_header fadeborder">{{ result.aboutPage.data.attributes?.title ?? '' }}</h1>
+    <article v-if="result && result.aboutPage" id="main_article" class="text">
+      <h1 class="article_header fadeborder">{{ result.aboutPage?.title ?? '' }}</h1>
       <main>
         <span class="post_text">
-          <DynaPost :content="result.aboutPage?.data.attributes?.text ?? ''" />
+          <DynaPost :content="result.aboutPage?.text ?? ''" />
         </span>
       </main>
-      <div v-if="result.aboutPage.data.attributes?.footnotes" id="footnote_container" class="footnotes">
-        <DynaPost :content="result.aboutPage.data.attributes.footnotes" />
+      <div v-if="result.aboutPage.footnotes" id="footnote_container" class="footnotes">
+        <DynaPost :content="result.aboutPage.footnotes" />
       </div>
-      <div v-if="result.aboutPage.data.attributes?.toenotes" id="toenote_container" class="footnotes toenotes">
-        <DynaPost :content="result.aboutPage.data.attributes.toenotes" />
+      <div v-if="result.aboutPage.toenotes" id="toenote_container" class="footnotes toenotes">
+        <DynaPost :content="result.aboutPage.toenotes" />
       </div>
     </article>
   </div>

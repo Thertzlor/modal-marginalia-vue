@@ -110,7 +110,7 @@ function locatePreview(text:string, queryValue:string[]) {
 </script>
 
 <template>
-  <div v-if="result?.posts" class="article_container">
+  <div v-if="result?.posts_connection" class="article_container">
     <form id="searchform-main" enctype="text/plain" @submit.stop.prevent="searchSubmit">
       <input
         v-model="query" type="search" placeholder="..."
@@ -142,14 +142,14 @@ function locatePreview(text:string, queryValue:string[]) {
       </fieldset>
     </form>
     <PaginationWidget
-      v-if="result?.posts" :page-data="result.posts.meta.pagination" :base-url="href"
+      v-if="result?.posts_connection" :page-data="result.posts_connection.pageInfo" :base-url="href"
       @pg="a => {pg = a; searchSubmit()}" />
     <TransitionGroup name="v-page">
-      <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, body_searchable, tags: {data: tagData}, category: {data: catData}}} in result.posts.data?.filter((f): f is Present<typeof f,'id'|'attributes'> & {attributes:{tags:{data:{}}, category:{data:{}}, header:{data:{attributes:UploadFile}}}} => !!(f?.id && f.attributes?.category?.data)) ?? []" :key="id" class="search_result">
-        <RouterLink v-if="img?.attributes" :to="`/post/${id}-${slug}`">
+      <article v-for="{id ,header: img, slug, title, publishedAt, body_searchable, tags_connection: tagData, category: catData} in result.posts_connection.nodes?.filter((f): f is Present<typeof f,'id'> & {tags:{}, category:{}, header:UploadFile} => !!(f?.id && f.category)) ?? []" :key="id" class="search_result">
+        <RouterLink v-if="img" :to="`/post/${id}-${slug}`">
           <img
-            :srcset="getSrcSet(getImageData(img.attributes))" :src="img.attributes.url" :width="img.attributes.width ?? ''"
-            sizes="30vw" :height="img.attributes.height??''" alt="whatever"
+            :srcset="getSrcSet(getImageData(img))" :src="img.url" :width="img.width ?? ''"
+            sizes="30vw" :height="img.height??''" alt="whatever"
             class="invisible" @load="imgload">
         </RouterLink>
         <div class="search_group">
@@ -164,8 +164,8 @@ function locatePreview(text:string, queryValue:string[]) {
       </article>
     </TransitionGroup>
     <PaginationWidget
-      v-if="result?.posts" :page-data="result.posts.meta.pagination" :base-url="href"
+      v-if="result?.posts_connection" :page-data="result.posts_connection.pageInfo" :base-url="href"
       @pg="fmore" />
-    <article v-if="!result?.posts.data.length" class="noresult">No content found for your search.</article>
+    <article v-if="!result?.posts_connection.nodes.length" class="noresult">No content found for your search.</article>
   </div>
 </template>

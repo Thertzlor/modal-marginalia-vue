@@ -5,7 +5,7 @@ import TaxoList from '../containers/TaxoList.vue';
 import {useGlobals} from '@/stores/globals';
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
 import {usePostListQuery, usePostCountLazyQuery} from '@/graphql/api';
-import type {CategoryFiltersInput, PaginationArg,PostFiltersInput,TagFiltersInput, UploadFileEntity} from '@/graphql/api';
+import type {CategoryFiltersInput, PaginationArg,PostFiltersInput,TagFiltersInput, UploadFile} from '@/graphql/api';
 const {perPage, unRay, antiNull, refreshRate, newTime, hist,isEmpty} = useGlobals();
 const invisible = ref(true);
 const transi = ref('none');
@@ -47,14 +47,14 @@ let postCount:number|undefined;
 let inVal:number|undefined;
 
 const {onResult:upRes,refetch:upFetch,load} = usePostCountLazyQuery({pg: paginationFilter,pf: postSelection},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
-upRes(r => {if ((r.data?.posts?.meta?.pagination.total ?? postCount) !== postCount) refetch()?.catch(e => console.log(e));});
-const sitename = computed(() => ((exclusiveCat && result.value?.categories?.data[0]?.attributes?.name) ?
-  result.value?.categories.data[0].attributes.name :
-  result.value?.tags?.data.length === 1 ? `Tag "${result.value?.tags.data[0].attributes?.name ?? ''}"` : 'Post List'));
+upRes(r => {if ((r.data?.posts_connection?.pageInfo.total ?? postCount) !== postCount) refetch()?.catch(e => console.log(e));});
+const sitename = computed(() => ((exclusiveCat && result.value?.categories_connection?.nodes[0]?.name) ?
+  result.value?.categories_connection.nodes[0].name :
+  result.value?.tags_connection?.nodes.length === 1 ? `Tag "${result.value?.tags_connection?.nodes[0]?.name ?? ''}"` : 'Post List'));
 onResult(r => {
   document.title = `${sitename.value} - Modal Marginalia`;
-  if (!r.data?.posts?.meta.pagination.total || !refreshRate) return;
-  postCount = r.data.posts.meta.pagination.total;
+  if (!r.data?.posts_connection?.pageInfo.total || !refreshRate) return;
+  postCount = r.data.posts_connection.pageInfo.total;
   if (!inVal) {
     inVal = 1;
     setTimeout(() => {
@@ -67,20 +67,20 @@ onResult(r => {
 </script>
 
 <template>
-  <div v-if="result?.posts" class="article_container">
-    <h1 v-if="result?.categories?.data?.length" class="generic_header fadeborder">{{ `${exclusiveCat ? "" : "Categories: "}${result?.categories.data.map((c) => c.attributes?.name ?? '').filter(f=>f).join(", ")}` }}</h1>
-    <h1 v-if="result?.tags?.data?.length" class="generic_header fadeborder">Posts tagged <em>{{ result?.tags.data.map((t) => t.attributes?.name).filter(f=>f).join(", ") }}</em></h1>
-    <p v-if="(exclusiveCat && result?.categories?.data) || ((exclusiveTag && result?.tags?.data[0]?.attributes?.description) ?? '')" class="breakdown fadeborder" v-html="exclusiveCat?result.categories?.data[0]?.attributes?.description:result.tags?.data[0]?.attributes?.description ?? ''" />
-    <h1 v-if="(!result?.tags?.data?.length) && (!result?.categories?.data?.length)" class="generic_header fadeborder">Posts</h1>
-    <PaginationWidget v-if="result?.posts" :page-data="result.posts.meta.pagination" @pg="fetcher" />
+  <div v-if="result?.posts_connection" class="article_container">
+    <h1 v-if="result?.categories_connection?.nodes?.length" class="generic_header fadeborder">{{ `${exclusiveCat ? "" : "Categories: "}${result?.categories_connection.nodes.map((c) => c.name ?? '').filter(f=>f).join(", ")}` }}</h1>
+    <h1 v-if="result?.tags_connection?.nodes?.length" class="generic_header fadeborder">Posts tagged <em>{{ result?.tags_connection.nodes.map((t) => t.name).filter(f=>f).join(", ") }}</em></h1>
+    <p v-if="(exclusiveCat && result?.categories_connection) || ((exclusiveTag && result?.tags_connection?.nodes[0]?.description) ?? '')" class="breakdown fadeborder" v-html="exclusiveCat?result.categories_connection?.nodes[0]?.description:result.tags_connection?.nodes[0]?.description ?? ''" />
+    <h1 v-if="(!result?.tags_connection?.nodes?.length) && (!result?.categories_connection?.nodes?.length)" class="generic_header fadeborder">Posts</h1>
+    <PaginationWidget v-if="result?.posts_connection" :page-data="result.posts_connection.pageInfo" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">
-      <TransitionGroup v-if="result?.posts.data.length" :name="transi">
-        <article v-for="{id, attributes: {header: {data: img}, slug, title, publishedAt, teaser, tags: {data: tagData}, category: {data: catData}}} in result.posts.data.filter((f): f is Present<typeof f,'attributes'|'id'> & {attributes:{tags:{}, category:{}, header:{data?:UploadFileEntity}}} => !!(f?.attributes && f.attributes.tags?.data && f.attributes.header && f.attributes.category?.data))" :key="id" :class="{listing:true,invisible}">
+      <TransitionGroup v-if="result?.posts_connection.nodes.length" :name="transi">
+        <article v-for="{id, header: img, slug, title, publishedAt, teaser, tags_connection: tagData, category: catData} in result.posts_connection.nodes.filter((f): f is Present<typeof f,'id'> & {tags:{}, category:{}, header:UploadFile} => !!(f && f.tags_connection?.nodes && f.header && f.category))" :key="id" :class="{listing:true,invisible}">
           <div :class="{top_part:true,empty:!img,is_new:(new Date().getTime()-newTime) < (new Date(publishedAt).getTime())}">
-            <a v-if="img?.attributes?.formats.medium.url" :href="`/post/${id}-${slug}`">
+            <a v-if="img?.formats.medium.url" :href="`/post/${id}-${slug}`">
               <img
-                :srcset="getSrcSet(getImageData(img.attributes))" :src="img.attributes.url" :width="img.attributes.width ?? ''"
-                sizes="(max-width : 1100px) 90vw, 33vw" :height="img.attributes.height ?? ''" alt="whatever"
+                :srcset="getSrcSet(getImageData(img))" :src="img.url" :width="img.width ?? ''"
+                sizes="(max-width : 1100px) 90vw, 33vw" :height="img.height ?? ''" alt="whatever"
                 class="invisible" @load="imgload">
             </a>
             <RouterLink :to="`/post/${id}-${slug}`"><h2>{{ title }}</h2></RouterLink>
@@ -96,7 +96,7 @@ onResult(r => {
           <div class="bottom_part"><p class="date_part">{{ gerDate(publishedAt) }}</p><p>{{ teaser }}</p></div>
         </article>
       </TransitionGroup>
-      <PaginationWidget v-if="result?.posts?.data?.length" :page-data="result.posts.meta.pagination" @pg="fetcher" />
+      <PaginationWidget v-if="result?.posts_connection?.nodes?.length" :page-data="result.posts_connection.pageInfo" @pg="fetcher" />
       <article v-else class="noresult">
         <h2>Nothing found.</h2>
         <p>Unfortunately, no content could be found. Try another page or go to the <RouterLink to="/">Homepage</RouterLink></p>

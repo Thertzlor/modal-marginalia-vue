@@ -1727,7 +1727,7 @@ export type PostSearchQueryVariables = Exact<{
 }>;
 
 
-export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', documentId: string, id: string, publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null };
+export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', documentId: string, id: string, publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null, height?: number | null, width?: number | null, url: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null };
 
 export type SinglePostQueryVariables = Exact<{
   postId: Scalars['ID']['input'];
@@ -1955,6 +1955,9 @@ export const PostSearchDocument = gql`
       slug
       header {
         formats
+        height
+        width
+        url
       }
       tags_connection {
         nodes {

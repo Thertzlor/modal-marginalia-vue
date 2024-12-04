@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type {CategoryEntity} from '@/graphql/api';
+import type {Category} from '@/graphql/api';
 import CustomLink from './CustomLink.vue';
-defineProps<{mainCategories?:CategoryEntity[]}>();
+defineProps<{mainCategories?:(Partial<Category>)[]}>();
 const categories = [
   {name: 'About', url: '/about'},
   {name: 'All Posts', url: '/post-list'},
@@ -15,7 +15,7 @@ const categories = [
       <li v-for="{name, url} in categories" :key="url">
         <CustomLink :no-blank="false" :to="url">{{ name }}</CustomLink>
       </li>
-      <li v-for="{attributes: {name, slug} } in mainCategories?.filter((e): e is Present<typeof e, 'attributes'> => !!(e.attributes)).sort((a,b) => a.attributes.priority < b.attributes.priority?1:-1)" :key="slug">
+      <li v-for="{name, slug} in mainCategories?.filter(e=> !!e).sort((a,b) => (a.priority ?? NaN) < (b.priority ?? NaN)?1:-1)" :key="slug">
         <CustomLink :no-blank="false" :to="'/post-list?category=' + slug">{{ name }}</CustomLink>
       </li>
     </ul>
