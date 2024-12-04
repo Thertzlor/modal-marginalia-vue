@@ -145,8 +145,8 @@ function locatePreview(text:string, queryValue:string[]) {
       v-if="result?.posts_connection" :page-data="result.posts_connection.pageInfo" :base-url="href"
       @pg="a => {pg = a; searchSubmit()}" />
     <TransitionGroup name="v-page">
-      <article v-for="{id ,header: img, slug, title, publishedAt, body_searchable, tags_connection: tagData, category: catData} in result.posts_connection.nodes?.filter((f): f is Present<typeof f,'id'> & {tags:{}, category:{}, header:UploadFile} => !!(f?.id && f.category)) ?? []" :key="id" class="search_result">
-        <RouterLink v-if="img" :to="`/post/${id}-${slug}`">
+      <article v-for="{documentId, human_id ,header: img, slug, title, publishedAt, body_searchable, tags_connection: tagData, category: catData} in result.posts_connection.nodes?.filter((f): f is typeof f & {tags:{}, category:{}, header:UploadFile} => !!(f?.documentId && f.category)) ?? []" :key="documentId" class="search_result">
+        <RouterLink v-if="img" :to="`/post/${human_id}-${slug}`">
           <img
             :srcset="getSrcSet(getImageData(img))" :src="img.url" :width="img.width ?? ''"
             sizes="30vw" :height="img.height??''" alt="whatever"
@@ -154,7 +154,7 @@ function locatePreview(text:string, queryValue:string[]) {
         </RouterLink>
         <div class="search_group">
           <h2>
-            <RouterLink :to="`/post/${id}-${slug}`">{{ title }}</RouterLink>
+            <RouterLink :to="`/post/${human_id}-${slug}`">{{ title }}</RouterLink>
             <span class="datespan">{{ gerDate(publishedAt) }}</span>
           </h2>
           <p class="grayborder" v-html="locatePreview(body_searchable || '', staticSplit)" />

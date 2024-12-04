@@ -709,7 +709,7 @@ export type Post = {
   documentId: Scalars['ID']['output'];
   footnotes?: Maybe<Scalars['String']['output']>;
   header?: Maybe<UploadFile>;
-  human_id?: Maybe<Scalars['Int']['output']>;
+  human_id: Scalars['Int']['output'];
   /** @deprecated Use `documentId` instead */
   id: Scalars['ID']['output'];
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -1707,7 +1707,7 @@ export type InitQueryVariables = Exact<{
 }>;
 
 
-export type InitQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: Array<{ __typename?: 'Quote', documentId: string, text: string }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, priority: number }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: Array<{ __typename?: 'Post', human_id?: number | null, documentId: string, publishedAt?: any | null, title: string, slug: string }> } | null };
+export type InitQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: Array<{ __typename?: 'Quote', documentId: string, text: string }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, priority: number }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: Array<{ __typename?: 'Post', human_id: number, documentId: string, publishedAt?: any | null, title: string, slug: string }> } | null };
 
 export type LastPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1731,7 +1731,7 @@ export type PostSearchQueryVariables = Exact<{
 }>;
 
 
-export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', documentId: string, human_id?: number | null, publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null, height?: number | null, width?: number | null, url: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null };
+export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', documentId: string, human_id: number, publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null, height?: number | null, width?: number | null, url: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null };
 
 export type SinglePostQueryVariables = Exact<{
   postId?: InputMaybe<Scalars['Int']['input']>;
@@ -1739,14 +1739,14 @@ export type SinglePostQueryVariables = Exact<{
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: Array<{ __typename?: 'Comment', documentId: string }> } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: Array<{ __typename?: 'Post', human_id?: number | null, title: string, body_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes?: string | null, toenotes?: string | null, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, category?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', color?: string | null, name: string, slug: string }> } | null }> } | null };
+export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: Array<{ __typename?: 'Comment', documentId: string }> } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: Array<{ __typename?: 'Post', human_id: number, title: string, body_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes?: string | null, toenotes?: string | null, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, category?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', color?: string | null, name: string, slug: string }> } | null }> } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId: Scalars['ID']['input'];
 }>;
 
 
-export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'Post', human_id?: number | null, documentId: string, updatedAt?: any | null } | null };
+export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'Post', human_id: number, documentId: string, updatedAt?: any | null } | null };
 
 export type PostCountQueryVariables = Exact<{
   pf?: InputMaybe<PostFiltersInput>;
@@ -1764,7 +1764,7 @@ export type PostListQueryVariables = Exact<{
 }>;
 
 
-export type PostListQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', human_id?: number | null, documentId: string, publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null, tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null }> } | null };
+export type PostListQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', human_id: number, documentId: string, publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null, tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null }> } | null };
 
 export type CommentatorMutationVariables = Exact<{
   post: Scalars['ID']['input'];

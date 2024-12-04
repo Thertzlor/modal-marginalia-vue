@@ -23,8 +23,8 @@ const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(searchQue
     </form>
     <div v-if="latestPosts?.length" class="misc">
       <ul>
-        <li v-for="{slug, publishedAt, title, id} in latestPosts?.filter((p): p is Present<typeof p,'id'>=>!!p) ?? []" :key="id">
-          <RouterLink :to="`/post/${id}-${slug}`">{{ title }}</RouterLink><br>
+        <li v-for="{slug, publishedAt, title, human_id,documentId} in latestPosts?.filter((p): p is Present<typeof p,'id'>=>!!p) ?? []" :key="documentId">
+          <RouterLink :to="`/post/${human_id}-${slug}`">{{ title }}</RouterLink><br>
           <span>{{ gerDate(publishedAt as Date|undefined ?? new Date(0)) }}</span>
         </li>
       </ul>
