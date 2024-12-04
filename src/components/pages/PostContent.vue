@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {useRouter} from 'vue-router';
-import {useSinglePostQuery, usePostCheckLazyQuery, type PaginationArg,Comment, Post} from '@/graphql/api';
+import {useSinglePostQuery, usePostCheckLazyQuery, type PaginationArg,Comment} from '@/graphql/api';
 import ImageContainer from '../containers/ImageContainer.vue';
 import TaxoList from '../containers/TaxoList.vue';
 import CommentSection from '../containers/CommentSection.vue';
@@ -37,7 +37,7 @@ let inVal:number|undefined;
 
 const {result, onResult, refetch, onError} = useSinglePostQuery({postId:postId,commentPagination});
 
-const {onResult:upRes,refetch:upFetch,load} = usePostCheckLazyQuery({postId:postId.toString(10)},{enabled:true});
+const {onResult:upRes,refetch:upFetch,load} = usePostCheckLazyQuery({postId:result.value?.posts_connection?.nodes[0]?.documentId ?? ''},{enabled:true});
 upRes(r => {if (new Date(r.data?.post?.updatedAt ?? updated).getTime() !== updated) refetch()?.catch(e => console.log(e));});
 const post = ref<Exclude<Exclude<(typeof result)['value'],undefined>['posts_connection'],null|undefined>['nodes'][number]|undefined>();
 onError(e => void router.push((e.message.includes('publishedAt') && !(e.networkError||e.clientErrors.length || e.protocolErrors.length))?'/NotFound':'/ServerError').then(() => hist(origRoute)));
@@ -45,7 +45,6 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connec
   post.value = r.data.posts_connection.nodes[0];
   document.title = `${post.value.title} - Modal Marginalia`;
   updated = new Date(post.value.updatedAt).getTime();
-  processContent(post.value.toc,navd);
   if (!refreshRate) return;
   if (!inVal) {
     hashNav();
@@ -78,7 +77,7 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
       <main>
         <span class="datespan">Posted {{ gerDate(post.publishedAt) }}</span>
         <span class="post_text">
-          <DynaPost :content="post.body_vue ?? ''" />
+          <DynaPost :content="post.body_vue ?? ''" @vue:mounted="processContent(post.toc,true)" @vue:updated="processContent(post.toc,false)" />
         </span>
       </main>
       <div

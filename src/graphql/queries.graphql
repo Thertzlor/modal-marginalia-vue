@@ -147,6 +147,7 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
 
   posts_connection(filters:{human_id:  {eq:$postId  }}) {
     nodes {
+    documentId
     human_id
     title
     header {

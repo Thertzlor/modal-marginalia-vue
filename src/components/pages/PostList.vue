@@ -24,7 +24,7 @@ const exclusiveTag = !catQuery && tagQuery && !Array.isArray(tagQuery);
 
 const transActive = ref(false);
 const allFilter = {};
-const noneFilter= {id: {eq: `${-1}`}};
+const noneFilter= {documentId: {eq: `${-1}`}};
 
 const slugFilter = (query:string | null | string[]) => (Array.isArray(query) ? {slug: {in: query.map(s => s.trim())}} : query ? {slug: {eq: query}} : allFilter);
 const catSelection = slugFilter(catQuery);
@@ -86,11 +86,11 @@ onResult(r => {
             <RouterLink :to="`/post/${human_id}-${slug}`"><h2>{{ title }}</h2></RouterLink>
             <div class="tagdiv shadowclone">
               <p class="tag_container">Category:<TaxoList :list="[catData].filter(f => f)" :tax-type="'category'" /></p>
-              <p class="tag_container">Tags:<TaxoList :list="taxoSort([...tagData])" :tax-type="'tag'" /></p>
+              <p class="tag_container">Tags:<TaxoList :list="taxoSort([...tagData?.nodes])" :tax-type="'tag'" /></p>
             </div>
             <div class="tagdiv">
               <p class="tag_container">Category:<TaxoList :list="[catData].filter(f => f)" :tax-type="'category'" /></p>
-              <p class="tag_container">Tags:<TaxoList :list="taxoSort([...tagData])" :tax-type="'tag'" /></p>
+              <p class="tag_container">Tags:<TaxoList :list="taxoSort([...tagData?.nodes])" :tax-type="'tag'" /></p>
             </div>
           </div>
           <div class="bottom_part"><p class="date_part">{{ gerDate(publishedAt) }}</p><p>{{ teaser }}</p></div>

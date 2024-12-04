@@ -158,7 +158,7 @@ function locatePreview(text:string, queryValue:string[]) {
             <span class="datespan">{{ gerDate(publishedAt) }}</span>
           </h2>
           <p class="grayborder" v-html="locatePreview(body_searchable || '', staticSplit)" />
-          <p class="tag_container">Tags:<TaxoList :list="taxoSort([...tagData])" :tax-type="'tag'" /></p>
+          <p class="tag_container">Tags:<TaxoList :list="taxoSort([...(tagData?.nodes ?? [])])" :tax-type="'tag'" /></p>
           <p class="tag_container">Category:<TaxoList :list="[catData].filter(f => f)" :tax-type="'category'" /></p>
         </div>
       </article>
