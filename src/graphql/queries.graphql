@@ -1,51 +1,50 @@
-fragment totalPages on ResponseCollectionMeta{
-  pagination{total}
+fragment totalPages on Pagination {
+  total
 }
-fragment fullPage on ResponseCollectionMeta{
-  pagination{
-    total
-    page
-    pageSize
-    pageCount
-    }
+fragment fullPage on Pagination {
+  total
+  page
+  pageSize
+  pageCount
 }
 
 query Init($pg: PaginationArg) {
-  quotes(pagination: $pg) {
-    data {
+  quotes_connection(pagination: $pg) {
+    nodes {
       id
-      attributes {
-        text
-      }
+      documentId
+      text
     }
   }
-  categories(filters:{posts:{publishedAt:{notNull:true}}}) {
-    data {
-      attributes {
-        name
-        slug
-        priority
-      }
+  categories_connection(
+    filters: { posts: { publishedAt: { notNull: true } } }
+  ) {
+    nodes {
+      name
+      slug
+      priority
     }
   }
-  posts(pagination: { start: 0, limit: 5 }, sort: "publishedAt:desc") {
-    meta {
+  posts_connection(
+    pagination: { start: 0, limit: 5 }
+    sort: "publishedAt:desc"
+  ) {
+    pageInfo {
       ...totalPages
     }
-    data {
+    nodes {
       id
-      attributes {
-        publishedAt
-        title
-        slug
-      }
+      documentId
+      publishedAt
+      title
+      slug
     }
   }
 }
 
 query lastPosts {
-  posts {
-    meta {
+  posts_connection {
+    pageInfo {
       ...totalPages
     }
   }
@@ -53,35 +52,32 @@ query lastPosts {
 
 query about {
   aboutPage {
-    data {
-      attributes {
-        text
-        title
-        footnotes
-        toenotes
-      }
-    }
+    text
+    title
+    footnotes
+    toenotes
   }
 }
 
 query TagList {
-  tags(
+  tags_connection(
     filters: {
-      posts: { id: { notNull: true }, publishedAt: { notNull: true } },
+      posts: { documentId: { notNull: true }, publishedAt: { notNull: true } }
     }
-          pagination : {pageSize:100}
+    pagination: { pageSize: 100 }
   ) {
-    data {
-      attributes {
-        name
-        slug
-        color
-        posts(
-          filters: { publishedAt: { notNull: true }, id: { notNull: true } }
-        ) {
-          data {
-            id
-          }
+    nodes {
+      name
+      slug
+      color
+      posts_connection(
+        filters: {
+          publishedAt: { notNull: true }
+          documentId: { notNull: true }
+        }
+      ) {
+        nodes {
+          documentId
         }
       }
     }
@@ -93,141 +89,107 @@ query postSearch(
   $pg: PaginationArg!
   $sort: [String]
 ) {
-  posts(filters: $postFilter, pagination: $pg, sort: $sort) {
-    meta {
+  posts_connection(filters: $postFilter, pagination: $pg, sort: $sort) {
+    pageInfo {
       ...fullPage
     }
-    data {
+    nodes {
+      documentId
       id
-      attributes {
-        publishedAt
-        body_searchable
-        title
-        teaser
+      publishedAt
+      body_searchable
+      title
+      teaser
+      slug
+      header {
+        formats
+      }
+      tags_connection {
+        nodes {
+          name
+          slug
+          color
+        }
+      }
+      category {
+        name
         slug
-        header {
-          data {
-            attributes {
-              formats
-            }
-          }
-        }
-        tags {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
-        }
-        category {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
-        }
+        color
       }
     }
   }
 }
 
-query SinglePost($postId: ID, $commentPagination: PaginationArg) {
-  comments(filters: { post: { id: { eq: $postId } } }, pagination:$commentPagination) {
-    meta {
+query SinglePost($postId: ID!, $commentPagination: PaginationArg) {
+  comments_connection(
+    filters: { post: { documentId: { eq: $postId } } }
+    pagination: $commentPagination
+  ) {
+    pageInfo {
       ...fullPage
     }
-    data {
-      attributes {
-        depth
-        subcomments {
-          data {
-            id
-          }
+    nodes {
+      depth
+      subcomments_connection {
+        nodes {
+          documentId
+          id
         }
-        createdAt
-        content
-        author {
-          data {
-            attributes {
-              username
-            }
-          }
-        }
+      }
+      createdAt
+      content
+      author {
+        username
       }
     }
   }
 
-  post(id: $postId) {
-    data {
-      id
-      attributes {
-        title
-        header {
-          data {
-            attributes {
-              url
-              caption
-              width
-              height
-              alternativeText
-              formats
-            }
-          }
-        }
-        body_vue
+  post(documentId: $postId) {
+    id
+    title
+    header {
+      url
+      caption
+      width
+      height
+      alternativeText
+      formats
+    }
+    body_vue
+    slug
+    toc
+    publishedAt
+    updatedAt
+    comments_enabled
+    footnotes
+    toenotes
+    category {
+      color
+      name
+      slug
+    }
+    tags_connection {
+      nodes {
+        color
+        name
         slug
-        toc
-        publishedAt
-        updatedAt
-        comments_enabled
-        footnotes
-        toenotes
-        category {
-          data {
-            attributes {
-              color
-              name
-              slug
-            }
-          }
-        }
-        tags {
-          data {
-            attributes {
-              color
-              name
-              slug
-            }
-          }
-        }
       }
     }
   }
 }
 
-
-query postCheck($postId: ID) {
-  post(id: $postId) {
-    data {
-      id
-      attributes {
-        updatedAt
-      }
-    }
+query postCheck($postId: ID!) {
+  post(documentId: $postId) {
+    documentId
+    updatedAt
   }
 }
 
 query PostCount($pf: PostFiltersInput, $pg: PaginationArg!) {
-  posts(filters: $pf, pagination: $pg) {
-    meta {
-      pagination {
-        total
-        pageSize
-      }
+  posts_connection(filters: $pf, pagination: $pg) {
+    pageInfo {
+      total
+      pageSize
     }
   }
 }
@@ -238,63 +200,48 @@ query PostList(
   $cf: CategoryFiltersInput
   $pg: PaginationArg!
 ) {
-  posts(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
-    meta {
+  posts_connection(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
+    pageInfo {
       ...fullPage
     }
-    data {
+    nodes {
       id
-      attributes {
-        publishedAt
-        title
-        teaser
-        slug
-        header {
-          data {
-            attributes {
-              formats
-            }
-          }
-        }
-        tags {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
-        }
-        category {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
+      documentId
+      publishedAt
+      title
+      teaser
+      slug
+      header {
+        formats
+      }
+      tags_connection {
+        nodes {
+          name
+          slug
+          color
         }
       }
-    }
-  }
-  tags(filters: $tf) {
-    data {
-      attributes {
+      category {
         name
         slug
         color
-        description
       }
     }
   }
-  categories(filters: $cf) {
-    data {
-      attributes {
-        name
-        slug
-        color
-        description
-      }
+  tags_connection(filters: $tf) {
+    nodes {
+      name
+      slug
+      color
+      description
+    }
+  }
+  categories_connection(filters: $cf) {
+    nodes {
+      name
+      slug
+      color
+      description
     }
   }
 }
@@ -315,8 +262,7 @@ mutation commentator(
       token: $token
     }
   ) {
-    data {
-      id
-    }
+    id
+    documentId
   }
 }

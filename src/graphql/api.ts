@@ -18,14 +18,23 @@ export type Scalars = {
   Float: { input: number; output: number; }
   DateTime: { input: any; output: any; }
   JSON: { input: any; output: any; }
-  Upload: { input: any; output: any; }
 };
 
 export type AboutPage = {
   __typename?: 'AboutPage';
+  /** @deprecated Use root level fields instead */
+  attributes: AboutPage;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: AboutPage;
+  documentId: Scalars['ID']['output'];
   footnotes?: Maybe<Scalars['String']['output']>;
-  images?: Maybe<UploadFileRelationResponseCollection>;
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
+  images: Array<Maybe<UploadFile>>;
+  images_connection?: Maybe<UploadFileRelationResponseCollection>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  pumas?: Maybe<Scalars['JSON']['output']>;
   text?: Maybe<Scalars['String']['output']>;
   title?: Maybe<Scalars['String']['output']>;
   toenotes?: Maybe<Scalars['String']['output']>;
@@ -39,20 +48,18 @@ export type AboutPageImagesArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type AboutPageEntity = {
-  __typename?: 'AboutPageEntity';
-  attributes?: Maybe<AboutPage>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
 
-export type AboutPageEntityResponse = {
-  __typename?: 'AboutPageEntityResponse';
-  data?: Maybe<AboutPageEntity>;
+export type AboutPageImages_ConnectionArgs = {
+  filters?: InputMaybe<UploadFileFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type AboutPageInput = {
   footnotes?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  pumas?: InputMaybe<Scalars['JSON']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   toenotes?: InputMaybe<Scalars['String']['input']>;
@@ -85,12 +92,21 @@ export type BooleanFilterInput = {
 
 export type Category = {
   __typename?: 'Category';
+  /** @deprecated Use root level fields instead */
+  attributes: Category;
   color?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: Category;
   description?: Maybe<Scalars['String']['output']>;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  posts?: Maybe<PostRelationResponseCollection>;
+  posts: Array<Maybe<Post>>;
+  posts_connection?: Maybe<PostRelationResponseCollection>;
   priority: Scalars['Int']['output'];
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   slug: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
@@ -99,25 +115,24 @@ export type Category = {
 export type CategoryPostsArgs = {
   filters?: InputMaybe<PostFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type CategoryEntity = {
-  __typename?: 'CategoryEntity';
-  attributes?: Maybe<Category>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
 
-export type CategoryEntityResponse = {
-  __typename?: 'CategoryEntityResponse';
-  data?: Maybe<CategoryEntity>;
+export type CategoryPosts_ConnectionArgs = {
+  filters?: InputMaybe<PostFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type CategoryEntityResponseCollection = {
   __typename?: 'CategoryEntityResponseCollection';
-  data: Array<CategoryEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Category>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<Category>;
+  pageInfo: Pagination;
 };
 
 export type CategoryFiltersInput = {
@@ -125,12 +140,13 @@ export type CategoryFiltersInput = {
   color?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<CategoryFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<CategoryFiltersInput>>>;
   posts?: InputMaybe<PostFiltersInput>;
   priority?: InputMaybe<IntFilterInput>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   slug?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
@@ -141,18 +157,28 @@ export type CategoryInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   posts?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   priority?: InputMaybe<Scalars['Int']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Comment = {
   __typename?: 'Comment';
   admin_comment?: Maybe<Scalars['Boolean']['output']>;
-  author?: Maybe<UsersPermissionsUserEntityResponse>;
+  /** @deprecated Use root level fields instead */
+  attributes: Comment;
+  author?: Maybe<UsersPermissionsUser>;
   content: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: Comment;
   depth: Scalars['Int']['output'];
-  post?: Maybe<PostEntityResponse>;
-  subcomments?: Maybe<CommentRelationResponseCollection>;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
+  post?: Maybe<Post>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  subcomments: Array<Maybe<Comment>>;
+  subcomments_connection?: Maybe<CommentRelationResponseCollection>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -163,21 +189,21 @@ export type CommentSubcommentsArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type CommentEntity = {
-  __typename?: 'CommentEntity';
-  attributes?: Maybe<Comment>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
 
-export type CommentEntityResponse = {
-  __typename?: 'CommentEntityResponse';
-  data?: Maybe<CommentEntity>;
+export type CommentSubcomments_ConnectionArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type CommentEntityResponseCollection = {
   __typename?: 'CommentEntityResponseCollection';
-  data: Array<CommentEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Comment>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<Comment>;
+  pageInfo: Pagination;
 };
 
 export type CommentFiltersInput = {
@@ -187,10 +213,11 @@ export type CommentFiltersInput = {
   content?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   depth?: InputMaybe<IntFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<CommentFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<CommentFiltersInput>>>;
   post?: InputMaybe<PostFiltersInput>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   subcomments?: InputMaybe<CommentFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
@@ -202,6 +229,7 @@ export type CommentInput = {
   depth?: InputMaybe<Scalars['Int']['input']>;
   email: Scalars['String']['input'];
   post?: InputMaybe<Scalars['ID']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   subcomments?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   token: Scalars['String']['input'];
   username: Scalars['String']['input'];
@@ -209,111 +237,9 @@ export type CommentInput = {
 
 export type CommentRelationResponseCollection = {
   __typename?: 'CommentRelationResponseCollection';
-  data: Array<CommentEntity>;
-};
-
-export type ContentReleasesRelease = {
-  __typename?: 'ContentReleasesRelease';
-  actions?: Maybe<ContentReleasesReleaseActionRelationResponseCollection>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  name: Scalars['String']['output'];
-  releasedAt?: Maybe<Scalars['DateTime']['output']>;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
-
-export type ContentReleasesReleaseActionsArgs = {
-  filters?: InputMaybe<ContentReleasesReleaseActionFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-export type ContentReleasesReleaseAction = {
-  __typename?: 'ContentReleasesReleaseAction';
-  contentType: Scalars['String']['output'];
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  entry?: Maybe<GenericMorph>;
-  locale?: Maybe<Scalars['String']['output']>;
-  release?: Maybe<ContentReleasesReleaseEntityResponse>;
-  type: Enum_Contentreleasesreleaseaction_Type;
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
-export type ContentReleasesReleaseActionEntity = {
-  __typename?: 'ContentReleasesReleaseActionEntity';
-  attributes?: Maybe<ContentReleasesReleaseAction>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
-
-export type ContentReleasesReleaseActionEntityResponse = {
-  __typename?: 'ContentReleasesReleaseActionEntityResponse';
-  data?: Maybe<ContentReleasesReleaseActionEntity>;
-};
-
-export type ContentReleasesReleaseActionEntityResponseCollection = {
-  __typename?: 'ContentReleasesReleaseActionEntityResponseCollection';
-  data: Array<ContentReleasesReleaseActionEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type ContentReleasesReleaseActionFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<ContentReleasesReleaseActionFiltersInput>>>;
-  contentType?: InputMaybe<StringFilterInput>;
-  createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
-  locale?: InputMaybe<StringFilterInput>;
-  not?: InputMaybe<ContentReleasesReleaseActionFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<ContentReleasesReleaseActionFiltersInput>>>;
-  release?: InputMaybe<ContentReleasesReleaseFiltersInput>;
-  type?: InputMaybe<StringFilterInput>;
-  updatedAt?: InputMaybe<DateTimeFilterInput>;
-};
-
-export type ContentReleasesReleaseActionInput = {
-  contentType?: InputMaybe<Scalars['String']['input']>;
-  locale?: InputMaybe<Scalars['String']['input']>;
-  release?: InputMaybe<Scalars['ID']['input']>;
-  type?: InputMaybe<Enum_Contentreleasesreleaseaction_Type>;
-};
-
-export type ContentReleasesReleaseActionRelationResponseCollection = {
-  __typename?: 'ContentReleasesReleaseActionRelationResponseCollection';
-  data: Array<ContentReleasesReleaseActionEntity>;
-};
-
-export type ContentReleasesReleaseEntity = {
-  __typename?: 'ContentReleasesReleaseEntity';
-  attributes?: Maybe<ContentReleasesRelease>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
-
-export type ContentReleasesReleaseEntityResponse = {
-  __typename?: 'ContentReleasesReleaseEntityResponse';
-  data?: Maybe<ContentReleasesReleaseEntity>;
-};
-
-export type ContentReleasesReleaseEntityResponseCollection = {
-  __typename?: 'ContentReleasesReleaseEntityResponseCollection';
-  data: Array<ContentReleasesReleaseEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type ContentReleasesReleaseFiltersInput = {
-  actions?: InputMaybe<ContentReleasesReleaseActionFiltersInput>;
-  and?: InputMaybe<Array<InputMaybe<ContentReleasesReleaseFiltersInput>>>;
-  createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
-  name?: InputMaybe<StringFilterInput>;
-  not?: InputMaybe<ContentReleasesReleaseFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<ContentReleasesReleaseFiltersInput>>>;
-  releasedAt?: InputMaybe<DateTimeFilterInput>;
-  updatedAt?: InputMaybe<DateTimeFilterInput>;
-};
-
-export type ContentReleasesReleaseInput = {
-  actions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  releasedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Comment>;
+  nodes: Array<Comment>;
 };
 
 export type DateTimeFilterInput = {
@@ -341,10 +267,10 @@ export type DateTimeFilterInput = {
   startsWith?: InputMaybe<Scalars['DateTime']['input']>;
 };
 
-export enum Enum_Contentreleasesreleaseaction_Type {
-  Publish = 'publish',
-  Unpublish = 'unpublish'
-}
+export type DeleteMutationResponse = {
+  __typename?: 'DeleteMutationResponse';
+  documentId: Scalars['ID']['output'];
+};
 
 export type FileInfoInput = {
   alternativeText?: InputMaybe<Scalars['String']['input']>;
@@ -377,41 +303,43 @@ export type FloatFilterInput = {
   startsWith?: InputMaybe<Scalars['Float']['input']>;
 };
 
-export type GenericMorph = AboutPage | Category | Comment | ContentReleasesRelease | ContentReleasesReleaseAction | I18NLocale | Post | Quote | Tag | UploadFile | UploadFolder | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
+export type GenericMorph = AboutPage | Category | Comment | I18NLocale | Post | Quote | ReviewWorkflowsWorkflow | ReviewWorkflowsWorkflowStage | Tag | UploadFile | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsUser;
 
 export type I18NLocale = {
   __typename?: 'I18NLocale';
+  /** @deprecated Use root level fields instead */
+  attributes: I18NLocale;
   code?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: I18NLocale;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
   name?: Maybe<Scalars['String']['output']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
-export type I18NLocaleEntity = {
-  __typename?: 'I18NLocaleEntity';
-  attributes?: Maybe<I18NLocale>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
-
-export type I18NLocaleEntityResponse = {
-  __typename?: 'I18NLocaleEntityResponse';
-  data?: Maybe<I18NLocaleEntity>;
 };
 
 export type I18NLocaleEntityResponseCollection = {
   __typename?: 'I18NLocaleEntityResponseCollection';
-  data: Array<I18NLocaleEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<I18NLocale>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<I18NLocale>;
+  pageInfo: Pagination;
 };
 
 export type I18NLocaleFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<I18NLocaleFiltersInput>>>;
   code?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<I18NLocaleFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<I18NLocaleFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
@@ -494,29 +422,26 @@ export type Mutation = {
   __typename?: 'Mutation';
   /** Change user password. Confirm with the current password. */
   changePassword?: Maybe<UsersPermissionsLoginPayload>;
-  createCategory?: Maybe<CategoryEntityResponse>;
-  createComment?: Maybe<CommentEntityResponse>;
-  createContentReleasesRelease?: Maybe<ContentReleasesReleaseEntityResponse>;
-  createContentReleasesReleaseAction?: Maybe<ContentReleasesReleaseActionEntityResponse>;
-  createPost?: Maybe<PostEntityResponse>;
-  createQuote?: Maybe<QuoteEntityResponse>;
-  createTag?: Maybe<TagEntityResponse>;
-  createUploadFile?: Maybe<UploadFileEntityResponse>;
-  createUploadFolder?: Maybe<UploadFolderEntityResponse>;
+  createCategory?: Maybe<Category>;
+  createComment?: Maybe<Comment>;
+  createPost?: Maybe<Post>;
+  createQuote?: Maybe<Quote>;
+  createReviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
+  createReviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
+  createTag?: Maybe<Tag>;
   /** Create a new role */
   createUsersPermissionsRole?: Maybe<UsersPermissionsCreateRolePayload>;
   /** Create a new user */
   createUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  deleteAboutPage?: Maybe<AboutPageEntityResponse>;
-  deleteCategory?: Maybe<CategoryEntityResponse>;
-  deleteComment?: Maybe<CommentEntityResponse>;
-  deleteContentReleasesRelease?: Maybe<ContentReleasesReleaseEntityResponse>;
-  deleteContentReleasesReleaseAction?: Maybe<ContentReleasesReleaseActionEntityResponse>;
-  deletePost?: Maybe<PostEntityResponse>;
-  deleteQuote?: Maybe<QuoteEntityResponse>;
-  deleteTag?: Maybe<TagEntityResponse>;
-  deleteUploadFile?: Maybe<UploadFileEntityResponse>;
-  deleteUploadFolder?: Maybe<UploadFolderEntityResponse>;
+  deleteAboutPage?: Maybe<DeleteMutationResponse>;
+  deleteCategory?: Maybe<DeleteMutationResponse>;
+  deleteComment?: Maybe<DeleteMutationResponse>;
+  deletePost?: Maybe<DeleteMutationResponse>;
+  deleteQuote?: Maybe<DeleteMutationResponse>;
+  deleteReviewWorkflowsWorkflow?: Maybe<DeleteMutationResponse>;
+  deleteReviewWorkflowsWorkflowStage?: Maybe<DeleteMutationResponse>;
+  deleteTag?: Maybe<DeleteMutationResponse>;
+  deleteUploadFile?: Maybe<UploadFile>;
   /** Delete an existing role */
   deleteUsersPermissionsRole?: Maybe<UsersPermissionsDeleteRolePayload>;
   /** Delete an existing user */
@@ -526,28 +451,23 @@ export type Mutation = {
   /** Request a reset password token */
   forgotPassword?: Maybe<UsersPermissionsPasswordPayload>;
   login: UsersPermissionsLoginPayload;
-  multipleUpload: Array<Maybe<UploadFileEntityResponse>>;
   /** Register a user */
   register: UsersPermissionsLoginPayload;
-  removeFile?: Maybe<UploadFileEntityResponse>;
   /** Reset user password. Confirm with a code (resetToken from forgotPassword) */
   resetPassword?: Maybe<UsersPermissionsLoginPayload>;
-  updateAboutPage?: Maybe<AboutPageEntityResponse>;
-  updateCategory?: Maybe<CategoryEntityResponse>;
-  updateComment?: Maybe<CommentEntityResponse>;
-  updateContentReleasesRelease?: Maybe<ContentReleasesReleaseEntityResponse>;
-  updateContentReleasesReleaseAction?: Maybe<ContentReleasesReleaseActionEntityResponse>;
-  updateFileInfo: UploadFileEntityResponse;
-  updatePost?: Maybe<PostEntityResponse>;
-  updateQuote?: Maybe<QuoteEntityResponse>;
-  updateTag?: Maybe<TagEntityResponse>;
-  updateUploadFile?: Maybe<UploadFileEntityResponse>;
-  updateUploadFolder?: Maybe<UploadFolderEntityResponse>;
+  updateAboutPage?: Maybe<AboutPage>;
+  updateCategory?: Maybe<Category>;
+  updateComment?: Maybe<Comment>;
+  updatePost?: Maybe<Post>;
+  updateQuote?: Maybe<Quote>;
+  updateReviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
+  updateReviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
+  updateTag?: Maybe<Tag>;
+  updateUploadFile: UploadFile;
   /** Update an existing role */
   updateUsersPermissionsRole?: Maybe<UsersPermissionsUpdateRolePayload>;
   /** Update an existing user */
   updateUsersPermissionsUser: UsersPermissionsUserEntityResponse;
-  upload: UploadFileEntityResponse;
 };
 
 
@@ -560,46 +480,43 @@ export type MutationChangePasswordArgs = {
 
 export type MutationCreateCategoryArgs = {
   data: CategoryInput;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationCreateCommentArgs = {
   data: CommentInput;
-};
-
-
-export type MutationCreateContentReleasesReleaseArgs = {
-  data: ContentReleasesReleaseInput;
-};
-
-
-export type MutationCreateContentReleasesReleaseActionArgs = {
-  data: ContentReleasesReleaseActionInput;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationCreatePostArgs = {
   data: PostInput;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationCreateQuoteArgs = {
   data: QuoteInput;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type MutationCreateReviewWorkflowsWorkflowArgs = {
+  data: ReviewWorkflowsWorkflowInput;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type MutationCreateReviewWorkflowsWorkflowStageArgs = {
+  data: ReviewWorkflowsWorkflowStageInput;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationCreateTagArgs = {
   data: TagInput;
-};
-
-
-export type MutationCreateUploadFileArgs = {
-  data: UploadFileInput;
-};
-
-
-export type MutationCreateUploadFolderArgs = {
-  data: UploadFolderInput;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -614,46 +531,41 @@ export type MutationCreateUsersPermissionsUserArgs = {
 
 
 export type MutationDeleteCategoryArgs = {
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteCommentArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteContentReleasesReleaseArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteContentReleasesReleaseActionArgs = {
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeletePostArgs = {
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteQuoteArgs = {
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteReviewWorkflowsWorkflowArgs = {
+  documentId: Scalars['ID']['input'];
+};
+
+
+export type MutationDeleteReviewWorkflowsWorkflowStageArgs = {
+  documentId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteTagArgs = {
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
 };
 
 
 export type MutationDeleteUploadFileArgs = {
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationDeleteUploadFolderArgs = {
   id: Scalars['ID']['input'];
 };
 
@@ -683,21 +595,8 @@ export type MutationLoginArgs = {
 };
 
 
-export type MutationMultipleUploadArgs = {
-  field?: InputMaybe<Scalars['String']['input']>;
-  files: Array<InputMaybe<Scalars['Upload']['input']>>;
-  ref?: InputMaybe<Scalars['String']['input']>;
-  refId?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
 export type MutationRegisterArgs = {
   input: UsersPermissionsRegisterInput;
-};
-
-
-export type MutationRemoveFileArgs = {
-  id: Scalars['ID']['input'];
 };
 
 
@@ -710,66 +609,62 @@ export type MutationResetPasswordArgs = {
 
 export type MutationUpdateAboutPageArgs = {
   data: AboutPageInput;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationUpdateCategoryArgs = {
   data: CategoryInput;
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationUpdateCommentArgs = {
   data: CommentInput;
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationUpdateContentReleasesReleaseArgs = {
-  data: ContentReleasesReleaseInput;
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationUpdateContentReleasesReleaseActionArgs = {
-  data: ContentReleasesReleaseActionInput;
-  id: Scalars['ID']['input'];
-};
-
-
-export type MutationUpdateFileInfoArgs = {
-  id: Scalars['ID']['input'];
-  info?: InputMaybe<FileInfoInput>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationUpdatePostArgs = {
   data: PostInput;
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationUpdateQuoteArgs = {
   data: QuoteInput;
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type MutationUpdateReviewWorkflowsWorkflowArgs = {
+  data: ReviewWorkflowsWorkflowInput;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type MutationUpdateReviewWorkflowsWorkflowStageArgs = {
+  data: ReviewWorkflowsWorkflowStageInput;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationUpdateTagArgs = {
   data: TagInput;
-  id: Scalars['ID']['input'];
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type MutationUpdateUploadFileArgs = {
-  data: UploadFileInput;
   id: Scalars['ID']['input'];
-};
-
-
-export type MutationUpdateUploadFolderArgs = {
-  data: UploadFolderInput;
-  id: Scalars['ID']['input'];
+  info?: InputMaybe<FileInfoInput>;
 };
 
 
@@ -782,15 +677,6 @@ export type MutationUpdateUsersPermissionsRoleArgs = {
 export type MutationUpdateUsersPermissionsUserArgs = {
   data: UsersPermissionsUserInput;
   id: Scalars['ID']['input'];
-};
-
-
-export type MutationUploadArgs = {
-  field?: InputMaybe<Scalars['String']['input']>;
-  file: Scalars['Upload']['input'];
-  info?: InputMaybe<FileInfoInput>;
-  ref?: InputMaybe<Scalars['String']['input']>;
-  refId?: InputMaybe<Scalars['ID']['input']>;
 };
 
 export type Pagination = {
@@ -810,17 +696,26 @@ export type PaginationArg = {
 
 export type Post = {
   __typename?: 'Post';
+  /** @deprecated Use root level fields instead */
+  attributes: Post;
   body_searchable?: Maybe<Scalars['String']['output']>;
   body_vue?: Maybe<Scalars['String']['output']>;
-  category?: Maybe<CategoryEntityResponse>;
-  comments?: Maybe<CommentRelationResponseCollection>;
+  category?: Maybe<Category>;
+  comments: Array<Maybe<Comment>>;
+  comments_connection?: Maybe<CommentRelationResponseCollection>;
   comments_enabled: Scalars['Boolean']['output'];
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: Post;
+  documentId: Scalars['ID']['output'];
   footnotes: Scalars['String']['output'];
-  header?: Maybe<UploadFileEntityResponse>;
+  header?: Maybe<UploadFile>;
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
   slug: Scalars['String']['output'];
-  tags?: Maybe<TagRelationResponseCollection>;
+  tags: Array<Maybe<Tag>>;
+  tags_connection?: Maybe<TagRelationResponseCollection>;
   teaser?: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];
   toc?: Maybe<Scalars['Boolean']['output']>;
@@ -836,43 +731,48 @@ export type PostCommentsArgs = {
 };
 
 
+export type PostComments_ConnectionArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
 export type PostTagsArgs = {
   filters?: InputMaybe<TagFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type PostEntity = {
-  __typename?: 'PostEntity';
-  attributes?: Maybe<Post>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
 
-export type PostEntityResponse = {
-  __typename?: 'PostEntityResponse';
-  data?: Maybe<PostEntity>;
+export type PostTags_ConnectionArgs = {
+  filters?: InputMaybe<TagFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type PostEntityResponseCollection = {
   __typename?: 'PostEntityResponseCollection';
-  data: Array<PostEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Post>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<Post>;
+  pageInfo: Pagination;
 };
 
 export type PostFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<PostFiltersInput>>>;
-  body?: InputMaybe<StringFilterInput>;
   body_searchable?: InputMaybe<StringFilterInput>;
   body_vue?: InputMaybe<StringFilterInput>;
   category?: InputMaybe<CategoryFiltersInput>;
   comments?: InputMaybe<CommentFiltersInput>;
   comments_enabled?: InputMaybe<BooleanFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   footnotes?: InputMaybe<StringFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<PostFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<PostFiltersInput>>>;
-  progress?: InputMaybe<FloatFilterInput>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
   slug?: InputMaybe<StringFilterInput>;
   tags?: InputMaybe<TagFiltersInput>;
@@ -884,7 +784,6 @@ export type PostFiltersInput = {
 };
 
 export type PostInput = {
-  body?: InputMaybe<Scalars['String']['input']>;
   body_searchable?: InputMaybe<Scalars['String']['input']>;
   body_vue?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Scalars['ID']['input']>;
@@ -892,8 +791,6 @@ export type PostInput = {
   comments_enabled?: InputMaybe<Scalars['Boolean']['input']>;
   footnotes?: InputMaybe<Scalars['String']['input']>;
   header?: InputMaybe<Scalars['ID']['input']>;
-  images?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  progress?: InputMaybe<Scalars['Float']['input']>;
   publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
@@ -905,42 +802,58 @@ export type PostInput = {
 
 export type PostRelationResponseCollection = {
   __typename?: 'PostRelationResponseCollection';
-  data: Array<PostEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Post>;
+  nodes: Array<Post>;
 };
 
-export enum PublicationState {
-  Live = 'LIVE',
-  Preview = 'PREVIEW'
+export enum PublicationStatus {
+  Draft = 'DRAFT',
+  Published = 'PUBLISHED'
 }
 
 export type Query = {
   __typename?: 'Query';
-  aboutPage?: Maybe<AboutPageEntityResponse>;
-  categories?: Maybe<CategoryEntityResponseCollection>;
-  category?: Maybe<CategoryEntityResponse>;
-  comment?: Maybe<CommentEntityResponse>;
-  comments?: Maybe<CommentEntityResponseCollection>;
-  contentReleasesRelease?: Maybe<ContentReleasesReleaseEntityResponse>;
-  contentReleasesReleaseAction?: Maybe<ContentReleasesReleaseActionEntityResponse>;
-  contentReleasesReleaseActions?: Maybe<ContentReleasesReleaseActionEntityResponseCollection>;
-  contentReleasesReleases?: Maybe<ContentReleasesReleaseEntityResponseCollection>;
-  i18NLocale?: Maybe<I18NLocaleEntityResponse>;
-  i18NLocales?: Maybe<I18NLocaleEntityResponseCollection>;
+  aboutPage?: Maybe<AboutPage>;
+  categories: Array<Maybe<Category>>;
+  categories_connection?: Maybe<CategoryEntityResponseCollection>;
+  category?: Maybe<Category>;
+  comment?: Maybe<Comment>;
+  comments: Array<Maybe<Comment>>;
+  comments_connection?: Maybe<CommentEntityResponseCollection>;
+  i18NLocale?: Maybe<I18NLocale>;
+  i18NLocales: Array<Maybe<I18NLocale>>;
+  i18NLocales_connection?: Maybe<I18NLocaleEntityResponseCollection>;
   me?: Maybe<UsersPermissionsMe>;
-  post?: Maybe<PostEntityResponse>;
-  posts?: Maybe<PostEntityResponseCollection>;
-  quote?: Maybe<QuoteEntityResponse>;
-  quotes?: Maybe<QuoteEntityResponseCollection>;
-  tag?: Maybe<TagEntityResponse>;
-  tags?: Maybe<TagEntityResponseCollection>;
-  uploadFile?: Maybe<UploadFileEntityResponse>;
-  uploadFiles?: Maybe<UploadFileEntityResponseCollection>;
-  uploadFolder?: Maybe<UploadFolderEntityResponse>;
-  uploadFolders?: Maybe<UploadFolderEntityResponseCollection>;
-  usersPermissionsRole?: Maybe<UsersPermissionsRoleEntityResponse>;
-  usersPermissionsRoles?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
-  usersPermissionsUser?: Maybe<UsersPermissionsUserEntityResponse>;
-  usersPermissionsUsers?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+  post?: Maybe<Post>;
+  posts: Array<Maybe<Post>>;
+  posts_connection?: Maybe<PostEntityResponseCollection>;
+  quote?: Maybe<Quote>;
+  quotes: Array<Maybe<Quote>>;
+  quotes_connection?: Maybe<QuoteEntityResponseCollection>;
+  reviewWorkflowsWorkflow?: Maybe<ReviewWorkflowsWorkflow>;
+  reviewWorkflowsWorkflowStage?: Maybe<ReviewWorkflowsWorkflowStage>;
+  reviewWorkflowsWorkflowStages: Array<Maybe<ReviewWorkflowsWorkflowStage>>;
+  reviewWorkflowsWorkflowStages_connection?: Maybe<ReviewWorkflowsWorkflowStageEntityResponseCollection>;
+  reviewWorkflowsWorkflows: Array<Maybe<ReviewWorkflowsWorkflow>>;
+  reviewWorkflowsWorkflows_connection?: Maybe<ReviewWorkflowsWorkflowEntityResponseCollection>;
+  tag?: Maybe<Tag>;
+  tags: Array<Maybe<Tag>>;
+  tags_connection?: Maybe<TagEntityResponseCollection>;
+  uploadFile?: Maybe<UploadFile>;
+  uploadFiles: Array<Maybe<UploadFile>>;
+  uploadFiles_connection?: Maybe<UploadFileEntityResponseCollection>;
+  usersPermissionsRole?: Maybe<UsersPermissionsRole>;
+  usersPermissionsRoles: Array<Maybe<UsersPermissionsRole>>;
+  usersPermissionsRoles_connection?: Maybe<UsersPermissionsRoleEntityResponseCollection>;
+  usersPermissionsUser?: Maybe<UsersPermissionsUser>;
+  usersPermissionsUsers: Array<Maybe<UsersPermissionsUser>>;
+  usersPermissionsUsers_connection?: Maybe<UsersPermissionsUserEntityResponseCollection>;
+};
+
+
+export type QueryAboutPageArgs = {
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -948,16 +861,27 @@ export type QueryCategoriesArgs = {
   filters?: InputMaybe<CategoryFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryCategories_ConnectionArgs = {
+  filters?: InputMaybe<CategoryFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryCategoryArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryCommentArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -965,35 +889,21 @@ export type QueryCommentsArgs = {
   filters?: InputMaybe<CommentFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
-export type QueryContentReleasesReleaseArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-export type QueryContentReleasesReleaseActionArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-export type QueryContentReleasesReleaseActionsArgs = {
-  filters?: InputMaybe<ContentReleasesReleaseActionFiltersInput>;
+export type QueryComments_ConnectionArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-
-export type QueryContentReleasesReleasesArgs = {
-  filters?: InputMaybe<ContentReleasesReleaseFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryI18NLocaleArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -1001,24 +911,43 @@ export type QueryI18NLocalesArgs = {
   filters?: InputMaybe<I18NLocaleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryI18NLocales_ConnectionArgs = {
+  filters?: InputMaybe<I18NLocaleFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryPostArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryPostsArgs = {
   filters?: InputMaybe<PostFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryPosts_ConnectionArgs = {
+  filters?: InputMaybe<PostFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryQuoteArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -1026,11 +955,65 @@ export type QueryQuotesArgs = {
   filters?: InputMaybe<QuoteFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryQuotes_ConnectionArgs = {
+  filters?: InputMaybe<QuoteFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryReviewWorkflowsWorkflowArgs = {
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryReviewWorkflowsWorkflowStageArgs = {
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryReviewWorkflowsWorkflowStagesArgs = {
+  filters?: InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryReviewWorkflowsWorkflowStages_ConnectionArgs = {
+  filters?: InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryReviewWorkflowsWorkflowsArgs = {
+  filters?: InputMaybe<ReviewWorkflowsWorkflowFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryReviewWorkflowsWorkflows_ConnectionArgs = {
+  filters?: InputMaybe<ReviewWorkflowsWorkflowFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryTagArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -1038,11 +1021,21 @@ export type QueryTagsArgs = {
   filters?: InputMaybe<TagFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryTags_ConnectionArgs = {
+  filters?: InputMaybe<TagFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryUploadFileArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -1050,23 +1043,21 @@ export type QueryUploadFilesArgs = {
   filters?: InputMaybe<UploadFileFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
-export type QueryUploadFolderArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
-};
-
-
-export type QueryUploadFoldersArgs = {
-  filters?: InputMaybe<UploadFolderFiltersInput>;
+export type QueryUploadFiles_ConnectionArgs = {
+  filters?: InputMaybe<UploadFileFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryUsersPermissionsRoleArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -1074,11 +1065,21 @@ export type QueryUsersPermissionsRolesArgs = {
   filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryUsersPermissionsRoles_ConnectionArgs = {
+  filters?: InputMaybe<UsersPermissionsRoleFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
 export type QueryUsersPermissionsUserArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  documentId: Scalars['ID']['input'];
+  status?: InputMaybe<PublicationStatus>;
 };
 
 
@@ -1086,49 +1087,180 @@ export type QueryUsersPermissionsUsersArgs = {
   filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
+};
+
+
+export type QueryUsersPermissionsUsers_ConnectionArgs = {
+  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  status?: InputMaybe<PublicationStatus>;
 };
 
 export type Quote = {
   __typename?: 'Quote';
+  /** @deprecated Use root level fields instead */
+  attributes: Quote;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: Quote;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   text: Scalars['String']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
-export type QuoteEntity = {
-  __typename?: 'QuoteEntity';
-  attributes?: Maybe<Quote>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
-
-export type QuoteEntityResponse = {
-  __typename?: 'QuoteEntityResponse';
-  data?: Maybe<QuoteEntity>;
-};
-
 export type QuoteEntityResponseCollection = {
   __typename?: 'QuoteEntityResponseCollection';
-  data: Array<QuoteEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Quote>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<Quote>;
+  pageInfo: Pagination;
 };
 
 export type QuoteFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<QuoteFiltersInput>>>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<QuoteFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<QuoteFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   text?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type QuoteInput = {
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ResponseCollectionMeta = {
   __typename?: 'ResponseCollectionMeta';
   pagination: Pagination;
+};
+
+export type ReviewWorkflowsWorkflow = {
+  __typename?: 'ReviewWorkflowsWorkflow';
+  /** @deprecated Use root level fields instead */
+  attributes: ReviewWorkflowsWorkflow;
+  contentTypes: Scalars['JSON']['output'];
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: ReviewWorkflowsWorkflow;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  stageRequiredToPublish?: Maybe<ReviewWorkflowsWorkflowStage>;
+  stages: Array<Maybe<ReviewWorkflowsWorkflowStage>>;
+  stages_connection?: Maybe<ReviewWorkflowsWorkflowStageRelationResponseCollection>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+};
+
+
+export type ReviewWorkflowsWorkflowStagesArgs = {
+  filters?: InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type ReviewWorkflowsWorkflowStages_ConnectionArgs = {
+  filters?: InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+export type ReviewWorkflowsWorkflowEntityResponseCollection = {
+  __typename?: 'ReviewWorkflowsWorkflowEntityResponseCollection';
+  /** @deprecated Use `nodes` field instead */
+  data: Array<ReviewWorkflowsWorkflow>;
+  /** @deprecated Use the `pageInfo` field instead */
+  meta: ResponseCollectionMeta;
+  nodes: Array<ReviewWorkflowsWorkflow>;
+  pageInfo: Pagination;
+};
+
+export type ReviewWorkflowsWorkflowFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ReviewWorkflowsWorkflowFiltersInput>>>;
+  contentTypes?: InputMaybe<JsonFilterInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ReviewWorkflowsWorkflowFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ReviewWorkflowsWorkflowFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  stageRequiredToPublish?: InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>;
+  stages?: InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+};
+
+export type ReviewWorkflowsWorkflowInput = {
+  contentTypes?: InputMaybe<Scalars['JSON']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  stageRequiredToPublish?: InputMaybe<Scalars['ID']['input']>;
+  stages?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+};
+
+export type ReviewWorkflowsWorkflowStage = {
+  __typename?: 'ReviewWorkflowsWorkflowStage';
+  /** @deprecated Use root level fields instead */
+  attributes: ReviewWorkflowsWorkflowStage;
+  color?: Maybe<Scalars['String']['output']>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: ReviewWorkflowsWorkflowStage;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  updatedAt?: Maybe<Scalars['DateTime']['output']>;
+  workflow?: Maybe<ReviewWorkflowsWorkflow>;
+};
+
+export type ReviewWorkflowsWorkflowStageEntityResponseCollection = {
+  __typename?: 'ReviewWorkflowsWorkflowStageEntityResponseCollection';
+  /** @deprecated Use `nodes` field instead */
+  data: Array<ReviewWorkflowsWorkflowStage>;
+  /** @deprecated Use the `pageInfo` field instead */
+  meta: ResponseCollectionMeta;
+  nodes: Array<ReviewWorkflowsWorkflowStage>;
+  pageInfo: Pagination;
+};
+
+export type ReviewWorkflowsWorkflowStageFiltersInput = {
+  and?: InputMaybe<Array<InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>>>;
+  color?: InputMaybe<StringFilterInput>;
+  createdAt?: InputMaybe<DateTimeFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
+  name?: InputMaybe<StringFilterInput>;
+  not?: InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>;
+  or?: InputMaybe<Array<InputMaybe<ReviewWorkflowsWorkflowStageFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
+  updatedAt?: InputMaybe<DateTimeFilterInput>;
+  workflow?: InputMaybe<ReviewWorkflowsWorkflowFiltersInput>;
+};
+
+export type ReviewWorkflowsWorkflowStageInput = {
+  color?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
+  workflow?: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type ReviewWorkflowsWorkflowStageRelationResponseCollection = {
+  __typename?: 'ReviewWorkflowsWorkflowStageRelationResponseCollection';
+  /** @deprecated Use `nodes` field instead */
+  data: Array<ReviewWorkflowsWorkflowStage>;
+  nodes: Array<ReviewWorkflowsWorkflowStage>;
 };
 
 export type StringFilterInput = {
@@ -1158,11 +1290,20 @@ export type StringFilterInput = {
 
 export type Tag = {
   __typename?: 'Tag';
+  /** @deprecated Use root level fields instead */
+  attributes: Tag;
   color?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: Tag;
   description?: Maybe<Scalars['String']['output']>;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  posts?: Maybe<PostRelationResponseCollection>;
+  posts: Array<Maybe<Post>>;
+  posts_connection?: Maybe<PostRelationResponseCollection>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   slug: Scalars['String']['output'];
   tier?: Maybe<Scalars['Int']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -1172,25 +1313,24 @@ export type Tag = {
 export type TagPostsArgs = {
   filters?: InputMaybe<PostFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
-  publicationState?: InputMaybe<PublicationState>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type TagEntity = {
-  __typename?: 'TagEntity';
-  attributes?: Maybe<Tag>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
 
-export type TagEntityResponse = {
-  __typename?: 'TagEntityResponse';
-  data?: Maybe<TagEntity>;
+export type TagPosts_ConnectionArgs = {
+  filters?: InputMaybe<PostFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type TagEntityResponseCollection = {
   __typename?: 'TagEntityResponseCollection';
-  data: Array<TagEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Tag>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<Tag>;
+  pageInfo: Pagination;
 };
 
 export type TagFiltersInput = {
@@ -1198,11 +1338,12 @@ export type TagFiltersInput = {
   color?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<TagFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<TagFiltersInput>>>;
   posts?: InputMaybe<PostFiltersInput>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   slug?: InputMaybe<StringFilterInput>;
   tier?: InputMaybe<IntFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
@@ -1213,29 +1354,40 @@ export type TagInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   posts?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tier?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type TagRelationResponseCollection = {
   __typename?: 'TagRelationResponseCollection';
-  data: Array<TagEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<Tag>;
+  nodes: Array<Tag>;
 };
 
 export type UploadFile = {
   __typename?: 'UploadFile';
   alternativeText?: Maybe<Scalars['String']['output']>;
+  /** @deprecated Use root level fields instead */
+  attributes: UploadFile;
   caption?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: UploadFile;
+  documentId: Scalars['ID']['output'];
   ext?: Maybe<Scalars['String']['output']>;
   formats?: Maybe<Scalars['JSON']['output']>;
   hash: Scalars['String']['output'];
   height?: Maybe<Scalars['Int']['output']>;
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
   mime: Scalars['String']['output'];
   name: Scalars['String']['output'];
   previewUrl?: Maybe<Scalars['String']['output']>;
   provider: Scalars['String']['output'];
   provider_metadata?: Maybe<Scalars['JSON']['output']>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   related?: Maybe<Array<Maybe<GenericMorph>>>;
   size: Scalars['Float']['output'];
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -1243,21 +1395,14 @@ export type UploadFile = {
   width?: Maybe<Scalars['Int']['output']>;
 };
 
-export type UploadFileEntity = {
-  __typename?: 'UploadFileEntity';
-  attributes?: Maybe<UploadFile>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
-
-export type UploadFileEntityResponse = {
-  __typename?: 'UploadFileEntityResponse';
-  data?: Maybe<UploadFileEntity>;
-};
-
 export type UploadFileEntityResponseCollection = {
   __typename?: 'UploadFileEntityResponseCollection';
-  data: Array<UploadFileEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<UploadFile>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<UploadFile>;
+  pageInfo: Pagination;
 };
 
 export type UploadFileFiltersInput = {
@@ -1265,13 +1410,11 @@ export type UploadFileFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<UploadFileFiltersInput>>>;
   caption?: InputMaybe<StringFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   ext?: InputMaybe<StringFilterInput>;
-  folder?: InputMaybe<UploadFolderFiltersInput>;
-  folderPath?: InputMaybe<StringFilterInput>;
   formats?: InputMaybe<JsonFilterInput>;
   hash?: InputMaybe<StringFilterInput>;
   height?: InputMaybe<IntFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
   mime?: InputMaybe<StringFilterInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<UploadFileFiltersInput>;
@@ -1279,106 +1422,18 @@ export type UploadFileFiltersInput = {
   previewUrl?: InputMaybe<StringFilterInput>;
   provider?: InputMaybe<StringFilterInput>;
   provider_metadata?: InputMaybe<JsonFilterInput>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   size?: InputMaybe<FloatFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   url?: InputMaybe<StringFilterInput>;
   width?: InputMaybe<IntFilterInput>;
 };
 
-export type UploadFileInput = {
-  alternativeText?: InputMaybe<Scalars['String']['input']>;
-  caption?: InputMaybe<Scalars['String']['input']>;
-  ext?: InputMaybe<Scalars['String']['input']>;
-  folder?: InputMaybe<Scalars['ID']['input']>;
-  folderPath?: InputMaybe<Scalars['String']['input']>;
-  formats?: InputMaybe<Scalars['JSON']['input']>;
-  hash?: InputMaybe<Scalars['String']['input']>;
-  height?: InputMaybe<Scalars['Int']['input']>;
-  mime?: InputMaybe<Scalars['String']['input']>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  previewUrl?: InputMaybe<Scalars['String']['input']>;
-  provider?: InputMaybe<Scalars['String']['input']>;
-  provider_metadata?: InputMaybe<Scalars['JSON']['input']>;
-  size?: InputMaybe<Scalars['Float']['input']>;
-  url?: InputMaybe<Scalars['String']['input']>;
-  width?: InputMaybe<Scalars['Int']['input']>;
-};
-
 export type UploadFileRelationResponseCollection = {
   __typename?: 'UploadFileRelationResponseCollection';
-  data: Array<UploadFileEntity>;
-};
-
-export type UploadFolder = {
-  __typename?: 'UploadFolder';
-  children?: Maybe<UploadFolderRelationResponseCollection>;
-  createdAt?: Maybe<Scalars['DateTime']['output']>;
-  files?: Maybe<UploadFileRelationResponseCollection>;
-  name: Scalars['String']['output'];
-  parent?: Maybe<UploadFolderEntityResponse>;
-  path: Scalars['String']['output'];
-  pathId: Scalars['Int']['output'];
-  updatedAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
-
-export type UploadFolderChildrenArgs = {
-  filters?: InputMaybe<UploadFolderFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-
-export type UploadFolderFilesArgs = {
-  filters?: InputMaybe<UploadFileFiltersInput>;
-  pagination?: InputMaybe<PaginationArg>;
-  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-};
-
-export type UploadFolderEntity = {
-  __typename?: 'UploadFolderEntity';
-  attributes?: Maybe<UploadFolder>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
-
-export type UploadFolderEntityResponse = {
-  __typename?: 'UploadFolderEntityResponse';
-  data?: Maybe<UploadFolderEntity>;
-};
-
-export type UploadFolderEntityResponseCollection = {
-  __typename?: 'UploadFolderEntityResponseCollection';
-  data: Array<UploadFolderEntity>;
-  meta: ResponseCollectionMeta;
-};
-
-export type UploadFolderFiltersInput = {
-  and?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
-  children?: InputMaybe<UploadFolderFiltersInput>;
-  createdAt?: InputMaybe<DateTimeFilterInput>;
-  files?: InputMaybe<UploadFileFiltersInput>;
-  id?: InputMaybe<IdFilterInput>;
-  name?: InputMaybe<StringFilterInput>;
-  not?: InputMaybe<UploadFolderFiltersInput>;
-  or?: InputMaybe<Array<InputMaybe<UploadFolderFiltersInput>>>;
-  parent?: InputMaybe<UploadFolderFiltersInput>;
-  path?: InputMaybe<StringFilterInput>;
-  pathId?: InputMaybe<IntFilterInput>;
-  updatedAt?: InputMaybe<DateTimeFilterInput>;
-};
-
-export type UploadFolderInput = {
-  children?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  files?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  name?: InputMaybe<Scalars['String']['input']>;
-  parent?: InputMaybe<Scalars['ID']['input']>;
-  path?: InputMaybe<Scalars['String']['input']>;
-  pathId?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type UploadFolderRelationResponseCollection = {
-  __typename?: 'UploadFolderRelationResponseCollection';
-  data: Array<UploadFolderEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<UploadFile>;
+  nodes: Array<UploadFile>;
 };
 
 export type UsersPermissionsCreateRolePayload = {
@@ -1429,31 +1484,36 @@ export type UsersPermissionsPasswordPayload = {
 export type UsersPermissionsPermission = {
   __typename?: 'UsersPermissionsPermission';
   action: Scalars['String']['output'];
+  /** @deprecated Use root level fields instead */
+  attributes: UsersPermissionsPermission;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
-  role?: Maybe<UsersPermissionsRoleEntityResponse>;
+  /** @deprecated Use root level fields instead */
+  data: UsersPermissionsPermission;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  role?: Maybe<UsersPermissionsRole>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-};
-
-export type UsersPermissionsPermissionEntity = {
-  __typename?: 'UsersPermissionsPermissionEntity';
-  attributes?: Maybe<UsersPermissionsPermission>;
-  id?: Maybe<Scalars['ID']['output']>;
 };
 
 export type UsersPermissionsPermissionFiltersInput = {
   action?: InputMaybe<StringFilterInput>;
   and?: InputMaybe<Array<InputMaybe<UsersPermissionsPermissionFiltersInput>>>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<UsersPermissionsPermissionFiltersInput>>>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   role?: InputMaybe<UsersPermissionsRoleFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
 export type UsersPermissionsPermissionRelationResponseCollection = {
   __typename?: 'UsersPermissionsPermissionRelationResponseCollection';
-  data: Array<UsersPermissionsPermissionEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<UsersPermissionsPermission>;
+  nodes: Array<UsersPermissionsPermission>;
 };
 
 export type UsersPermissionsRegisterInput = {
@@ -1464,17 +1524,34 @@ export type UsersPermissionsRegisterInput = {
 
 export type UsersPermissionsRole = {
   __typename?: 'UsersPermissionsRole';
+  /** @deprecated Use root level fields instead */
+  attributes: UsersPermissionsRole;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: UsersPermissionsRole;
   description?: Maybe<Scalars['String']['output']>;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
-  permissions?: Maybe<UsersPermissionsPermissionRelationResponseCollection>;
+  permissions: Array<Maybe<UsersPermissionsPermission>>;
+  permissions_connection?: Maybe<UsersPermissionsPermissionRelationResponseCollection>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
   type?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
-  users?: Maybe<UsersPermissionsUserRelationResponseCollection>;
+  users: Array<Maybe<UsersPermissionsUser>>;
+  users_connection?: Maybe<UsersPermissionsUserRelationResponseCollection>;
 };
 
 
 export type UsersPermissionsRolePermissionsArgs = {
+  filters?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+};
+
+
+export type UsersPermissionsRolePermissions_ConnectionArgs = {
   filters?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
   pagination?: InputMaybe<PaginationArg>;
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
@@ -1487,32 +1564,33 @@ export type UsersPermissionsRoleUsersArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type UsersPermissionsRoleEntity = {
-  __typename?: 'UsersPermissionsRoleEntity';
-  attributes?: Maybe<UsersPermissionsRole>;
-  id?: Maybe<Scalars['ID']['output']>;
-};
 
-export type UsersPermissionsRoleEntityResponse = {
-  __typename?: 'UsersPermissionsRoleEntityResponse';
-  data?: Maybe<UsersPermissionsRoleEntity>;
+export type UsersPermissionsRoleUsers_ConnectionArgs = {
+  filters?: InputMaybe<UsersPermissionsUserFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type UsersPermissionsRoleEntityResponseCollection = {
   __typename?: 'UsersPermissionsRoleEntityResponseCollection';
-  data: Array<UsersPermissionsRoleEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<UsersPermissionsRole>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<UsersPermissionsRole>;
+  pageInfo: Pagination;
 };
 
 export type UsersPermissionsRoleFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<UsersPermissionsRoleFiltersInput>>>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
   description?: InputMaybe<StringFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   name?: InputMaybe<StringFilterInput>;
   not?: InputMaybe<UsersPermissionsRoleFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<UsersPermissionsRoleFiltersInput>>>;
   permissions?: InputMaybe<UsersPermissionsPermissionFiltersInput>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   type?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   users?: InputMaybe<UsersPermissionsUserFiltersInput>;
@@ -1522,6 +1600,7 @@ export type UsersPermissionsRoleInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   permissions?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   type?: InputMaybe<Scalars['String']['input']>;
   users?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
 };
@@ -1533,12 +1612,21 @@ export type UsersPermissionsUpdateRolePayload = {
 
 export type UsersPermissionsUser = {
   __typename?: 'UsersPermissionsUser';
+  /** @deprecated Use root level fields instead */
+  attributes: UsersPermissionsUser;
   blocked?: Maybe<Scalars['Boolean']['output']>;
-  comments?: Maybe<CommentRelationResponseCollection>;
+  comments: Array<Maybe<Comment>>;
+  comments_connection?: Maybe<CommentRelationResponseCollection>;
   confirmed?: Maybe<Scalars['Boolean']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
+  /** @deprecated Use root level fields instead */
+  data: UsersPermissionsUser;
+  documentId: Scalars['ID']['output'];
+  /** @deprecated Use `documentId` instead */
+  id: Scalars['ID']['output'];
   provider?: Maybe<Scalars['String']['output']>;
-  role?: Maybe<UsersPermissionsRoleEntityResponse>;
+  publishedAt?: Maybe<Scalars['DateTime']['output']>;
+  role?: Maybe<UsersPermissionsRole>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
   username: Scalars['String']['output'];
 };
@@ -1550,37 +1638,39 @@ export type UsersPermissionsUserCommentsArgs = {
   sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
-export type UsersPermissionsUserEntity = {
-  __typename?: 'UsersPermissionsUserEntity';
-  attributes?: Maybe<UsersPermissionsUser>;
-  id?: Maybe<Scalars['ID']['output']>;
+
+export type UsersPermissionsUserComments_ConnectionArgs = {
+  filters?: InputMaybe<CommentFiltersInput>;
+  pagination?: InputMaybe<PaginationArg>;
+  sort?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
 export type UsersPermissionsUserEntityResponse = {
   __typename?: 'UsersPermissionsUserEntityResponse';
-  data?: Maybe<UsersPermissionsUserEntity>;
+  data?: Maybe<UsersPermissionsUser>;
 };
 
 export type UsersPermissionsUserEntityResponseCollection = {
   __typename?: 'UsersPermissionsUserEntityResponseCollection';
-  data: Array<UsersPermissionsUserEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<UsersPermissionsUser>;
+  /** @deprecated Use the `pageInfo` field instead */
   meta: ResponseCollectionMeta;
+  nodes: Array<UsersPermissionsUser>;
+  pageInfo: Pagination;
 };
 
 export type UsersPermissionsUserFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
   blocked?: InputMaybe<BooleanFilterInput>;
   comments?: InputMaybe<CommentFiltersInput>;
-  confirmationToken?: InputMaybe<StringFilterInput>;
   confirmed?: InputMaybe<BooleanFilterInput>;
   createdAt?: InputMaybe<DateTimeFilterInput>;
-  email?: InputMaybe<StringFilterInput>;
-  id?: InputMaybe<IdFilterInput>;
+  documentId?: InputMaybe<IdFilterInput>;
   not?: InputMaybe<UsersPermissionsUserFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<UsersPermissionsUserFiltersInput>>>;
-  password?: InputMaybe<StringFilterInput>;
   provider?: InputMaybe<StringFilterInput>;
-  resetPasswordToken?: InputMaybe<StringFilterInput>;
+  publishedAt?: InputMaybe<DateTimeFilterInput>;
   role?: InputMaybe<UsersPermissionsRoleFiltersInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
   username?: InputMaybe<StringFilterInput>;
@@ -1589,46 +1679,46 @@ export type UsersPermissionsUserFiltersInput = {
 export type UsersPermissionsUserInput = {
   blocked?: InputMaybe<Scalars['Boolean']['input']>;
   comments?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
-  confirmationToken?: InputMaybe<Scalars['String']['input']>;
   confirmed?: InputMaybe<Scalars['Boolean']['input']>;
-  email?: InputMaybe<Scalars['String']['input']>;
   password?: InputMaybe<Scalars['String']['input']>;
   provider?: InputMaybe<Scalars['String']['input']>;
-  resetPasswordToken?: InputMaybe<Scalars['String']['input']>;
+  publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   role?: InputMaybe<Scalars['ID']['input']>;
   username?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type UsersPermissionsUserRelationResponseCollection = {
   __typename?: 'UsersPermissionsUserRelationResponseCollection';
-  data: Array<UsersPermissionsUserEntity>;
+  /** @deprecated Use `nodes` field instead */
+  data: Array<UsersPermissionsUser>;
+  nodes: Array<UsersPermissionsUser>;
 };
 
-export type TotalPagesFragment = { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } };
+export type TotalPagesFragment = { __typename?: 'Pagination', total: number };
 
-export type FullPageFragment = { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } };
+export type FullPageFragment = { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number };
 
 export type InitQueryVariables = Exact<{
   pg?: InputMaybe<PaginationArg>;
 }>;
 
 
-export type InitQuery = { __typename?: 'Query', quotes?: { __typename?: 'QuoteEntityResponseCollection', data: Array<{ __typename?: 'QuoteEntity', id?: string | null, attributes?: { __typename?: 'Quote', text: string } | null }> } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, priority: number } | null }> } | null, posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } }, data: Array<{ __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', publishedAt?: any | null, title: string, slug: string } | null }> } | null };
+export type InitQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: Array<{ __typename?: 'Quote', id: string, documentId: string, text: string }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, priority: number }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: Array<{ __typename?: 'Post', id: string, documentId: string, publishedAt?: any | null, title: string, slug: string }> } | null };
 
 export type LastPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type LastPostsQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number } } } | null };
+export type LastPostsQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number } } | null };
 
 export type AboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AboutQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPageEntityResponse', data?: { __typename?: 'AboutPageEntity', attributes?: { __typename?: 'AboutPage', text?: string | null, title?: string | null, footnotes?: string | null, toenotes?: string | null } | null } | null } | null };
+export type AboutQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPage', text?: string | null, title?: string | null, footnotes?: string | null, toenotes?: string | null } | null };
 
 export type TagListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TagListQuery = { __typename?: 'Query', tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null, posts?: { __typename?: 'PostRelationResponseCollection', data: Array<{ __typename?: 'PostEntity', id?: string | null }> } | null } | null }> } | null };
+export type TagListQuery = { __typename?: 'Query', tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null, posts_connection?: { __typename?: 'PostRelationResponseCollection', nodes: Array<{ __typename?: 'Post', documentId: string }> } | null }> } | null };
 
 export type PostSearchQueryVariables = Exact<{
   postFilter: PostFiltersInput;
@@ -1637,22 +1727,22 @@ export type PostSearchQueryVariables = Exact<{
 }>;
 
 
-export type PostSearchQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', formats?: any | null } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null } | null }> } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null } | null } | null } | null }> } | null };
+export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', documentId: string, id: string, publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null };
 
 export type SinglePostQueryVariables = Exact<{
-  postId?: InputMaybe<Scalars['ID']['input']>;
+  postId: Scalars['ID']['input'];
   commentPagination?: InputMaybe<PaginationArg>;
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', comments?: { __typename?: 'CommentEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'CommentEntity', attributes?: { __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments?: { __typename?: 'CommentRelationResponseCollection', data: Array<{ __typename?: 'CommentEntity', id?: string | null }> } | null, author?: { __typename?: 'UsersPermissionsUserEntityResponse', data?: { __typename?: 'UsersPermissionsUserEntity', attributes?: { __typename?: 'UsersPermissionsUser', username: string } | null } | null } | null } | null }> } | null, post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', title: string, body_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null } | null } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', color?: string | null, name: string, slug: string } | null }> } | null } | null } | null } | null };
+export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: Array<{ __typename?: 'Comment', documentId: string, id: string }> } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null, post?: { __typename?: 'Post', id: string, title: string, body_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, category?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', color?: string | null, name: string, slug: string }> } | null } | null };
 
 export type PostCheckQueryVariables = Exact<{
-  postId?: InputMaybe<Scalars['ID']['input']>;
+  postId: Scalars['ID']['input'];
 }>;
 
 
-export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'PostEntityResponse', data?: { __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', updatedAt?: any | null } | null } | null } | null };
+export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'Post', documentId: string, updatedAt?: any | null } | null };
 
 export type PostCountQueryVariables = Exact<{
   pf?: InputMaybe<PostFiltersInput>;
@@ -1660,7 +1750,7 @@ export type PostCountQueryVariables = Exact<{
 }>;
 
 
-export type PostCountQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, pageSize: number } } } | null };
+export type PostCountQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, pageSize: number } } | null };
 
 export type PostListQueryVariables = Exact<{
   pf?: InputMaybe<PostFiltersInput>;
@@ -1670,7 +1760,7 @@ export type PostListQueryVariables = Exact<{
 }>;
 
 
-export type PostListQuery = { __typename?: 'Query', posts?: { __typename?: 'PostEntityResponseCollection', meta: { __typename?: 'ResponseCollectionMeta', pagination: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number } }, data: Array<{ __typename?: 'PostEntity', id?: string | null, attributes?: { __typename?: 'Post', publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFileEntityResponse', data?: { __typename?: 'UploadFileEntity', attributes?: { __typename?: 'UploadFile', formats?: any | null } | null } | null } | null, tags?: { __typename?: 'TagRelationResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null } | null }> } | null, category?: { __typename?: 'CategoryEntityResponse', data?: { __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null } | null } | null } | null }> } | null, tags?: { __typename?: 'TagEntityResponseCollection', data: Array<{ __typename?: 'TagEntity', attributes?: { __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null, categories?: { __typename?: 'CategoryEntityResponseCollection', data: Array<{ __typename?: 'CategoryEntity', attributes?: { __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null } | null }> } | null };
+export type PostListQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', id: string, documentId: string, publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null, tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null }> } | null };
 
 export type CommentatorMutationVariables = Exact<{
   post: Scalars['ID']['input'];
@@ -1681,55 +1771,47 @@ export type CommentatorMutationVariables = Exact<{
 }>;
 
 
-export type CommentatorMutation = { __typename?: 'Mutation', createComment?: { __typename?: 'CommentEntityResponse', data?: { __typename?: 'CommentEntity', id?: string | null } | null } | null };
+export type CommentatorMutation = { __typename?: 'Mutation', createComment?: { __typename?: 'Comment', id: string, documentId: string } | null };
 
 export const TotalPagesFragmentDoc = gql`
-    fragment totalPages on ResponseCollectionMeta {
-  pagination {
-    total
-  }
+    fragment totalPages on Pagination {
+  total
 }
     `;
 export const FullPageFragmentDoc = gql`
-    fragment fullPage on ResponseCollectionMeta {
-  pagination {
-    total
-    page
-    pageSize
-    pageCount
-  }
+    fragment fullPage on Pagination {
+  total
+  page
+  pageSize
+  pageCount
 }
     `;
 export const InitDocument = gql`
     query Init($pg: PaginationArg) {
-  quotes(pagination: $pg) {
-    data {
+  quotes_connection(pagination: $pg) {
+    nodes {
       id
-      attributes {
-        text
-      }
+      documentId
+      text
     }
   }
-  categories(filters: {posts: {publishedAt: {notNull: true}}}) {
-    data {
-      attributes {
-        name
-        slug
-        priority
-      }
+  categories_connection(filters: {posts: {publishedAt: {notNull: true}}}) {
+    nodes {
+      name
+      slug
+      priority
     }
   }
-  posts(pagination: {start: 0, limit: 5}, sort: "publishedAt:desc") {
-    meta {
+  posts_connection(pagination: {start: 0, limit: 5}, sort: "publishedAt:desc") {
+    pageInfo {
       ...totalPages
     }
-    data {
+    nodes {
       id
-      attributes {
-        publishedAt
-        title
-        slug
-      }
+      documentId
+      publishedAt
+      title
+      slug
     }
   }
 }
@@ -1759,8 +1841,8 @@ export function useInitLazyQuery(variables: InitQueryVariables | VueCompositionA
 export type InitQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<InitQuery, InitQueryVariables>;
 export const LastPostsDocument = gql`
     query lastPosts {
-  posts {
-    meta {
+  posts_connection {
+    pageInfo {
       ...totalPages
     }
   }
@@ -1789,14 +1871,10 @@ export type LastPostsQueryCompositionFunctionResult = VueApolloComposable.UseQue
 export const AboutDocument = gql`
     query about {
   aboutPage {
-    data {
-      attributes {
-        text
-        title
-        footnotes
-        toenotes
-      }
-    }
+    text
+    title
+    footnotes
+    toenotes
   }
 }
     `;
@@ -1822,19 +1900,19 @@ export function useAboutLazyQuery(options: VueApolloComposable.UseQueryOptions<A
 export type AboutQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<AboutQuery, AboutQueryVariables>;
 export const TagListDocument = gql`
     query TagList {
-  tags(
-    filters: {posts: {id: {notNull: true}, publishedAt: {notNull: true}}}
+  tags_connection(
+    filters: {posts: {documentId: {notNull: true}, publishedAt: {notNull: true}}}
     pagination: {pageSize: 100}
   ) {
-    data {
-      attributes {
-        name
-        slug
-        color
-        posts(filters: {publishedAt: {notNull: true}, id: {notNull: true}}) {
-          data {
-            id
-          }
+    nodes {
+      name
+      slug
+      color
+      posts_connection(
+        filters: {publishedAt: {notNull: true}, documentId: {notNull: true}}
+      ) {
+        nodes {
+          documentId
         }
       }
     }
@@ -1863,43 +1941,32 @@ export function useTagListLazyQuery(options: VueApolloComposable.UseQueryOptions
 export type TagListQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<TagListQuery, TagListQueryVariables>;
 export const PostSearchDocument = gql`
     query postSearch($postFilter: PostFiltersInput!, $pg: PaginationArg!, $sort: [String]) {
-  posts(filters: $postFilter, pagination: $pg, sort: $sort) {
-    meta {
+  posts_connection(filters: $postFilter, pagination: $pg, sort: $sort) {
+    pageInfo {
       ...fullPage
     }
-    data {
+    nodes {
+      documentId
       id
-      attributes {
-        publishedAt
-        body_searchable
-        title
-        teaser
+      publishedAt
+      body_searchable
+      title
+      teaser
+      slug
+      header {
+        formats
+      }
+      tags_connection {
+        nodes {
+          name
+          slug
+          color
+        }
+      }
+      category {
+        name
         slug
-        header {
-          data {
-            attributes {
-              formats
-            }
-          }
-        }
-        tags {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
-        }
-        category {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
-        }
+        color
       }
     }
   }
@@ -1931,74 +1998,58 @@ export function usePostSearchLazyQuery(variables?: PostSearchQueryVariables | Vu
 }
 export type PostSearchQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostSearchQuery, PostSearchQueryVariables>;
 export const SinglePostDocument = gql`
-    query SinglePost($postId: ID, $commentPagination: PaginationArg) {
-  comments(filters: {post: {id: {eq: $postId}}}, pagination: $commentPagination) {
-    meta {
+    query SinglePost($postId: ID!, $commentPagination: PaginationArg) {
+  comments_connection(
+    filters: {post: {documentId: {eq: $postId}}}
+    pagination: $commentPagination
+  ) {
+    pageInfo {
       ...fullPage
     }
-    data {
-      attributes {
-        depth
-        subcomments {
-          data {
-            id
-          }
+    nodes {
+      depth
+      subcomments_connection {
+        nodes {
+          documentId
+          id
         }
-        createdAt
-        content
-        author {
-          data {
-            attributes {
-              username
-            }
-          }
-        }
+      }
+      createdAt
+      content
+      author {
+        username
       }
     }
   }
-  post(id: $postId) {
-    data {
-      id
-      attributes {
-        title
-        header {
-          data {
-            attributes {
-              url
-              caption
-              width
-              height
-              alternativeText
-              formats
-            }
-          }
-        }
-        body_vue
+  post(documentId: $postId) {
+    id
+    title
+    header {
+      url
+      caption
+      width
+      height
+      alternativeText
+      formats
+    }
+    body_vue
+    slug
+    toc
+    publishedAt
+    updatedAt
+    comments_enabled
+    footnotes
+    toenotes
+    category {
+      color
+      name
+      slug
+    }
+    tags_connection {
+      nodes {
+        color
+        name
         slug
-        toc
-        publishedAt
-        updatedAt
-        comments_enabled
-        footnotes
-        toenotes
-        category {
-          data {
-            attributes {
-              color
-              name
-              slug
-            }
-          }
-        }
-        tags {
-          data {
-            attributes {
-              color
-              name
-              slug
-            }
-          }
-        }
       }
     }
   }
@@ -2021,22 +2072,18 @@ export const SinglePostDocument = gql`
  *   commentPagination: // value for 'commentPagination'
  * });
  */
-export function useSinglePostQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
+export function useSinglePostQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables>, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
   return VueApolloComposable.useQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, variables, options);
 }
-export function useSinglePostLazyQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
+export function useSinglePostLazyQuery(variables?: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables>, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
   return VueApolloComposable.useLazyQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, variables, options);
 }
 export type SinglePostQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<SinglePostQuery, SinglePostQueryVariables>;
 export const PostCheckDocument = gql`
-    query postCheck($postId: ID) {
-  post(id: $postId) {
-    data {
-      id
-      attributes {
-        updatedAt
-      }
-    }
+    query postCheck($postId: ID!) {
+  post(documentId: $postId) {
+    documentId
+    updatedAt
   }
 }
     `;
@@ -2056,21 +2103,19 @@ export const PostCheckDocument = gql`
  *   postId: // value for 'postId'
  * });
  */
-export function usePostCheckQuery(variables: PostCheckQueryVariables | VueCompositionApi.Ref<PostCheckQueryVariables> | ReactiveFunction<PostCheckQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> = {}) {
+export function usePostCheckQuery(variables: PostCheckQueryVariables | VueCompositionApi.Ref<PostCheckQueryVariables> | ReactiveFunction<PostCheckQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> = {}) {
   return VueApolloComposable.useQuery<PostCheckQuery, PostCheckQueryVariables>(PostCheckDocument, variables, options);
 }
-export function usePostCheckLazyQuery(variables: PostCheckQueryVariables | VueCompositionApi.Ref<PostCheckQueryVariables> | ReactiveFunction<PostCheckQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> = {}) {
+export function usePostCheckLazyQuery(variables?: PostCheckQueryVariables | VueCompositionApi.Ref<PostCheckQueryVariables> | ReactiveFunction<PostCheckQueryVariables>, options: VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<PostCheckQuery, PostCheckQueryVariables>> = {}) {
   return VueApolloComposable.useLazyQuery<PostCheckQuery, PostCheckQueryVariables>(PostCheckDocument, variables, options);
 }
 export type PostCheckQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostCheckQuery, PostCheckQueryVariables>;
 export const PostCountDocument = gql`
     query PostCount($pf: PostFiltersInput, $pg: PaginationArg!) {
-  posts(filters: $pf, pagination: $pg) {
-    meta {
-      pagination {
-        total
-        pageSize
-      }
+  posts_connection(filters: $pf, pagination: $pg) {
+    pageInfo {
+      total
+      pageSize
     }
   }
 }
@@ -2101,63 +2146,48 @@ export function usePostCountLazyQuery(variables?: PostCountQueryVariables | VueC
 export type PostCountQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostCountQuery, PostCountQueryVariables>;
 export const PostListDocument = gql`
     query PostList($pf: PostFiltersInput, $tf: TagFiltersInput!, $cf: CategoryFiltersInput, $pg: PaginationArg!) {
-  posts(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
-    meta {
+  posts_connection(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
+    pageInfo {
       ...fullPage
     }
-    data {
+    nodes {
       id
-      attributes {
-        publishedAt
-        title
-        teaser
-        slug
-        header {
-          data {
-            attributes {
-              formats
-            }
-          }
-        }
-        tags {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
-        }
-        category {
-          data {
-            attributes {
-              name
-              slug
-              color
-            }
-          }
+      documentId
+      publishedAt
+      title
+      teaser
+      slug
+      header {
+        formats
+      }
+      tags_connection {
+        nodes {
+          name
+          slug
+          color
         }
       }
-    }
-  }
-  tags(filters: $tf) {
-    data {
-      attributes {
+      category {
         name
         slug
         color
-        description
       }
     }
   }
-  categories(filters: $cf) {
-    data {
-      attributes {
-        name
-        slug
-        color
-        description
-      }
+  tags_connection(filters: $tf) {
+    nodes {
+      name
+      slug
+      color
+      description
+    }
+  }
+  categories_connection(filters: $cf) {
+    nodes {
+      name
+      slug
+      color
+      description
     }
   }
 }
@@ -2193,9 +2223,8 @@ export const CommentatorDocument = gql`
   createComment(
     data: {post: $post, content: $content, username: $username, email: $email, token: $token}
   ) {
-    data {
-      id
-    }
+    id
+    documentId
   }
 }
     `;
