@@ -7,6 +7,7 @@ export const useGlobals = defineStore('globals',() => {
   const maxResults = 100;
   const perPage = 10;
   const perComment = 20;
+  const iMap = new Map<string,Partial<UploadFile>>();
   const refreshRate = 30000;
   const postRefreshRate = 0;
   const searchSurround = 150;
@@ -20,7 +21,8 @@ export const useGlobals = defineStore('globals',() => {
   const col = new Intl.Collator('en');
   const taxoSort = (l:(Partial<Tag> | Partial<Category>)[]) => l.sort((a,b) => col.compare(a?.name ?? '', b?.name ?? '')).sort((a,b) => (((a && 'tier' in a)? a.tier ?? 0 : 0) > ((b && 'tier' in b)? b.tier ?? 0 : 0) ? -1 : 1));
   type SimpleImg = {url:string;width:number;height:number};
-  const getImageData = (imgData:UploadFile):SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => (s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height})).filter(f => f);
+  const getImageFile = (src?:string) => (src? iMap.get(src):undefined);
+  const getImageData = (imgData:Partial<UploadFile>):SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => (s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height})).filter(f => f);
   const getSrcSet = (imgs:SimpleImg[]):string => imgs.filter(i => i.url).map(({url, width}) => `${url} ${width}w`).join(',');
   const unRay = <T>(x:T):T extends any[] ? T[0] : T => (Array.isArray(x) ? x[0] : x);
   const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],null|undefined>[]:T => (Array.isArray(arr)?arr.filter(f => f) as any:arr);
@@ -189,5 +191,5 @@ export const useGlobals = defineStore('globals',() => {
     });
   }
 
-  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile};
 });

@@ -7,7 +7,7 @@ import CommentSection from '../containers/CommentSection.vue';
 import {useGlobals} from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
 import {ref} from 'vue';
-const {processContent, defaultNote, postRefreshRate, hist, unRay, perComment,scrollOption} = useGlobals();
+const {processContent, defaultNote, postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 const selector = router.currentRoute.value.params.select;
@@ -41,7 +41,10 @@ upRes(r => {if (new Date(r.data?.post?.updatedAt ?? updated).getTime() !== updat
 const post = ref<Exclude<Exclude<(typeof result)['value'],undefined>['posts_connection'],null|undefined>['nodes'][number]|undefined>();
 onError(e => void router.push((e.message.includes('publishedAt') && !(e.networkError||e.clientErrors.length || e.protocolErrors.length))?'/NotFound':'/ServerError').then(() => hist(origRoute)));
 onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connection?.nodes.length ? router.push('/NotFound').then(() => hist(origRoute)) : (() => {
-  post.value = r.data.posts_connection.nodes[0];
+  const p = r.data.posts_connection.nodes[0];
+  p.images_connection?.nodes?.forEach(n => !iMap.has(n.url) && iMap.set(n.url, n));
+  p.header && !iMap.has(p.header.url) && iMap.set(p.header.url, p.header);
+  post.value = p;
   document.title = `${post.value.title} - Modal Marginalia`;
   updated = new Date(post.value.updatedAt).getTime();
   if (!inVal) {
@@ -69,7 +72,7 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
         <TaxoList :list="taxoSort([...post.tags_connection?.nodes ?? []])" :tax-type="'tag'" />
       </div>
       <ImageContainer
-        v-if="post.header" :img-data="post.header" :class-name="'banner'"
+        v-if="post.header" :image="post.header.url" :class-name="'banner'"
         custom-size="60vw" />
       <input id="tocButton" type="checkbox">
       <label id="tocLabel" for="tocButton" title="table of contents">⩸</label>

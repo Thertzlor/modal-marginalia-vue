@@ -166,6 +166,14 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
     comments_enabled
     footnotes
     toenotes
+    images_connection {
+      nodes {
+        url
+        caption
+        alternativeText
+        formats
+      }
+    }
     category {
       color
       name
