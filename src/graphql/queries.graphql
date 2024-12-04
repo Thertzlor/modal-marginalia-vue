@@ -11,7 +11,6 @@ fragment fullPage on Pagination {
 query Init($pg: PaginationArg) {
   quotes_connection(pagination: $pg) {
     nodes {
-      id
       documentId
       text
     }
@@ -33,7 +32,7 @@ query Init($pg: PaginationArg) {
       ...totalPages
     }
     nodes {
-      id
+      human_id
       documentId
       publishedAt
       title
@@ -95,7 +94,7 @@ query postSearch(
     }
     nodes {
       documentId
-      id
+      human_id
       publishedAt
       body_searchable
       title
@@ -123,9 +122,9 @@ query postSearch(
   }
 }
 
-query SinglePost($postId: ID!, $commentPagination: PaginationArg) {
+query SinglePost($postId: Int, $commentPagination: PaginationArg) {
   comments_connection(
-    filters: { post: { documentId: { eq: $postId } } }
+    filters: { post: { human_id: { eq: $postId } } }
     pagination: $commentPagination
   ) {
     pageInfo {
@@ -136,7 +135,6 @@ query SinglePost($postId: ID!, $commentPagination: PaginationArg) {
       subcomments_connection {
         nodes {
           documentId
-          id
         }
       }
       createdAt
@@ -147,8 +145,9 @@ query SinglePost($postId: ID!, $commentPagination: PaginationArg) {
     }
   }
 
-  post(documentId: $postId) {
-    id
+  posts_connection(filters:{human_id:  {eq:$postId  }}) {
+    nodes {
+    human_id
     title
     header {
       url
@@ -179,10 +178,12 @@ query SinglePost($postId: ID!, $commentPagination: PaginationArg) {
       }
     }
   }
+  }
 }
 
 query postCheck($postId: ID!) {
   post(documentId: $postId) {
+    human_id
     documentId
     updatedAt
   }
@@ -208,7 +209,7 @@ query PostList(
       ...fullPage
     }
     nodes {
-      id
+      human_id
       documentId
       publishedAt
       title
@@ -265,7 +266,6 @@ mutation commentator(
       token: $token
     }
   ) {
-    id
     documentId
   }
 }

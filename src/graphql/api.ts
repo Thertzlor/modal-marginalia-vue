@@ -34,8 +34,7 @@ export type AboutPage = {
   images: Array<Maybe<UploadFile>>;
   images_connection?: Maybe<UploadFileRelationResponseCollection>;
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
-  pumas?: Maybe<Scalars['JSON']['output']>;
-  text?: Maybe<Scalars['String']['output']>;
+  text: Scalars['String']['output'];
   title?: Maybe<Scalars['String']['output']>;
   toenotes?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -59,7 +58,6 @@ export type AboutPageInput = {
   footnotes?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
   publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
-  pumas?: InputMaybe<Scalars['JSON']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   toenotes?: InputMaybe<Scalars['String']['input']>;
@@ -698,6 +696,7 @@ export type Post = {
   __typename?: 'Post';
   /** @deprecated Use root level fields instead */
   attributes: Post;
+  body: Scalars['String']['output'];
   body_searchable?: Maybe<Scalars['String']['output']>;
   body_vue?: Maybe<Scalars['String']['output']>;
   category?: Maybe<Category>;
@@ -708,8 +707,9 @@ export type Post = {
   /** @deprecated Use root level fields instead */
   data: Post;
   documentId: Scalars['ID']['output'];
-  footnotes: Scalars['String']['output'];
+  footnotes?: Maybe<Scalars['String']['output']>;
   header?: Maybe<UploadFile>;
+  human_id?: Maybe<Scalars['Int']['output']>;
   /** @deprecated Use `documentId` instead */
   id: Scalars['ID']['output'];
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
@@ -719,7 +719,7 @@ export type Post = {
   teaser?: Maybe<Scalars['String']['output']>;
   title: Scalars['String']['output'];
   toc?: Maybe<Scalars['Boolean']['output']>;
-  toenotes: Scalars['String']['output'];
+  toenotes?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -763,6 +763,7 @@ export type PostEntityResponseCollection = {
 
 export type PostFiltersInput = {
   and?: InputMaybe<Array<InputMaybe<PostFiltersInput>>>;
+  body?: InputMaybe<StringFilterInput>;
   body_searchable?: InputMaybe<StringFilterInput>;
   body_vue?: InputMaybe<StringFilterInput>;
   category?: InputMaybe<CategoryFiltersInput>;
@@ -771,6 +772,7 @@ export type PostFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   documentId?: InputMaybe<IdFilterInput>;
   footnotes?: InputMaybe<StringFilterInput>;
+  human_id?: InputMaybe<IntFilterInput>;
   not?: InputMaybe<PostFiltersInput>;
   or?: InputMaybe<Array<InputMaybe<PostFiltersInput>>>;
   publishedAt?: InputMaybe<DateTimeFilterInput>;
@@ -784,6 +786,7 @@ export type PostFiltersInput = {
 };
 
 export type PostInput = {
+  body?: InputMaybe<Scalars['String']['input']>;
   body_searchable?: InputMaybe<Scalars['String']['input']>;
   body_vue?: InputMaybe<Scalars['String']['input']>;
   category?: InputMaybe<Scalars['ID']['input']>;
@@ -791,6 +794,7 @@ export type PostInput = {
   comments_enabled?: InputMaybe<Scalars['Boolean']['input']>;
   footnotes?: InputMaybe<Scalars['String']['input']>;
   header?: InputMaybe<Scalars['ID']['input']>;
+  human_id?: InputMaybe<Scalars['Int']['input']>;
   publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   slug?: InputMaybe<Scalars['String']['input']>;
   tags?: InputMaybe<Array<InputMaybe<Scalars['ID']['input']>>>;
@@ -1703,7 +1707,7 @@ export type InitQueryVariables = Exact<{
 }>;
 
 
-export type InitQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: Array<{ __typename?: 'Quote', id: string, documentId: string, text: string }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, priority: number }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: Array<{ __typename?: 'Post', id: string, documentId: string, publishedAt?: any | null, title: string, slug: string }> } | null };
+export type InitQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: Array<{ __typename?: 'Quote', documentId: string, text: string }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, priority: number }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: Array<{ __typename?: 'Post', human_id?: number | null, documentId: string, publishedAt?: any | null, title: string, slug: string }> } | null };
 
 export type LastPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1713,7 +1717,7 @@ export type LastPostsQuery = { __typename?: 'Query', posts_connection?: { __type
 export type AboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AboutQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPage', text?: string | null, title?: string | null, footnotes?: string | null, toenotes?: string | null } | null };
+export type AboutQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPage', text: string, title?: string | null, footnotes?: string | null, toenotes?: string | null } | null };
 
 export type TagListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1727,22 +1731,22 @@ export type PostSearchQueryVariables = Exact<{
 }>;
 
 
-export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', documentId: string, id: string, publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null, height?: number | null, width?: number | null, url: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null };
+export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', documentId: string, human_id?: number | null, publishedAt?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null, height?: number | null, width?: number | null, url: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null };
 
 export type SinglePostQueryVariables = Exact<{
-  postId: Scalars['ID']['input'];
+  postId?: InputMaybe<Scalars['Int']['input']>;
   commentPagination?: InputMaybe<PaginationArg>;
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: Array<{ __typename?: 'Comment', documentId: string, id: string }> } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null, post?: { __typename?: 'Post', id: string, title: string, body_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes: string, toenotes: string, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, category?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', color?: string | null, name: string, slug: string }> } | null } | null };
+export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Comment', depth: number, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: Array<{ __typename?: 'Comment', documentId: string }> } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }> } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: Array<{ __typename?: 'Post', human_id?: number | null, title: string, body_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes?: string | null, toenotes?: string | null, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, category?: { __typename?: 'Category', color?: string | null, name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', color?: string | null, name: string, slug: string }> } | null }> } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId: Scalars['ID']['input'];
 }>;
 
 
-export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'Post', documentId: string, updatedAt?: any | null } | null };
+export type PostCheckQuery = { __typename?: 'Query', post?: { __typename?: 'Post', human_id?: number | null, documentId: string, updatedAt?: any | null } | null };
 
 export type PostCountQueryVariables = Exact<{
   pf?: InputMaybe<PostFiltersInput>;
@@ -1760,7 +1764,7 @@ export type PostListQueryVariables = Exact<{
 }>;
 
 
-export type PostListQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', id: string, documentId: string, publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null, tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null }> } | null };
+export type PostListQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: Array<{ __typename?: 'Post', human_id?: number | null, documentId: string, publishedAt?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null }> } | null, category?: { __typename?: 'Category', name: string, slug: string, color?: string | null } | null }> } | null, tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: Array<{ __typename?: 'Tag', name: string, slug: string, color?: string | null, description?: string | null }> } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: Array<{ __typename?: 'Category', name: string, slug: string, color?: string | null, description?: string | null }> } | null };
 
 export type CommentatorMutationVariables = Exact<{
   post: Scalars['ID']['input'];
@@ -1771,7 +1775,7 @@ export type CommentatorMutationVariables = Exact<{
 }>;
 
 
-export type CommentatorMutation = { __typename?: 'Mutation', createComment?: { __typename?: 'Comment', id: string, documentId: string } | null };
+export type CommentatorMutation = { __typename?: 'Mutation', createComment?: { __typename?: 'Comment', documentId: string } | null };
 
 export const TotalPagesFragmentDoc = gql`
     fragment totalPages on Pagination {
@@ -1790,7 +1794,6 @@ export const InitDocument = gql`
     query Init($pg: PaginationArg) {
   quotes_connection(pagination: $pg) {
     nodes {
-      id
       documentId
       text
     }
@@ -1807,7 +1810,7 @@ export const InitDocument = gql`
       ...totalPages
     }
     nodes {
-      id
+      human_id
       documentId
       publishedAt
       title
@@ -1947,7 +1950,7 @@ export const PostSearchDocument = gql`
     }
     nodes {
       documentId
-      id
+      human_id
       publishedAt
       body_searchable
       title
@@ -2001,9 +2004,9 @@ export function usePostSearchLazyQuery(variables?: PostSearchQueryVariables | Vu
 }
 export type PostSearchQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<PostSearchQuery, PostSearchQueryVariables>;
 export const SinglePostDocument = gql`
-    query SinglePost($postId: ID!, $commentPagination: PaginationArg) {
+    query SinglePost($postId: Int, $commentPagination: PaginationArg) {
   comments_connection(
-    filters: {post: {documentId: {eq: $postId}}}
+    filters: {post: {human_id: {eq: $postId}}}
     pagination: $commentPagination
   ) {
     pageInfo {
@@ -2014,7 +2017,6 @@ export const SinglePostDocument = gql`
       subcomments_connection {
         nodes {
           documentId
-          id
         }
       }
       createdAt
@@ -2024,35 +2026,37 @@ export const SinglePostDocument = gql`
       }
     }
   }
-  post(documentId: $postId) {
-    id
-    title
-    header {
-      url
-      caption
-      width
-      height
-      alternativeText
-      formats
-    }
-    body_vue
-    slug
-    toc
-    publishedAt
-    updatedAt
-    comments_enabled
-    footnotes
-    toenotes
-    category {
-      color
-      name
+  posts_connection(filters: {human_id: {eq: $postId}}) {
+    nodes {
+      human_id
+      title
+      header {
+        url
+        caption
+        width
+        height
+        alternativeText
+        formats
+      }
+      body_vue
       slug
-    }
-    tags_connection {
-      nodes {
+      toc
+      publishedAt
+      updatedAt
+      comments_enabled
+      footnotes
+      toenotes
+      category {
         color
         name
         slug
+      }
+      tags_connection {
+        nodes {
+          color
+          name
+          slug
+        }
       }
     }
   }
@@ -2075,16 +2079,17 @@ export const SinglePostDocument = gql`
  *   commentPagination: // value for 'commentPagination'
  * });
  */
-export function useSinglePostQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables>, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
+export function useSinglePostQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
   return VueApolloComposable.useQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, variables, options);
 }
-export function useSinglePostLazyQuery(variables?: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables>, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
+export function useSinglePostLazyQuery(variables: SinglePostQueryVariables | VueCompositionApi.Ref<SinglePostQueryVariables> | ReactiveFunction<SinglePostQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<SinglePostQuery, SinglePostQueryVariables>> = {}) {
   return VueApolloComposable.useLazyQuery<SinglePostQuery, SinglePostQueryVariables>(SinglePostDocument, variables, options);
 }
 export type SinglePostQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<SinglePostQuery, SinglePostQueryVariables>;
 export const PostCheckDocument = gql`
     query postCheck($postId: ID!) {
   post(documentId: $postId) {
+    human_id
     documentId
     updatedAt
   }
@@ -2154,7 +2159,7 @@ export const PostListDocument = gql`
       ...fullPage
     }
     nodes {
-      id
+      human_id
       documentId
       publishedAt
       title
@@ -2226,7 +2231,6 @@ export const CommentatorDocument = gql`
   createComment(
     data: {post: $post, content: $content, username: $username, email: $email, token: $token}
   ) {
-    id
     documentId
   }
 }
