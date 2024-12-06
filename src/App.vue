@@ -77,7 +77,7 @@ const sToN = (s:string,unit='',mult=100) => parseFloat(s.slice(0,unit.length*-1|
 const nToS = (n:number,unit='',mult=100) => `${n/mult}${unit}`;
 const savedVars = JSON.parse(localStorage.getItem(lVar)??'{}');
 
-type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>};
+type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number};
 type VarRef<T extends string=string> = {input:Ref<number>, output:ComputedRef<string>,name:T} & VarData;
 
 type Cd = typeof cssData;
@@ -89,6 +89,7 @@ const cssData = [
   {name:'text_fullwidth',unit:'vw',mult:1,min:20,max:60,description:'Article Width',condition:matcher(/\/post\/|\/about$/)},
   {name:'bg_opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
   {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:''},
+  // {name:'p_factor',min:0,max:3,description:'Paralax factor',unit:'',mult:1,step:0.1},
   {name:'cubeTransform',min:0,max:10,mult:1,description:'Rectangle Growth',unit:'em',condition:matcher(/^\/$/)}
 ] as const;
 const _miscData = [
@@ -279,11 +280,12 @@ const scrollcheck = s => {
   <div id="settings" :style="finalStyle" class="grayborder">
     <button id="close" @click="cl">x</button>
     <div>Style Settings</div>
-    <template v-for="{input,min,max,description,condition,output,name} of cssObject" :key="name">
+    <template v-for="{input,min,max,description,condition,output,name,step} of cssObject" :key="name">
       <label v-if="!condition || condition.value" :title="output.value">
         {{ description }}
         <input
-          v-model.number="input.value" :min="min" :max="max"
+          v-model.number="input.value"
+          :step="step ?? 1" :min="min" :max="max"
           type="range" @wheel.passive="e=>scrollini(input,e)">
       </label>
     </template>
@@ -300,12 +302,12 @@ const scrollcheck = s => {
     :no="cookNo" @confirm="c=>cookieConfirms.c?.(c)" />
   <GenericMessage v-if="showMsg" :msg="showMsg" @confirm="()=> (showMsg='')" />
   <label class="menu_label" title="Show Menu" for="menucheck" />
-  <div class="wrapper" :style="selectKey(finalStyle,'--p_opacity')" @scroll="scrollcheck">
+  <div class="wrapper" :style="finalStyle" @scroll="scrollcheck">
     <div class="parallax-wrapper">
       <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
       <div class="parallax p2" />
       <div :style="{backgroundImage, opacity:`calc(var(--p_opacity) * ${opacity})`}" class="parallax p3 invisible" />
-      <div :style="finalStyle" class="content">
+      <div class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal<br>Marginalia</RouterLink></h1>
         <SidebarRegular :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="result?.posts_connection?.nodes ?? []" />
         <RouterView v-slot="{Component, route: compRoute}" :quote="quote">
