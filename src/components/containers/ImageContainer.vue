@@ -19,6 +19,6 @@ const iml = ref(false);
         :style="{aspectRatio: `${data.width} / ${data.height}`, width: iml ? 'auto' : '', maxHeight:className.includes('banner')?undefined:`${data.height}px`}" :sizes="customSize || sizeText" :height="data.height??undefined"
         :width="data.width??undefined" @load="e => ((iml = true), imgload(e, 2))">
     </a>
-    <figcaption v-if="caption || data.caption">{{ caption || data.caption }}</figcaption>
+    <figcaption v-if="caption?.trim() || data.caption?.trim()">{{ caption || data.caption }}</figcaption>
   </figure>
 </template>
