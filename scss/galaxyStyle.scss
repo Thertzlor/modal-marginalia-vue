@@ -1826,8 +1826,21 @@ td.hljs-ln-numbers {
     margin: .2em auto;
     font-size: 1.3em;
   }
+  #comment_form {
+    margin-top: var(--input_margin);
 
-  #comment_form { margin-top: var(--input_margin); }
+    .userhint {
+      font-size: .8em;
+      font-weight: lighter;
+      opacity: 0;
+      user-select: none;
+      text-shadow: var(--subtle_shadow);
+      margin-top: .5em;
+      line-height: 0;
+      transition: opacity .2s ease-in;
+    }
+    input:focus ~ .userhint { opacity: .7; }
+  }
   .comment_input {
     size: var(--input_inactive_w) var(--input_inactive_h);
     color: white;

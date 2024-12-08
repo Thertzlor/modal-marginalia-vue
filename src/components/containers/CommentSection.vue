@@ -105,6 +105,7 @@ function commentSubmit(challengeToken) {
         size="invisible" challenge-container="challenger" @pg="propagate"
         @verify="commentSubmit" @expired="onExpire" @challenge-expired="onChallengeExpire"
         @error="onError" />
+      <div class="userhint">Note that an email address can only be used with a single username.</div>
     </form>
   </div>
   <div id="challenger" :class="{captive: activeCaptcha}" />
