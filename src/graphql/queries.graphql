@@ -137,6 +137,7 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
           documentId
         }
       }
+      documentId
       createdAt
       content
       author {

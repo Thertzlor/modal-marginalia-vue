@@ -14,8 +14,10 @@ export const useGlobals = defineStore('globals',() => {
   const daysNew = 12;
   const newTime = daysNew * 24 * 60 * 60 * 1000;
   const defaultNote ='<olstyle="list-style-type:decimal;"><li>#</li></ol>';
-  const apiBase = 'http://192.168.0.35:1337';
-  const apiURL=`${apiBase}/api`;
+  const apiBase = 'https://modal-marginalia-cms.up.railway.app';
+  // const apiBase = 'http://192.168.0.35:1337';
+
+  // const apiURL=`${apiBase}/api`;
   const graphqlURL=`${apiBase}/graphql`;
   const gerDate = (date:Date):string => new Date(date).toLocaleString('de-DE', {month: '2-digit',day: '2-digit',year: 'numeric'});
   const col = new Intl.Collator('en');
@@ -191,5 +193,5 @@ export const useGlobals = defineStore('globals',() => {
     });
   }
 
-  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,apiURL,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile};
 });
