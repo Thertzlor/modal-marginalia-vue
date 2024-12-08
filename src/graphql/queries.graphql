@@ -68,7 +68,7 @@ query TagList {
     nodes {
       name
       slug
-      color
+      description
       posts_connection(
         filters: {
           publishedAt: { notNull: true }
@@ -110,13 +110,12 @@ query postSearch(
         nodes {
           name
           slug
-          color
+          description
         }
       }
       category {
         name
         slug
-        color
       }
     }
   }
@@ -176,13 +175,12 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
       }
     }
     category {
-      color
       name
       slug
     }
     tags_connection {
       nodes {
-        color
+        description
         name
         slug
       }
@@ -233,13 +231,12 @@ query PostList(
         nodes {
           name
           slug
-          color
+          description
         }
       }
       category {
         name
         slug
-        color
       }
     }
   }
@@ -247,7 +244,6 @@ query PostList(
     nodes {
       name
       slug
-      color
       description
     }
   }
@@ -255,7 +251,6 @@ query PostList(
     nodes {
       name
       slug
-      color
       description
     }
   }
