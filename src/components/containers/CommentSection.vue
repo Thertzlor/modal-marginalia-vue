@@ -1,11 +1,11 @@
 <script lang ="ts" setup>
-import type {Comment, Pagination, PaginationArg} from '@/graphql/api';
+import type {Pagination, PaginationArg,SinglePostQuery} from '@/graphql/api';
 import {ref} from 'vue';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
 import {useCommentatorMutation} from '@/graphql/api';
 import PaginationWidget from '../navigation/PaginationWidget.vue';
 
-const props = defineProps<{postId:number, commentData:Comment[], page?:number, pagination?:Pagination}>();
+const props = defineProps<{postId:string, commentData:NonNullable<SinglePostQuery['comments_connection']>['nodes'], page?:number, pagination?:Pagination}>();
 const emit = defineEmits<{
   (e:'pg', arg:PaginationArg)
   (e:'fetch', value:true):void
@@ -36,7 +36,7 @@ onCommentError(e => alert(`Something went wrong:
   ${e.message ?? 'Unknown error'}
   Try again if you like.`));
 
-const sendComment = () => mutate({email: mail.value, username: user.value, content: body.value, token: token.value,post:props.postId.toString(10)});
+const sendComment = () => mutate({email: mail.value, username: user.value, content: body.value, token: token.value,post:props.postId});
 
 function onExpire() {
   console.log('Ex Pire');
@@ -71,7 +71,7 @@ function commentSubmit(challengeToken) {
       v-if="pagination" term="p" :page-data="pagination"
       @pg="propagate" />
     <ul v-if="commentData.length">
-      <li v-for="{ author: {username}, createdAt, content, documentId} in commentData.filter((f):f is Present<NonNullable<typeof f>> & {author:{}} => !!(f?.author))" :key="documentId">
+      <li v-for="{ author: {username}, createdAt, content, documentId} in commentData.filter((f):f is typeof f & {author:{},createdAt:{}} => !!(f?.author && f.createdAt)).sort((a,b) => (a.createdAt as Date).getTime() - (b.createdAt as Date).getTime())" :key="documentId">
         <span class="commentitle">{{ username }}</span>
         <span class="commentStats">posted {{ gerDate(createdAt??new Date(0)) }}</span>
         <hr>

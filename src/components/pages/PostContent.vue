@@ -93,7 +93,7 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
     </article>
     <CommentSection
       v-if="post?.comments_enabled" :pagination="result?.comments_connection?.pageInfo" :page="1"
-      :post-id="postId" :comment-data="result?.comments_connection?.nodes as any as Comment[] ?? []" @pg="rePage"
+      :post-id="post.documentId" :comment-data="result?.comments_connection?.nodes ?? []" @pg="rePage"
       @fetch="contentFetcher" />
   </div>
 </template>
