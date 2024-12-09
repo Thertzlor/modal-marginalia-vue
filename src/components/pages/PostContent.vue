@@ -6,6 +6,7 @@ import TaxoList from '../containers/TaxoList.vue';
 import CommentSection from '../containers/CommentSection.vue';
 import {useGlobals} from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
+import {useHead} from '@unhead/vue';
 import {ref} from 'vue';
 const {processContent, defaultNote, postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
 const router = useRouter();
@@ -45,7 +46,11 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connec
   p.images_connection?.nodes?.forEach(n => !iMap.has(n.url) && iMap.set(n.url, n));
   p.header && !iMap.has(p.header.url) && iMap.set(p.header.url, p.header);
   post.value = p;
-  document.title = `${post.value.title} - Modal Marginalia`;
+  const titlus = `${post.value.title} - Modal Marginalia`;
+  useHead({
+    title:titlus,
+    meta:[{name:'description',content:post.value.teaser},{name:'og:url',content:`https://www.modal-marginalia.com/post/${post.value.human_id}-${post.value.slug}`},{name:'og:description',content:post.value.teaser},{name:'og:title',content:titlus},{name:'og:image',content:post.value.header?.url}]
+  });
   updated = new Date(post.value.updatedAt).getTime();
   if (!inVal) {
     hashNav();
