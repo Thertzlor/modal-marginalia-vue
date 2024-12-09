@@ -27,7 +27,7 @@ const getMax = computed(() => (([...((tagList.value)?.tags_connection?.nodes ?? 
     <h1 class="fadeborder generic_header">Tag Cloud</h1>
     <main v-if="tagList?.tags_connection" class="cloud">
       <ul>
-        <li v-for=" {slug, name, description, posts_connection: {nodes: {length}, }, } in tagList.tags_connection.nodes.filter((f): f is typeof f & {posts_connection:{nodes:Post[]}} => !!f.posts_connection?.nodes.length)" :key="`post-list?tag=${slug}`" :title="`(Posts: ${length}) ${description}`">
+        <li v-for=" {slug, name, description, posts_connection: {nodes: {length}}} in tagList.tags_connection.nodes.filter((f): f is typeof f & {posts_connection:{nodes:Post[]}} => !!f.posts_connection?.nodes.length)" :key="`post-list?tag=${slug}`" :title="`(Posts: ${length})${description?` ${description}`:''}`">
           <RouterLink :style="{fontSize: `${linearTransform(length, 1, getMax, minEm, maxEm).toFixed(2)}em`,fontWeight: linearTransform(length, 1, getMax, minWeight, maxWeight).toFixed(2)}" :to="`post-list?tag=${slug}`">{{ name }}</RouterLink>
         </li>
       </ul>
