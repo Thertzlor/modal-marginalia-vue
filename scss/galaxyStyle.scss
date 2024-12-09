@@ -320,13 +320,17 @@ h1 {
     max-width: 90%;
   }
   &.tag_header {
+    position: relative;
     &:hover::after { opacity: .4; }
     &::after {
-      display: block;
-      opacity: 0;
-      transition: opacity .2s ease;
-      font-weight: lighter;
       content: "...that technically also contains categories (but don't tell anyone)";
+      transform: translateX(-50%);
+      transition: opacity .2s ease;
+      opacity: 0;
+      left: 50%;
+      white-space: nowrap;
+      display: block;
+      font-weight: lighter;
       position: absolute;
       padding-top: .5em;
       font-size: .6em;
@@ -1804,6 +1808,11 @@ td.hljs-ln-numbers {
     form { line-height: 8em; }
   }
 
+  .edit_label {
+    cursor: pointer;
+    color: var(--hyperlink);
+  }
+
   font-size: var(--text_multiplier);
   position: static !important;
   display: block;
@@ -1827,6 +1836,10 @@ td.hljs-ln-numbers {
     margin-right: 3%;
     margin-bottom: 1%;
 
+    &.vis {
+      visibility: visible;
+      opacity: 1;
+    }
     &:active { color: rgb(160 199 235); }
     &[type="text"] {
       width: calc(70% - 15.15em);
@@ -1839,7 +1852,7 @@ td.hljs-ln-numbers {
     margin: .2em auto;
     font-size: 1.3em;
   }
-  #comment_form {
+  .com_forms {
     margin-top: var(--input_margin);
 
     .userhint {
@@ -1855,6 +1868,14 @@ td.hljs-ln-numbers {
     input:focus ~ .userhint { opacity: .7; }
   }
   .comment_input {
+    &.edit {
+      margin-top: -1.5em;
+      margin-bottom: .5em;
+      padding: .5em;
+      height: 7em;
+      width: 100%;
+    }
+
     size: var(--input_inactive_w) var(--input_inactive_h);
     color: white;
     font-size: .9em;

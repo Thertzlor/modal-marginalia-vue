@@ -285,10 +285,34 @@ mutation commentator(
   $content: String!
   $email: String!
   $token: String!
+  $edit_token:String
 ) {
   createComment(
     data: {
       post: $post
+      content: $content
+      username: $username
+      email: $email
+      token: $token
+      edit_token: $edit_token
+    }
+  ) {
+    documentId
+  }
+}
+
+mutation commentEditor(
+  $post: ID!
+  $username: String!
+  $content: String!
+  $email: String!
+  $token: String!
+  $edit_token:String
+) {
+  updateComment(
+    documentId: $post
+    data: {
+      edit_token: $edit_token
       content: $content
       username: $username
       email: $email

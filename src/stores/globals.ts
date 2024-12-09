@@ -14,12 +14,12 @@ export const useGlobals = defineStore('globals',() => {
   const daysNew = 12;
   const newTime = daysNew * 24 * 60 * 60 * 1000;
   const defaultNote ='<olstyle="list-style-type:decimal;"><li>#</li></ol>';
-  const apiBase = 'https://modal-marginalia-cms.up.railway.app';
-  // const apiBase = 'http://192.168.0.35:1337';
+  // const apiBase = 'https://modal-marginalia-cms.up.railway.app';
+  const apiBase = 'http://192.168.0.35:1337';
 
   // const apiURL=`${apiBase}/api`;
   const graphqlURL=`${apiBase}/graphql`;
-  const gerDate = (date:Date):string => new Date(date).toLocaleString('de-DE', {month: '2-digit',day: '2-digit',year: 'numeric'});
+  const gerDate = (date:Date|string):string => new Date(date).toLocaleString('de-DE', {month: '2-digit',day: '2-digit',year: 'numeric'});
   const col = new Intl.Collator('en');
   const taxoSort = (l:(Partial<Tag> | Partial<Category>)[]) => l.sort((a,b) => col.compare(a?.name ?? '', b?.name ?? '')).sort((a,b) => (((a && 'tier' in a)? a.tier ?? 0 : 0) > ((b && 'tier' in b)? b.tier ?? 0 : 0) ? -1 : 1));
   type SimpleImg = {url:string;width:number;height:number};
