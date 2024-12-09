@@ -18,17 +18,17 @@ const linearTransform = (val:number, oldMin:number, oldMax:number, newMin:number
 const {result: tagList, onError} = useTagListQuery();
 onError(() => void router.push('/ServerError').then(() => hist(origRoute)));
 
-const getMax = computed(() => (([...((tagList.value)?.tags_connection?.nodes ?? [])]).sort((a, b) => ((a.posts_connection?.nodes.length ?? NaN) < (b.posts_connection?.nodes.length ?? NaN) ? 1 : -1))[0]?.posts_connection?.nodes.length ?? 1));
+const getMax = computed(() => (([...((tagList.value)?.tags_connection?.nodes ?? []),...((tagList.value)?.categories_connection?.nodes ?? [])]).sort((a, b) => ((a.posts_connection?.nodes.length ?? NaN) < (b.posts_connection?.nodes.length ?? NaN) ? 1 : -1))[0]?.posts_connection?.nodes.length ?? 1));
 
 </script>
 
 <template>
   <div class="article_container">
-    <h1 class="fadeborder generic_header">Tag Cloud</h1>
+    <h1 class="fadeborder generic_header tag_header">Tag Cloud</h1>
     <main v-if="tagList?.tags_connection" class="cloud">
       <ul>
-        <li v-for=" {slug, name, description, posts_connection: {nodes: {length}}} in tagList.tags_connection.nodes.filter((f): f is typeof f & {posts_connection:{nodes:Post[]}} => !!f.posts_connection?.nodes.length)" :key="`post-list?tag=${slug}`" :title="`(Posts: ${length})${description?` ${description}`:''}`">
-          <RouterLink :style="{fontSize: `${linearTransform(length, 1, getMax, minEm, maxEm).toFixed(2)}em`,fontWeight: linearTransform(length, 1, getMax, minWeight, maxWeight).toFixed(2)}" :to="`post-list?tag=${slug}`">{{ name }}</RouterLink>
+        <li v-for=" {slug, isCat, name, description, posts_connection: {nodes: {length}}} in [...tagList.tags_connection.nodes.map(t=>({isCat:false,...t})),...tagList.categories_connection?.nodes.map(c=>({ isCat:true,...c })) ?? []].filter((f): f is typeof f & {posts_connection:{nodes:Post[]}} => !!f.posts_connection?.nodes.length)" :key="`${isCat?'c':'t'}=${slug}`" :title="`(Posts: ${length})${!isCat && description?` ${description}`:''}`">
+          <RouterLink :style="{fontSize: `${linearTransform(length, 1, getMax, minEm, maxEm).toFixed(2)}em`,fontWeight: linearTransform(length, 1, getMax, minWeight, maxWeight).toFixed(2)}" :to="`post-list?${isCat?'category':'tag'}=${slug}`">{{ name }}</RouterLink>
         </li>
       </ul>
     </main>

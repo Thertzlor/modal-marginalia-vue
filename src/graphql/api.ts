@@ -1740,7 +1740,7 @@ export type AboutQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'Abo
 export type TagListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type TagListQuery = { __typename?: 'Query', tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null, posts_connection?: { __typename?: 'PostRelationResponseCollection', nodes: { __typename?: 'Post', documentId: string }[] } | null }[] } | null };
+export type TagListQuery = { __typename?: 'Query', tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null, posts_connection?: { __typename?: 'PostRelationResponseCollection', nodes: { __typename?: 'Post', documentId: string }[] } | null }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, description?: string | null, posts_connection?: { __typename?: 'PostRelationResponseCollection', nodes: { __typename?: 'Post', documentId: string }[] } | null }[] } | null };
 
 export type PostSearchQueryVariables = Exact<{
   postFilter: PostFiltersInput;
@@ -1922,6 +1922,23 @@ export type AboutQueryCompositionFunctionResult = VueApolloComposable.UseQueryRe
 export const TagListDocument = gql`
     query TagList {
   tags_connection(
+    filters: {posts: {documentId: {notNull: true}, publishedAt: {notNull: true}}}
+    pagination: {pageSize: 100}
+  ) {
+    nodes {
+      name
+      slug
+      description
+      posts_connection(
+        filters: {publishedAt: {notNull: true}, documentId: {notNull: true}}
+      ) {
+        nodes {
+          documentId
+        }
+      }
+    }
+  }
+  categories_connection(
     filters: {posts: {documentId: {notNull: true}, publishedAt: {notNull: true}}}
     pagination: {pageSize: 100}
   ) {
