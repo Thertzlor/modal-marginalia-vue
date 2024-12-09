@@ -319,6 +319,19 @@ h1 {
     padding: .5% 6vw;
     max-width: 90%;
   }
+  &.tag_header {
+    &:hover::after { opacity: .4; }
+    &::after {
+      display: block;
+      opacity: 0;
+      transition: opacity .2s ease;
+      font-weight: lighter;
+      content: "...that technically also contains categories (but don't tell anyone)";
+      position: absolute;
+      padding-top: .5em;
+      font-size: .6em;
+    }
+  }
   &.sitename {
     @media (max-width: $mediaCutoff) { margin-top: -13vw; }
 
