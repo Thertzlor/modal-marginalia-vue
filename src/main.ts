@@ -2,6 +2,7 @@
 import App from '@/App.vue';
 import router from '@/router';
 import {createApp,h} from 'vue';
+import {createHead} from '@unhead/vue';
 import {createPinia} from 'pinia';
 import {DefaultApolloClient} from '@vue/apollo-composable';
 import {ApolloClient, InMemoryCache, HttpLink, from} from '@apollo/client/core';
@@ -19,7 +20,8 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 });
 
 const pinia = createPinia();
-const app = createApp({render: () => h(App),compilerOptions:{isCustomElement(t){return ['CustomLink'].includes(t);}}}).use(router).use(pinia);
+const head = createHead();
+const app = createApp({render: () => h(App),compilerOptions:{isCustomElement(t){return ['CustomLink'].includes(t);}}}).use(router).use(pinia).use(head);
 //Pina is loaded now
 
 const globals = useGlobals();
