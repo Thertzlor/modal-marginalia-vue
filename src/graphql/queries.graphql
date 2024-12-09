@@ -158,6 +158,7 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
       alternativeText
       formats
     }
+    teaser
     body_vue
     slug
     toc
