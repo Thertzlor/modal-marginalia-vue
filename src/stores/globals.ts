@@ -14,8 +14,7 @@ export const useGlobals = defineStore('globals',() => {
   const daysNew = 12;
   const newTime = daysNew * 24 * 60 * 60 * 1000;
   const defaultNote ='<olstyle="list-style-type:decimal;"><li>#</li></ol>';
-  // const apiBase = 'https://modal-marginalia-cms.up.railway.app';
-  const apiBase = 'http://192.168.0.35:1337';
+  const apiBase = (import.meta as any).env.MODE === 'development'?'http://192.168.0.35:1337':'https://modal-marginalia-cms.up.railway.app';
 
   // const apiURL=`${apiBase}/api`;
   const graphqlURL=`${apiBase}/graphql`;

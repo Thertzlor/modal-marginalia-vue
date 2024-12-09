@@ -92,7 +92,7 @@ const editSubmit =(id:string,event:SubmitEvent) => {
   const newValue = (event.target as any)?.edit_content.value as string|undefined;
   if (!newValue?.trim() || newValue.length < 20) return alert('Your comment needs at least 20 characters. Surely, you have more to say?');
   editing.value[id] = undefined;
-  editComment({post:id,content:newValue,email:saved.email,username:saved.user,token:'',edit_token:saved.edit_token});
+  editComment({post:id,content:newValue,email:saved.email,username:saved.user,token:'',edit_token:saved.edit_token}).catch(console.log);
 };
 </script>
 
