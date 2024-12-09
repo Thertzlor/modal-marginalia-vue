@@ -111,11 +111,6 @@ export default [{
 
         "@typescript-eslint/consistent-type-assertions": 1,
         "@typescript-eslint/no-use-before-define": 1,
-
-        "@typescript-eslint/explicit-module-boundary-types": [1, {
-            allowArgumentsExplicitlyTypedAsAny: true,
-        }],
-
         indent: [1, 2, {
             flatTernaryExpressions: true,
             VariableDeclarator: "first",
