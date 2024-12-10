@@ -24,11 +24,13 @@ export type AboutPage = {
   __typename?: 'AboutPage';
   /** @deprecated Use root level fields instead */
   attributes: AboutPage;
+  body_vue?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['DateTime']['output']>;
   /** @deprecated Use root level fields instead */
   data: AboutPage;
   documentId: Scalars['ID']['output'];
   footnotes?: Maybe<Scalars['String']['output']>;
+  footnotes_vue?: Maybe<Scalars['String']['output']>;
   /** @deprecated Use `documentId` instead */
   id: Scalars['ID']['output'];
   images: Maybe<UploadFile>[];
@@ -37,6 +39,7 @@ export type AboutPage = {
   text: Scalars['String']['output'];
   title?: Maybe<Scalars['String']['output']>;
   toenotes?: Maybe<Scalars['String']['output']>;
+  toenotes_vue?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -55,12 +58,15 @@ export type AboutPageImages_ConnectionArgs = {
 };
 
 export type AboutPageInput = {
+  body_vue?: InputMaybe<Scalars['String']['input']>;
   footnotes?: InputMaybe<Scalars['String']['input']>;
+  footnotes_vue?: InputMaybe<Scalars['String']['input']>;
   images?: InputMaybe<InputMaybe<Scalars['ID']['input']>[]>;
   publishedAt?: InputMaybe<Scalars['DateTime']['input']>;
   text?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
   toenotes?: InputMaybe<Scalars['String']['input']>;
+  toenotes_vue?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type BooleanFilterInput = {
@@ -709,6 +715,7 @@ export type Post = {
   data: Post;
   documentId: Scalars['ID']['output'];
   footnotes?: Maybe<Scalars['String']['output']>;
+  footnotes_vue?: Maybe<Scalars['String']['output']>;
   header?: Maybe<UploadFile>;
   human_id: Scalars['Int']['output'];
   /** @deprecated Use `documentId` instead */
@@ -723,6 +730,7 @@ export type Post = {
   title: Scalars['String']['output'];
   toc?: Maybe<Scalars['Boolean']['output']>;
   toenotes?: Maybe<Scalars['String']['output']>;
+  toenotes_vue?: Maybe<Scalars['String']['output']>;
   updatedAt?: Maybe<Scalars['DateTime']['output']>;
 };
 
@@ -789,6 +797,7 @@ export type PostFiltersInput = {
   createdAt?: InputMaybe<DateTimeFilterInput>;
   documentId?: InputMaybe<IdFilterInput>;
   footnotes?: InputMaybe<StringFilterInput>;
+  footnotes_vue?: InputMaybe<StringFilterInput>;
   human_id?: InputMaybe<IntFilterInput>;
   not?: InputMaybe<PostFiltersInput>;
   or?: InputMaybe<InputMaybe<PostFiltersInput>[]>;
@@ -799,6 +808,7 @@ export type PostFiltersInput = {
   title?: InputMaybe<StringFilterInput>;
   toc?: InputMaybe<BooleanFilterInput>;
   toenotes?: InputMaybe<StringFilterInput>;
+  toenotes_vue?: InputMaybe<StringFilterInput>;
   updatedAt?: InputMaybe<DateTimeFilterInput>;
 };
 
@@ -810,6 +820,7 @@ export type PostInput = {
   comments?: InputMaybe<InputMaybe<Scalars['ID']['input']>[]>;
   comments_enabled?: InputMaybe<Scalars['Boolean']['input']>;
   footnotes?: InputMaybe<Scalars['String']['input']>;
+  footnotes_vue?: InputMaybe<Scalars['String']['input']>;
   header?: InputMaybe<Scalars['ID']['input']>;
   human_id?: InputMaybe<Scalars['Int']['input']>;
   images?: InputMaybe<InputMaybe<Scalars['ID']['input']>[]>;
@@ -820,6 +831,7 @@ export type PostInput = {
   title?: InputMaybe<Scalars['String']['input']>;
   toc?: InputMaybe<Scalars['Boolean']['input']>;
   toenotes?: InputMaybe<Scalars['String']['input']>;
+  toenotes_vue?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type PostRelationResponseCollection = {
@@ -1736,7 +1748,7 @@ export type LastPostsQuery = { __typename?: 'Query', posts_connection?: { __type
 export type AboutQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AboutQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPage', text: string, title?: string | null, footnotes?: string | null, toenotes?: string | null } | null };
+export type AboutQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPage', title?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null } | null };
 
 export type TagListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1758,7 +1770,7 @@ export type SinglePostQueryVariables = Exact<{
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Comment', depth: number, documentId: string, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: { __typename?: 'Comment', documentId: string }[] } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: { __typename?: 'Post', documentId: string, human_id: number, title: string, teaser?: string | null, body_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, footnotes?: string | null, toenotes?: string | null, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, images_connection?: { __typename?: 'UploadFileRelationResponseCollection', nodes: { __typename?: 'UploadFile', url: string, caption?: string | null, alternativeText?: string | null, formats?: any | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', description?: string | null, name: string, slug: string }[] } | null }[] } | null };
+export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Comment', depth: number, documentId: string, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: { __typename?: 'Comment', documentId: string }[] } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: { __typename?: 'Post', documentId: string, human_id: number, title: string, teaser?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null, slug: string, toc?: boolean | null, publishedAt?: any | null, updatedAt?: any | null, comments_enabled: boolean, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, images_connection?: { __typename?: 'UploadFileRelationResponseCollection', nodes: { __typename?: 'UploadFile', url: string, caption?: string | null, alternativeText?: string | null, formats?: any | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', description?: string | null, name: string, slug: string }[] } | null }[] } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId: Scalars['ID']['input'];
@@ -1906,10 +1918,10 @@ export type LastPostsQueryCompositionFunctionResult = VueApolloComposable.UseQue
 export const AboutDocument = gql`
     query about {
   aboutPage {
-    text
     title
-    footnotes
-    toenotes
+    body_vue
+    toenotes_vue
+    footnotes_vue
   }
 }
     `;
@@ -2090,13 +2102,13 @@ export const SinglePostDocument = gql`
       }
       teaser
       body_vue
+      toenotes_vue
+      footnotes_vue
       slug
       toc
       publishedAt
       updatedAt
       comments_enabled
-      footnotes
-      toenotes
       images_connection {
         nodes {
           url

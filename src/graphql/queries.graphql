@@ -51,10 +51,10 @@ query lastPosts {
 
 query about {
   aboutPage {
-    text
     title
-    footnotes
-    toenotes
+    body_vue
+    toenotes_vue
+    footnotes_vue
   }
 }
 
@@ -182,13 +182,13 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
     }
     teaser
     body_vue
+    toenotes_vue
+    footnotes_vue
     slug
     toc
     publishedAt
     updatedAt
     comments_enabled
-    footnotes
-    toenotes
     images_connection {
       nodes {
         url
