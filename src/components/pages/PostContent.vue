@@ -6,9 +6,10 @@ import TaxoList from '../containers/TaxoList.vue';
 import CommentSection from '../containers/CommentSection.vue';
 import {useGlobals} from '@/stores/globals';
 import DynaPost from '../containers/DynaPost.vue';
+import DynaNote from '../containers/DynaNote.vue';
 import {useHead} from '@unhead/vue';
 import {ref} from 'vue';
-const {processContent, defaultNote, postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
+const {processContent, postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 const selector = router.currentRoute.value.params.select;
@@ -89,14 +90,8 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
           @vue:mounted="processContent(true)"
           @vue:updated="processContent(false)" />
       </main>
-      <div
-        v-if="post.footnotes
-          && post.footnotes.replace(/\s*/g, '') !== defaultNote" id="footnote_container" class="footnotes">
-        <DynaPost :content="post.footnotes" />
-      </div>
-      <div v-if="post.toenotes && post.toenotes.replace(/\s*/g, '') !== defaultNote" id="toenote_container" class="footnotes toenotes">
-        <DynaPost :content="post.toenotes" />
-      </div>
+      <DynaNote :content="post.footnotes" />
+      <DynaNote :content="post.toenotes" :toenotes="true" />
     </article>
     <CommentSection
       v-if="post?.comments_enabled" :pagination="result?.comments_connection?.pageInfo" :page="1"
