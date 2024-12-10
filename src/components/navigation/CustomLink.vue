@@ -4,9 +4,10 @@ import {RouterLink} from 'vue-router';
 import {useGlobals} from '@/stores/globals';
 const {scrollOption} = useGlobals();
 const props = defineProps({...(RouterLink as any).props, noBlank: Boolean});
+const emit = defineEmits<{(arg:'nav')}>();
 const isExt = computed(() => typeof props.to === 'string' && props.to.startsWith('http'));
 const isAnchor = computed(() => !isExt.value && props.to.startsWith('#'));
-const scrolly = (anch:string) => document.getElementById(anch.slice(1))?.scrollIntoView(scrollOption);
+const scrolly = (anch:string) => (document.getElementById(anch.slice(1))?.scrollIntoView(scrollOption),emit('nav'));
 </script>
 
 <template>
