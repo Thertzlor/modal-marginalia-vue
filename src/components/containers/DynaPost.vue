@@ -3,6 +3,7 @@ import {type Component, computed,ref} from 'vue';
 import CustomLink from '../navigation/CustomLink.vue';
 import VueHeader from '../navigation/VueHeader.vue';
 import ImageContainer from '../containers/ImageContainer.vue';
+import CodeWrapper from '../containers/CodeWrapper.vue';
 import ToC from '../navigation/ToC.vue';
 const props = defineProps<{content:string,toc?:boolean|null,main?:boolean,published?:string}>();
 const headerinos = ref<[number,string,string][]>([]);
@@ -11,7 +12,7 @@ const dynamicComponent = computed(():Component => (
   {
     methods:{addHeader},
     template: props.content,
-    components: {CustomLink, ImageContainer,VueHeader}
+    components: {CustomLink, ImageContainer,VueHeader,CodeWrapper}
   }
 ));
 </script>
