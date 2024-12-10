@@ -34,6 +34,7 @@ const hashNav = (noDelay = false) => {
 
 let updated:number|undefined;
 let inVal:number|undefined;
+const heady = useHead({});
 
 const {result, onResult, refetch, onError} = useSinglePostQuery({postId:postId,commentPagination});
 
@@ -47,7 +48,7 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connec
   p.header && !iMap.has(p.header.url) && iMap.set(p.header.url, p.header);
   post.value = p;
   const titlus = `${post.value.title} - Modal Marginalia`;
-  useHead({
+  heady?.patch({
     title:titlus,
     meta:[{name:'description',content:post.value.teaser},{name:'og:url',content:`https://www.modal-marginalia.com/post/${post.value.human_id}-${post.value.slug}`},{name:'og:description',content:post.value.teaser},{name:'og:title',content:titlus},{name:'og:image',content:post.value.header?.url}]
   });
@@ -83,9 +84,10 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
       <label id="tocLabel" for="tocButton" title="table of contents">⩸</label>
       <main>
         <span class="datespan">Posted {{ gerDate(post.publishedAt) }}</span>
-        <span class="post_text">
-          <DynaPost :content="post.body_vue ?? ''" @vue:mounted="processContent(post.toc,true)" @vue:updated="processContent(post.toc,false)" />
-        </span>
+        <DynaPost
+          :toc="post.toc" :main="true" :content="post.body_vue ?? ''"
+          @vue:mounted="processContent(post.toc,true)"
+          @vue:updated="processContent(post.toc,false)" />
       </main>
       <div
         v-if="post.footnotes
