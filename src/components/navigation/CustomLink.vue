@@ -15,5 +15,6 @@ const scrolly = (anch:string) => (document.getElementById(anch.slice(1))?.scroll
   <a v-if="isExt" :target="noBlank ? 'self' : '_blank'" :href="to"><slot /></a>
   <!-- @vue-expect-error more hacky templates -->
   <a v-else-if="isAnchor" :href="to" @click.stop.prevent="() => scrolly(to)"><slot /></a>
-  <router-link v-else v-bind="(props as any)"><slot /></router-link>
+  <!-- @vue-expect-error even more hacky templates -->
+  <RouterLink v-else v-bind="props"><slot /></RouterLink>
 </template>

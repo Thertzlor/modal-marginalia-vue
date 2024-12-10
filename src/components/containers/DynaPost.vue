@@ -1,4 +1,3 @@
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
 import {type Component, computed,ref} from 'vue';
 import CustomLink from '../navigation/CustomLink.vue';
