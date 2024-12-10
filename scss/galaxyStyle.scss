@@ -1329,7 +1329,7 @@ ul.pagination {
       font-size: .8rem;
       font-weight: calc(var(--text_weight) * 1.5);
     }
-    a {
+    a:not(sup > a) {
       font-weight: calc(var(--text_weight) * 1.2);
 
       i { font-weight: calc(var(--text_weight) * 1.1); }
@@ -1775,10 +1775,13 @@ td.hljs-ln-numbers {
   }
 
   p { margin: 0; }
+  sup {
+    font-weight: calc(var(--text_weight) * 2);
+    &::before { content: "⁠"; }
+  }
   a sup {
     font-family: "Arial Black", sans-serif;
-    font-weight: bolder;
-    font-size: .65em;
+    font-size: .75em;
   }
   ol {
     margin: .5em .5em .3em 1.7em;
