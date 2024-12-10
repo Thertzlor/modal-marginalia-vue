@@ -9,7 +9,7 @@ import DynaPost from '../containers/DynaPost.vue';
 import DynaNote from '../containers/DynaNote.vue';
 import {useHead} from '@unhead/vue';
 import {ref} from 'vue';
-const {processContent, postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
+const {postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 const selector = router.currentRoute.value.params.select;
@@ -86,12 +86,10 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
       <main>
         <DynaPost
           :published="post.publishedAt"
-          :toc="post.toc" :main="true" :content="post.body_vue ?? ''"
-          @vue:mounted="processContent(true)"
-          @vue:updated="processContent(false)" />
+          :toc="post.toc" :main="true" :content="post.body_vue ?? ''" />
       </main>
-      <DynaNote :content="post.footnotes" />
-      <DynaNote :content="post.toenotes" :toenotes="true" />
+      <DynaNote :content="post.footnotes_vue" />
+      <DynaNote :content="post.toenotes_vue" :toenotes="true" />
     </article>
     <CommentSection
       v-if="post?.comments_enabled" :pagination="result?.comments_connection?.pageInfo" :page="1"

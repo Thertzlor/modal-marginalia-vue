@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import {useRouter} from 'vue-router';
 import {useGlobals} from '@/stores/globals';
-import {onUpdated} from 'vue';
 import {useAboutQuery} from '@/graphql/api';
 import DynaPost from '../containers/DynaPost.vue';
 import DynaNote from '../containers/DynaNote.vue';
-const {processContent,hist} = useGlobals();
+const {hist} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 
 const {result, onError} = useAboutQuery();//useQuery<{aboutPage: Relation<AboutPage>}>(postQuery);
 onError(() => void router.push('/ServerError').then(() => hist(origRoute)));
-onUpdated(() => processContent());
 </script>
 
 <template>
@@ -20,11 +18,11 @@ onUpdated(() => processContent());
       <h1 class="article_header fadeborder">{{ result.aboutPage?.title ?? '' }}</h1>
       <main>
         <span class="post_text">
-          <DynaPost :content="result.aboutPage?.text ?? ''" />
+          <DynaPost :content="result.aboutPage?.body_vue ?? ''" />
         </span>
       </main>
-      <DynaNote :content="result.aboutPage.footnotes" />
-      <DynaNote :content="result.aboutPage.toenotes" :toenotes="true" />
+      <DynaNote :content="result.aboutPage.footnotes_vue" />
+      <DynaNote :content="result.aboutPage.toenotes_vue" :toenotes="true" />
     </article>
   </div>
 </template>

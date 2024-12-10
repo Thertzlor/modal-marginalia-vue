@@ -40,21 +40,8 @@ export const useGlobals = defineStore('globals',() => {
     targ.classList.remove('invisible');
   };
 
-  const wrap = (el:HTMLElement, wrapper:HTMLElement) => (el.parentNode?.insertBefore(wrapper, el) && wrapper.appendChild(el));
   const selectKey = <T extends Record<string,any>, K extends keyof T>(obj:T,...keys:K[]) => keys.reduce((p,k) => ((p[k] = obj[k]),p) ,{} as Pick<T,K>);
 
-  const codeWrapper = () => {
-    [...document.getElementsByTagName('pre')].filter(f => !f.getElementsByTagName('code').length).forEach(pr => {
-      const coder = document.createElement('code');
-      coder.className = pr.className;
-      pr.className = '';
-      coder.innerHTML = pr.innerHTML;
-      pr.innerHTML = '';
-      pr.appendChild(coder);
-    });
-
-    [...document.getElementsByTagName('code')].forEach(el => (el?.parentElement?.tagName !== 'PRE') && wrap(el, document.createElement('pre')));
-  };
   const unHash = (l:Location) => l.href.slice(0,-l.hash.length);
 
   function activateCanvas() {
@@ -91,64 +78,5 @@ export const useGlobals = defineStore('globals',() => {
     paral.style.background = `url(${virtualCanvas ?? ''})`;
   }
 
-  function processContent(redo=false):void {
-    const loadedFocus = document.hasFocus();
-    const main = document.getElementById('main_article')?.getElementsByTagName('main').item(0);
-    const redoing = main?.classList.contains('processed');
-    if (!redoing) main?.classList.add('processed');
-    const foot = main && document.getElementById('footnote_container');
-    const toe = foot && document.getElementById('toenote_container');
-    codeWrapper();
-    const linkNotes = (origin:HTMLElement|null, notes:HTMLElement, term:string) => {
-      [...origin?.getElementsByTagName('sup') ?? []].filter(s => /\[\d+\]/.test(s.innerHTML.trim())).forEach((el, i) => {
-        const footLink = `_${term}_${i+1}`;
-        const headLink = `_${term}_${i+1}_head`;
-        const element = document.createElement('a');
-        element.id = headLink;
-        element.href = `#${footLink}`;
-        wrap(el, element);
-        const scroller = (f:HTMLTableCellElement|undefined|null) => f && [element, f].forEach((eli, ii, a) => {
-          const first = ii === 0;
-          const opposing = a[first ? 1 : 0];
-          const opposeLink = first? opposing.getElementsByTagName('a').item(0) : opposing;
-          const thisLink = !first? eli.getElementsByTagName('a').item(0) : eli;
-          eli.addEventListener('click', e => (e.preventDefault(), opposing.classList.add('highlight'),history.pushState({}, '',`${unHash(window.location)}#${opposeLink?.id??''}`), opposing.scrollIntoView(scrollOption), opposeLink?.focus({preventScroll: true})));
-          thisLink?.addEventListener('blur', () => eli.classList.remove('highlight'));
-        });
-        const counterpart = notes.getElementsByTagName('li').item(i);
-        if (!counterpart) return;
-        element.setAttribute('title', counterpart.innerText.replace(/^\^/,'').replaceAll(/\[\d+\]/g,'').trim());
-        if (redoing) return scroller(counterpart.getElementsByTagName('td').item(0));
-        //counterpart.innerHTML = " " + counterpart.innerHTML;
-        const counterHTML = counterpart.innerHTML;
-        counterpart.textContent='';
-        const countertable = counterpart.appendChild(document.createElement('table'));
-        countertable.classList.add('footnotable');
-        const counterbod = countertable.appendChild(document.createElement('tbody')).appendChild(document.createElement('tr'));
-        const [f,s] = [0,1].map(() => counterbod.appendChild(document.createElement('td')));
-        s.innerHTML = counterHTML;
-        const counterLink = f.appendChild(document.createElement('a'));
-        counterLink.appendChild(document.createElement('sup')).innerHTML = '^';
-        counterLink.href = `#${headLink}`;
-        counterLink.id = footLink;
-        scroller(f);
-      });
-    };
-
-    if (main?.parentElement && foot) linkNotes(main.parentElement.getElementsByTagName('main').item(0), foot, 'ref');
-    if (foot && toe) linkNotes(foot, toe, 'toe');
-
-    ([...document.querySelectorAll('[id^="_"],[href^="#_"]')] as HTMLAnchorElement[]).forEach(el => {
-      if (el.href?.includes('#_')) {el.href = el.href.replace('#_', '#');}
-      const sliceJump = () => {
-        if (el.id.startsWith('_')) el.id = el.id.slice(1);
-        if (window.location.hash === `#${el.id}` && !redo) el.scrollIntoView(scrollOption);
-      };
-      if (loadedFocus) sliceJump();
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      else {const jumper = () => (sliceJump(), window.removeEventListener('focus', jumper));}
-      el.addEventListener('click', e => (e.preventDefault(), false));
-    });
-  }
-  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash};
 });
