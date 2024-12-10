@@ -4,6 +4,7 @@ import {useGlobals} from '@/stores/globals';
 import {onUpdated} from 'vue';
 import {useAboutQuery} from '@/graphql/api';
 import DynaPost from '../containers/DynaPost.vue';
+import DynaNote from '../containers/DynaNote.vue';
 const {processContent,hist} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
@@ -22,12 +23,8 @@ onUpdated(() => processContent());
           <DynaPost :content="result.aboutPage?.text ?? ''" />
         </span>
       </main>
-      <div v-if="result.aboutPage.footnotes" id="footnote_container" class="footnotes">
-        <DynaPost :content="result.aboutPage.footnotes" />
-      </div>
-      <div v-if="result.aboutPage.toenotes" id="toenote_container" class="footnotes toenotes">
-        <DynaPost :content="result.aboutPage.toenotes" />
-      </div>
+      <DynaNote :content="result.aboutPage.footnotes" />
+      <DynaNote :content="result.aboutPage.toenotes" :toenotes="true" />
     </article>
   </div>
 </template>
