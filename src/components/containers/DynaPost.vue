@@ -5,7 +5,7 @@ import CustomLink from '../navigation/CustomLink.vue';
 import VueHeader from '../navigation/VueHeader.vue';
 import ImageContainer from '../containers/ImageContainer.vue';
 import ToC from '../navigation/ToC.vue';
-const props = defineProps<{content:string,toc?:boolean|null,main?:boolean}>();
+const props = defineProps<{content:string,toc?:boolean|null,main?:boolean,published?:string}>();
 const headerinos = ref<[number,string,string][]>([]);
 const addHeader = (index:number,level:number,title:string,id:string) => props.toc && (headerinos.value[index] = [level,id,title]);
 const dynamicComponent = computed(():Component => (
@@ -18,6 +18,7 @@ const dynamicComponent = computed(():Component => (
 </script>
 
 <template>
+  <span v-if="published" class="datespan">Posted {{ gerDate(published) }}</span>
   <ToC v-if="toc" :elements="headerinos" />
   <template v-if="main">
     <span class="post_text">

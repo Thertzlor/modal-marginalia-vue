@@ -83,8 +83,8 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
       <input id="tocButton" type="checkbox">
       <label id="tocLabel" for="tocButton" title="table of contents">⩸</label>
       <main>
-        <span class="datespan">Posted {{ gerDate(post.publishedAt) }}</span>
         <DynaPost
+          :published="post.publishedAt"
           :toc="post.toc" :main="true" :content="post.body_vue ?? ''"
           @vue:mounted="processContent(true)"
           @vue:updated="processContent(false)" />
