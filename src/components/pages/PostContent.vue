@@ -86,8 +86,8 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
         <span class="datespan">Posted {{ gerDate(post.publishedAt) }}</span>
         <DynaPost
           :toc="post.toc" :main="true" :content="post.body_vue ?? ''"
-          @vue:mounted="processContent(post.toc,true)"
-          @vue:updated="processContent(post.toc,false)" />
+          @vue:mounted="processContent(true)"
+          @vue:updated="processContent(false)" />
       </main>
       <div
         v-if="post.footnotes

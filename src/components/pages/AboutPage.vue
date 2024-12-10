@@ -10,7 +10,7 @@ const origRoute = router.currentRoute.value.fullPath;
 
 const {result, onError} = useAboutQuery();//useQuery<{aboutPage: Relation<AboutPage>}>(postQuery);
 onError(() => void router.push('/ServerError').then(() => hist(origRoute)));
-onUpdated(() => processContent(false));
+onUpdated(() => processContent());
 </script>
 
 <template>

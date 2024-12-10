@@ -1,5 +1,4 @@
 import {defineStore} from 'pinia';
-import slugify from 'slugify';
 import {UploadFile,Tag, Category} from '@/graphql/api';
 
 export const useGlobals = defineStore('globals',() => {
@@ -24,7 +23,7 @@ export const useGlobals = defineStore('globals',() => {
   type SimpleImg = {url:string;width:number;height:number};
   const getImageFile = (src?:string) => (src? iMap.get(src):undefined);
   const getImageData = (imgData:Partial<UploadFile>):SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => (s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height})).filter(f => f);
-  const getSrcSet = (imgs:SimpleImg[]):string => imgs.filter(i => i.url).map(({url, width}) => `${url} ${width}w`).join(',');
+  const getSrcSet = (imgs:SimpleImg[]):string => imgs.filter(i => i.url).map(({url, width}) => `${url} ${width??1000}w`).join(',');
   const unRay = <T>(x:T):T extends any[] ? T[0] : T => (Array.isArray(x) ? x[0] : x);
   const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],null|undefined>[]:T => (Array.isArray(arr)?arr.filter(f => f) as any:arr);
   const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f => f)),something);
@@ -92,46 +91,7 @@ export const useGlobals = defineStore('globals',() => {
     paral.style.background = `url(${virtualCanvas ?? ''})`;
   }
 
-  function tocGenerator(main:HTMLElement,redo=false) {
-    const posty = main.getElementsByClassName('post_text')[0] as HTMLElement;
-    if (!posty) return;
-    const headers = [...posty.querySelectorAll('h1, h2, h3, h4, h5, h6')] as HTMLElement[];
-    if (!headers.length) return void document.getElementById('tocLabel')?.style.setProperty('display', 'none');
-    const enclosure = redo? document.getElementById('tabcont'):document.createElement('div');
-    if (!enclosure) return;
-    if (redo) enclosure.innerHTML ='';
-    else enclosure.id='tabcont';
-    const toctainer = enclosure.appendChild(document.createElement('div'));
-    toctainer.classList.add('toc');
-    const listType = 'UL';
-    const tocTargetOrig = toctainer.appendChild(document.createElement(listType));
-    let tocTarget = tocTargetOrig;
-
-    headers.forEach((e, i, a) => {
-      e.id = e.id || slugify(e.innerText,{lower:true,replacement:'_',strict:true,trim:true});
-      const next = a[i + 1];
-      const currentEntry = tocTarget.appendChild(document.createElement('li'));
-      const currentLink = currentEntry.appendChild(document.createElement('a'));
-      currentLink.href = `#${e.id}`;
-      const tocBut = document.getElementById('tocButton') as HTMLInputElement|null;
-      currentLink.addEventListener('click', ev => (ev.preventDefault(),history.pushState({}, '',`${unHash(window.location)}#${e.id}`),(tocBut!.checked = false), e.scrollIntoView(scrollOption)));
-
-      currentLink.innerHTML = e.innerHTML;
-      if (next && next.tagName !== e.tagName) {
-        const [currentNum, nextNum] = [e.tagName[1], next.tagName[1]].map(t => parseInt(t,10));
-        if (currentNum + 1 === nextNum) tocTarget = currentEntry.appendChild(document.createElement(listType));
-        else if (currentNum > nextNum) {
-          for (let ii = 0; ii < currentNum - nextNum; ii++) {
-            const upValue = tocTarget.parentElement?.parentElement as HTMLOListElement;
-            if (upValue && upValue.tagName === listType) tocTarget = upValue;
-            if (!upValue || tocTarget.isSameNode(tocTargetOrig)) break;
-          }
-        }
-      }
-    });
-    if (!redo) main.insertBefore(enclosure, main.getElementsByTagName('main').item(0));
-  }
-  function processContent(doToc:boolean|null=true,redo=false):void {
+  function processContent(redo=false):void {
     const loadedFocus = document.hasFocus();
     const main = document.getElementById('main_article')?.getElementsByTagName('main').item(0);
     const redoing = main?.classList.contains('processed');
@@ -139,7 +99,6 @@ export const useGlobals = defineStore('globals',() => {
     const foot = main && document.getElementById('footnote_container');
     const toe = foot && document.getElementById('toenote_container');
     codeWrapper();
-    doToc && main && tocGenerator(main,redoing);
     const linkNotes = (origin:HTMLElement|null, notes:HTMLElement, term:string) => {
       [...origin?.getElementsByTagName('sup') ?? []].filter(s => /\[\d+\]/.test(s.innerHTML.trim())).forEach((el, i) => {
         const footLink = `_${term}_${i+1}`;
@@ -191,6 +150,5 @@ export const useGlobals = defineStore('globals',() => {
       el.addEventListener('click', e => (e.preventDefault(), false));
     });
   }
-
   return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,processContent,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile};
 });
