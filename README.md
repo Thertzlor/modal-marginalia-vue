@@ -13,4 +13,3 @@ The SCSS for this site is designed to be processed with PostCSS, but the plug-in
 * A better search function than the default Strapi search.
 * more SEO couldn't hurt.
 * customaizable parallax effects?
-* Better notifications/dialogues
