@@ -5,8 +5,9 @@ import {useGlobals} from '@/stores/globals';
 const {sleep} = useGlobals();
 
 const props = defineProps<{def:MessageDefinition,critical?:boolean}>();
-const emit = defineEmits<{(e:'response',arg:string,cbVal?:any)}>();
+const emit = defineEmits<{(e:'response',arg:string,cbVal?:any),(e:'timeout')}>();
 const text = ref<string>(props.def.message);
+if (props.def.msgTimeout) setTimeout(() => emit('timeout'), props.def.msgTimeout);
 const submitted = ref(false);
 const process = async(b:string) => {
   const cbVal = props.def.callback?.(b);
@@ -21,13 +22,13 @@ const process = async(b:string) => {
 </script>
 
 <template>
-  <div :class="{grayborder:true, critical, ['modal-message']:true}">
+  <div :class="{grayborder:true, critical, ['modal_message']:true}">
     <span>{{ text }}</span>
     <br>
     <template v-if="!submitted">
       <button
         v-for="[i,r] of def.replies?.entries() ?? []" :key="i" class="grayborder hoverglow"
-        @click="process(r == 'string'?r:r[1])">{{ typeof r == 'string'?r:r[0] }}</button>
+        @click="process(typeof r === 'string'?r:r[1])">{{ typeof r == 'string'?r:r[0] }}</button>
     </template>
   </div>
 </template>

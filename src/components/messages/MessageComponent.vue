@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {ref} from 'vue';
 import GenericMessage from './GenericMessage.vue';
 
 type ReplyOptions = (string|[string,string])[]
@@ -7,6 +8,7 @@ type ReceivedReply<T extends ReplyOptions> = UnwrapReply<T[number]>
 
 export type MessageDefinition<T extends ReplyOptions =ReplyOptions> = {
   reactions?:Record<ReceivedReply<T>,string|undefined>
+  critical?:boolean,
   msgTimeout?:number,
   reactionTimeout?:number,
   id?:string,
@@ -15,23 +17,36 @@ export type MessageDefinition<T extends ReplyOptions =ReplyOptions> = {
   replies?:T
   callback?:(rep:ReceivedReply<T>,...args:any)=>any
 }
-const casualMessages = new Map<string,MessageDefinition>();
-const blockingMessages = new Map<string,MessageDefinition>();
+const casualMessages = ref(new Map<string,MessageDefinition>());
+const criticalMessages = ref(new Map<string,MessageDefinition>());
 
 const emit = defineEmits<{(e:'subResponse',id:string,arg:string,cbVal?:any)}>();
-const removeMessage = (key:string, casual=true) => (casual? casualMessages:blockingMessages).delete(key);
-const processReply = (key,replyVal,cbVal?:any) => {
-  removeMessage(key);
+
+type RemoveCall = {(key:string,critical?:boolean):void,(def:MessageDefinition):void}
+const removeMessage:RemoveCall = (key:string|MessageDefinition, critical= typeof key ==='string'? false:key.critical ?? false) => void (critical? criticalMessages:casualMessages).value.delete(typeof key === 'string'?key:key.id??'');
+const processReply = (key,replyVal,cbVal?:any,critical=false) => {
+  removeMessage(key,critical);
   emit('subResponse',key,replyVal,cbVal);
 };
-const addMessage = (def:MessageDefinition,blocking = false) => (blocking?blockingMessages:casualMessages).set(def.id ?? self.crypto.randomUUID(), def);
+
+
+type AddCall = {(def:MessageDefinition,critical?:boolean):void}
+const addMessage:AddCall = (def:MessageDefinition,critical = def.critical ?? false, target = (critical?criticalMessages:casualMessages).value) => void ((!def.id || !target.has(def.id)) && target.set(def.id ?? self.crypto.randomUUID(), def));
 
 defineExpose({addMessage,removeMessage});
 </script>
 <template>
-  <div v-if="blockingMessages.size" class="modal_block" />
-  <GenericMessage
-    v-for="[k,m] of casualMessages.entries()" :key="k" :def="m"
-    @response="(r,c)=>processReply(k,r,c)" />
+  <div v-if="criticalMessages.size" class="modal_block" />
+  <div v-if="casualMessages.size+criticalMessages.size" id="msgtainer">
+    <GenericMessage
+      v-for="[k,m] of casualMessages.entries()" :key="k" :def="m"
+      @timeout="()=>removeMessage(k)"
+      @response="(r,c)=>processReply(k,r,c)" />
+    <GenericMessage
+      v-for="[k,m] of criticalMessages.entries()" :key="k" :critical="true"
+      :def="m"
+      @timeout="()=>removeMessage(k,true)"
+      @response="(r,c)=>processReply(k,r,c,true)" />
+  </div>
 
 </template>

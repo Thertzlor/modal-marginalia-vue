@@ -87,31 +87,45 @@ $mediaCutoff: 1100px;
 
 button { cursor: pointer; }
 
-.modal-message {
-  white-space: pre-wrap;
+.modal_block {
+  top: 0%;
+  left: 0%;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(0 0 0 / 50%);
+  z-index: 550;
+}
+
+#msgtainer {
+  top: 50%;
+  left: 50%;
+  max-height: 95vh;
   position: fixed;
   z-index: 600;
-  top: 50%;
-  padding: 3em;
-  overflow-y: scroll;
-  max-height: 95vh;
-  left: 50%;
   transform: translate(-50%, -50%);
-  width: 30%;
-  text-align: center;
-  box-shadow: .7em .6em 1em .7em rgb(0 0 0 / 50%);
-  border: .2em solid white;
-  background: black;
 
-  button {
-    color: white;
-    background: black;
-    font-size: 1em;
+  .modal_message {
+    white-space: pre-wrap;
+    padding: 1.5em;
     margin: 1em;
-    padding: .5em 1em;
-    margin-bottom: -1em;
+    overflow-y: scroll;
+    width: 30vw;
+    text-align: center;
+    box-shadow: .7em .6em 1em .7em rgb(0 0 0 / 50%);
+    border: .2em solid white;
+    background: black;
+
+    button {
+      color: white;
+      background: black;
+      font-size: 1em;
+      margin: 1em;
+      padding: .5em 1em;
+      margin-bottom: -1em;
+    }
+    &.critical { color: red; }
   }
-  &.critical { color: red; }
 }
 
 #options {
