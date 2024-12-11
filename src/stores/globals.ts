@@ -30,7 +30,7 @@ export const useGlobals = defineStore('globals',() => {
   const hist = (url:string):void => window.history.pushState({}, '',url);
   const isEmpty = (obj:Record<any,any>):obj is Record<any,never> => !Object.keys(obj).length;
   const run = (fun:() => any) => setTimeout(fun, 0);
-
+  const sleep = (num:number) => new Promise<true>(r => setTimeout(() => r(true),num));
 
   const ct = '4b14c42a63fb8f0c62e816faf32c5ed5578bd3ec9a5b46eced32f66d47d1430cc54896eeecec06f87a1a355fd4921097c387556930b6527616ba1d8dc1f3da2d790d2a745365f8f73eaeba07d69fbea98c065f00b04a3e170f57fdfce054504d7e15dcc266c70c7ca3edba0b6023840c82380f5d4849d58bb7b15c930220b40b';
   const imgload = (e:Event,parSelect=0):void => {
@@ -80,5 +80,5 @@ export const useGlobals = defineStore('globals',() => {
     paral.style.background = `url(${virtualCanvas ?? ''})`;
   }
 
-  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run,localCssVars};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run,localCssVars,sleep};
 });

@@ -111,7 +111,7 @@ button { cursor: pointer; }
     padding: .5em 1em;
     margin-bottom: -1em;
   }
-  &#cookie-warning { color: red; }
+  &.critical { color: red; }
 }
 
 #options {

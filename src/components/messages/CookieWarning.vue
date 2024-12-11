@@ -8,7 +8,7 @@ const emi = (b:boolean) => ((decision.value = b),setTimeout(() => emit('confirm'
 </script>
 
 <template>
-  <div id="cookie-warning" class="grayborder modal-message">
+  <div id="cookie-warning" class="grayborder modal-message critical">
     <span v-if="decision">{{ yes }}</span>
     <span v-else-if="decision===false">{{ no }}</span>
     <span v-else>{{ msg }}</span>

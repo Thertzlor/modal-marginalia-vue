@@ -6,6 +6,9 @@ type UnwrapReply<T extends string|[string,string]> = T extends string? T:T[1]
 type ReceivedReply<T extends ReplyOptions> = UnwrapReply<T[number]>
 
 export type MessageDefinition<T extends ReplyOptions =ReplyOptions> = {
+  reactions?:Record<ReceivedReply<T>,string|undefined>
+  msgTimeout?:number,
+  reactionTimeout?:number,
   id?:string,
   title?:string,
   message:string,
