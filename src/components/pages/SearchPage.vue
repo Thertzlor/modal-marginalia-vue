@@ -25,7 +25,7 @@ const numRoute = (key:string, def:number) => {
 };
 
 const sortOptions = [
-  {userVal: 'published', graphVal: 'publishedAt', urlVal: 'pub'},
+  {userVal: 'published', graphVal: 'pub_date', urlVal: 'pub'},
   {userVal: 'name', graphVal: 'title', urlVal: 'name'},
   {userVal: 'category', graphVal: 'category.name', urlVal: 'cat'},
   {userVal: 'id', graphVal: 'id', urlVal: 'id'}
@@ -145,7 +145,7 @@ function locatePreview(text:string, queryValue:string[]) {
       v-if="result?.posts_connection" :page-data="result.posts_connection.pageInfo" :base-url="href"
       @pg="a => {pg = a; searchSubmit()}" />
     <TransitionGroup name="v-page">
-      <article v-for="{documentId, human_id ,header: img, slug, title, publishedAt, body_searchable, tags_connection: tagData, category: catData} in result.posts_connection.nodes?.filter((f): f is typeof f & {tags:{}, category:{}, header:UploadFile} => !!(f?.documentId && f.category)) ?? []" :key="documentId" class="search_result">
+      <article v-for="{documentId, human_id ,header: img, slug, title, pub_date, body_searchable, tags_connection: tagData, category: catData} in result.posts_connection.nodes?.filter((f): f is typeof f & {tags:{}, category:{}, header:UploadFile} => !!(f?.documentId && f.category)) ?? []" :key="documentId" class="search_result">
         <RouterLink v-if="img" :to="`/post/${human_id}-${slug}`">
           <img
             :srcset="getSrcSet(getImageData(img))" :src="img.url" :width="img.width ?? ''"
@@ -155,7 +155,7 @@ function locatePreview(text:string, queryValue:string[]) {
         <div class="search_group">
           <h2>
             <RouterLink :to="`/post/${human_id}-${slug}`">{{ title }}</RouterLink>
-            <span class="datespan">{{ gerDate(publishedAt) }}</span>
+            <span class="datespan">{{ gerDate(pub_date) }}</span>
           </h2>
           <p class="grayborder" v-html="locatePreview(body_searchable || '', staticSplit)" />
           <p class="tag_container">Tags:<TaxoList :list="taxoSort([...(tagData?.nodes ?? [])])" :tax-type="'tag'" /></p>

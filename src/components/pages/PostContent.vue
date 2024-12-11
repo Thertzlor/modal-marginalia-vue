@@ -85,7 +85,7 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
       <label id="tocLabel" for="tocButton" title="table of contents">⩸</label>
       <main>
         <DynaPost
-          :published="post.publishedAt"
+          :published="post.pub_date"
           :toc="post.toc" :main="true" :content="post.body_vue ?? ''" />
       </main>
       <DynaNote :content="post.footnotes_vue" />

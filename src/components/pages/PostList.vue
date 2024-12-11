@@ -75,8 +75,8 @@ onResult(r => {
     <PaginationWidget v-if="result?.posts_connection" :page-data="result.posts_connection.pageInfo" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">
       <TransitionGroup v-if="result?.posts_connection.nodes.length" :name="transi">
-        <article v-for="{documentId, human_id, header: img, slug, title, publishedAt, teaser, tags_connection: tagData, category: catData} in result.posts_connection.nodes.filter((f): f is typeof f & {tags:{}, category:{}, header:UploadFile} => !!(f && f.tags_connection?.nodes && f.header && f.category))" :key="documentId" :class="{listing:true,invisible}">
-          <div :class="{top_part:true,empty:!img,is_new:(new Date().getTime()-newTime) < (new Date(publishedAt).getTime())}">
+        <article v-for="{documentId, human_id, header: img, slug, title, pub_date, teaser, tags_connection: tagData, category: catData} in result.posts_connection.nodes.filter((f): f is typeof f & {tags:{}, category:{}, header:UploadFile} => !!(f && f.tags_connection?.nodes && f.header && f.category))" :key="documentId" :class="{listing:true,invisible}">
+          <div :class="{top_part:true,empty:!img,is_new:(new Date().getTime()-newTime) < (new Date(pub_date).getTime())}">
             <a v-if="img?.formats.medium.url" :href="`/post/${human_id}-${slug}`">
               <img
                 :srcset="getSrcSet(getImageData(img))" :src="img.url" :width="img.width ?? ''"
@@ -93,7 +93,7 @@ onResult(r => {
               <p class="tag_container">Tags:<TaxoList :list="taxoSort([...tagData?.nodes])" :tax-type="'tag'" /></p>
             </div>
           </div>
-          <div class="bottom_part"><p class="date_part">{{ gerDate(publishedAt) }}</p><p>{{ teaser }}</p></div>
+          <div class="bottom_part"><p class="date_part">{{ gerDate(pub_date) }}</p><p>{{ teaser }}</p></div>
         </article>
       </TransitionGroup>
       <PaginationWidget v-if="result?.posts_connection?.nodes?.length" :page-data="result.posts_connection.pageInfo" @pg="fetcher" />

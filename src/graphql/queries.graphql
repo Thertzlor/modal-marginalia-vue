@@ -26,7 +26,7 @@ query Init($pg: PaginationArg) {
   }
   posts_connection(
     pagination: { start: 0, limit: 5 }
-    sort: "publishedAt:desc"
+    sort: "pub_date:desc"
   ) {
     pageInfo {
       ...totalPages
@@ -34,7 +34,7 @@ query Init($pg: PaginationArg) {
     nodes {
       human_id
       documentId
-      publishedAt
+      pub_date
       title
       slug
     }
@@ -117,7 +117,7 @@ query postSearch(
     nodes {
       documentId
       human_id
-      publishedAt
+      pub_date
       body_searchable
       title
       teaser
@@ -186,7 +186,7 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
     footnotes_vue
     slug
     toc
-    publishedAt
+    pub_date
     updatedAt
     comments_enabled
     images_connection {
@@ -236,14 +236,14 @@ query PostList(
   $cf: CategoryFiltersInput
   $pg: PaginationArg!
 ) {
-  posts_connection(filters: $pf, pagination: $pg, sort: "publishedAt:desc") {
+  posts_connection(filters: $pf, pagination: $pg, sort: "pub_date:desc") {
     pageInfo {
       ...fullPage
     }
     nodes {
       human_id
       documentId
-      publishedAt
+      pub_date
       title
       teaser
       slug
