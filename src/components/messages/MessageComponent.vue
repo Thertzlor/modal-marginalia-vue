@@ -17,8 +17,8 @@ export type MessageDefinition<T extends ReplyOptions =ReplyOptions> = {
   replies?:T
   callback?:(rep:ReceivedReply<T>,...args:any)=>any
 }
-const casualMessages = ref(new Map<string,MessageDefinition>());
-const criticalMessages = ref(new Map<string,MessageDefinition>());
+const casualMessages = ref(new Map<string,MessageDefinition<any>>());
+const criticalMessages = ref(new Map<string,MessageDefinition<any>>());
 
 const emit = defineEmits<{(e:'subResponse',id:string,arg:string,cbVal?:any)}>();
 
@@ -30,14 +30,15 @@ const processReply = (key,replyVal,cbVal?:any,critical=false) => {
 };
 
 
-type AddCall = {(def:MessageDefinition,critical?:boolean):void}
-const addMessage:AddCall = (def:MessageDefinition,critical = def.critical ?? false, target = (critical?criticalMessages:casualMessages).value) => void ((!def.id || !target.has(def.id)) && target.set(def.id ?? self.crypto.randomUUID(), def));
+type AddCall = {<T extends ReplyOptions = ReplyOptions>(def:MessageDefinition<T>,critical?:boolean):void}
+const addMessage:AddCall = <T extends ReplyOptions = ReplyOptions>(def:MessageDefinition<T>,critical = def.critical ?? false, target = (critical?criticalMessages:casualMessages).value) => void ((!def.id || !target.has(def.id)) && target.set(def.id ?? self.crypto.randomUUID(), def));
 
 defineExpose({addMessage,removeMessage});
 </script>
 <template>
   <div v-if="criticalMessages.size" class="modal_block" />
   <div v-if="casualMessages.size+criticalMessages.size" id="msgtainer">
+
     <GenericMessage
       v-for="[k,m] of casualMessages.entries()" :key="k" :def="m"
       @timeout="()=>removeMessage(k)"

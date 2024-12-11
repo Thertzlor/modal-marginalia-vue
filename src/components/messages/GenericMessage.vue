@@ -2,7 +2,7 @@
 import {ref} from 'vue';
 import type {MessageDefinition} from './MessageComponent.vue';
 import {useGlobals} from '@/stores/globals';
-const {sleep} = useGlobals();
+const {sleep,defaultReactionTimeout} = useGlobals();
 
 const props = defineProps<{def:MessageDefinition,critical?:boolean}>();
 const emit = defineEmits<{(e:'response',arg:string,cbVal?:any),(e:'timeout')}>();
@@ -15,7 +15,7 @@ const process = async(b:string) => {
   if (reaction){
     submitted.value = true;
     text.value = reaction;
-    await sleep(props.def.reactionTimeout ?? 0);
+    await sleep(props.def.reactionTimeout ?? defaultReactionTimeout);
   }
   emit('response',b,cbVal);
 };
