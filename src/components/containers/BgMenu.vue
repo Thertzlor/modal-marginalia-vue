@@ -17,12 +17,7 @@ const positionAdjust = computed(() => {
   <input id="starChanger" type="button" @click="emit('stars')">
   <input id="fullcheck" type="checkbox" @change="emit('res')">
   <label :style="positionAdjust[0]" title="Hide Sidebar" for="fullcheck">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <polyline points="5,30 ,5,5 30,5" />
-      <polyline points="70,5 ,95,5 95,30" />
-      <polyline points="95,70 ,95,95 70,95" />
-      <polyline points="30,95 ,5,95 5,70" />
-    </svg>
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polyline points="5,30 ,5,5 30,5" /><polyline points="70,5 ,95,5 95,30" /><polyline points="95,70 ,95,95 70,95" /><polyline points="30,95 ,5,95 5,70" /></svg>
   </label>
   <label
     v-if="bigImgSwitch" :style="positionAdjust[1]" title="Change Stars"

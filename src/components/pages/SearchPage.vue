@@ -12,17 +12,10 @@ const router = useRouter();
 const route = router.currentRoute.value;
 const origRoute = route.fullPath;
 
-function proc<T>(t:T) {return unRay(antiNull(t));}
+const proc = <T>(t:T) => unRay(antiNull(t));
+const boolRoute = (key:string, def:boolean,val=proc(route.query[key])) => (val ? val === '1' : def);
+const numRoute = (key:string, def:number, val = parseInt(proc(route.query[key]) || '', 10)) => (isNaN(val) ? def : val);
 
-const boolRoute = (key:string, def:boolean) => {
-  const val = proc(route.query[key]);
-  return val ? val === '1' : def;
-};
-
-const numRoute = (key:string, def:number) => {
-  const val = parseInt(proc(route.query[key]) || '', 10);
-  return isNaN(val) ? def : val;
-};
 
 const sortOptions = [
   {userVal: 'published', graphVal: 'pub_date', urlVal: 'pub'},

@@ -59,8 +59,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to) {
-    if (to.hash) return {selector: to.hash,behavior: 'smooth'};
-    return {x: 0, y: 0,behavior:'smooth'}; // Go to the top of the page if no hash
+    return to.hash?{selector: to.hash,behavior: 'smooth'}:{x: 0, y: 0,behavior:'smooth'};// Go to the top of the page if no hash
   }
 });
 

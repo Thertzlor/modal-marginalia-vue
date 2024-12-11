@@ -103,8 +103,6 @@ const myPrivacyIsYourBitch = async(e:Event) => {
   noPriv.value=false;
 };
 const cl = () => document.getElementById('options')?.click();
-
-
 defineExpose({finalStyle});
 </script>
 <template>
