@@ -4,11 +4,12 @@ import SidebarRegular from './components/navigation/SidebarRegular.vue';
 import CookieWarning from './components/messages/CookieWarning.vue';
 import GenericMessage from './components/messages/GenericMessage.vue';
 import BgMenu from './components/containers/BgMenu.vue';
+import ParallaxLayer from './components/containers/ParallaxLayer.vue';
 import {useGlobals} from './stores/globals';
-import {onMounted, onBeforeMount, computed, ref, type Ref, type ComputedRef} from 'vue';
+import {onBeforeMount, computed, ref, type Ref, type ComputedRef, useTemplateRef} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {PaginationArg, useInitQuery, useLastPostsLazyQuery} from '@/graphql/api';
-const {refreshRate,hist,activateCanvas} = useGlobals();
+const {refreshRate,hist,run} = useGlobals();
 let relCount = 5;
 const lVar = 'modal-marginalia-css-vars';
 const lCook = 'modal-marginalia-cookie-confirmation';
@@ -17,58 +18,19 @@ const route = useRoute();
 const router = useRouter();
 const sizes = new Map<string, string>();
 const pg:PaginationArg = {pageSize: 100, page: 1};
-const loadedImgs = new Set<string>();
-const imgList = (['', '_1', '_2'] as const).map((s => `../img/para_2${s}.png` as const));
-const imgListBg = (['', '_1', '_2'] as const).map((s => `../img/para_1${s}.png` as const));
-const [currentImg, currentImgBg] = ([imgList, imgListBg]).map(l => ref(l[0]));
-const [backgroundImage, backgroundImageBg] = [currentImg, currentImgBg].map(b => computed(() => `url(${b.value})`));
 const cookieConfirms = {} as {c?:(b:boolean) => void};
 const [cookVisible,menVis,noPriv] = ([false,false,!!localStorage.getItem(bCook)]).map(v => ref(v));
-const [qouteSalt,opacity,opacityBg] = ([1,0,0]).map(v => ref(v));
+const [qouteSalt] = ([1]).map(v => ref(v));
 const [cookNo,cookYes,cookMsg,showMsg,slideVal] = (['','','','','-200vh']).map(v => ref(v));
-let bigImgSwitch = true;
-const loadLimit = 1500;
 let first = true;
-const imgLoader = (url:string, loadFunc:() => any = (() => void 0), execNoLoad = false) => new Promise<boolean>(res => {
-  if (loadedImgs.has(url)) {
-    execNoLoad && loadFunc();
-    res(true);
-  }
-  const newImg = new Image();
-  newImg.src = url;
-  newImg.onload = () => {
-    loadFunc();
-    loadedImgs.add(url);
-    res(true);
-  };
-});
 
-onMounted(
-  () => {
-    const run = (fun:() => any) => setTimeout(fun, 0);
-    const art = document.getElementsByClassName('article_container')[0];
-    if (art) {
-      art.classList.add('invisible');
-      run(() => (art.classList.add('vistrans2'), art.classList.remove('invisible')));
-    }
-    ['../img/para_2.png', '../img/para_1.png', ''].map((s) => (s ? document.location.href.split('/').slice(4).reduce(a => `../${a}`, s) : s)).forEach((u, i) => {
-      const el = document.getElementsByClassName(['p1', 'p2', 'p3'][i]).item(0) as HTMLElement;
-      el.classList.add('vistrans');
-      const bgImg:HTMLImageElement = (u && new Image()) as HTMLImageElement;
-      const t = Date.now();
-      if (u) bgImg.src = u;
-      if (u && !bgImg.complete) bgImg.onload = () => {
-        loadedImgs.add(bgImg.src);
-        if (Math.abs((t - Date.now())) > loadLimit) bigImgSwitch = false;
-        el.classList.add('vistrans', 'visible');
-        if (i === 0) opacity.value = 1;
-        else if (i === 1) opacityBg.value = 1;
-      };
-      else run(() => el.classList.add('visible'));
-    });
-    activateCanvas();
-  }
-);
+const visAdjuster = ({el}:{el?:HTMLDivElement}) => {
+  if (!el?.classList) return;
+  el.classList.add('invisible');
+  run(() => (el.classList.add('vistrans2'), el.classList.remove('invisible')));
+};
+
+const para = useTemplateRef<InstanceType<typeof ParallaxLayer>>('para');
 
 const letsCook = (msg:string,yes:string,no:string) => ((cookVisible.value = true,cookMsg.value=msg,cookNo.value=no,cookYes.value=yes),new Promise<boolean>((res) => ((cookieConfirms.c = (b:boolean) => ((cookVisible.value = false),res(b))))));
 const scrollini = (r:Ref<number>,{deltaY}:WheelEvent) => (r.value += (1*((deltaY < 1)?1:-1)));
@@ -165,31 +127,6 @@ const delRes = () => window.setTimeout(res, 300);
 //const afterEnter = () => CanvasService.canvasUtilities.refill();
 const isMain = computed(() => ['/', '/home'].includes(route.path));
 const bodyClass = () => ((menVis.value = false), document.body.classList[isMain.value ? 'add' as const : 'remove' as const]('home'));
-
-const changeStars = (forceDiff = false) => {
-  const targetList = forceDiff ? imgList.filter((f => f !== currentImg.value)) : imgList;
-  const targetListBg = forceDiff ? imgListBg.filter((f => f !== currentImgBg.value)) : imgListBg;
-  const [randomImg, randomimgBg] = [targetList, targetListBg].map(l => l[Math.floor(Math.random() * l.length)]);
-  const [picEl, picElBg] = ['p3', 'p1'].map(p => document.getElementsByClassName(p)[0] as HTMLDivElement | undefined);
-  if (picElBg && randomimgBg !== currentImgBg.value) {
-    opacityBg.value = 0;
-    setTimeout(() => {
-      currentImgBg.value = randomimgBg;
-      setTimeout(() => opacityBg.value = 1, 450);
-    }, 2000);
-  }
-  if (picEl && randomImg !== currentImg.value) {
-    opacity.value = 0;
-    const loaded = loadedImgs.has(randomImg);
-    const loady = loaded ? true : imgLoader(randomImg);
-    setTimeout(async() => {
-      currentImg.value = randomImg;
-      await loady;
-      opacity.value = 1;
-    }, 2100);
-  }
-};
-
 router.beforeEach(g => {
   if (first) {
     first = false;
@@ -197,9 +134,9 @@ router.beforeEach(g => {
   }
   relCount++;
   if (['/', '/home'].includes(g.path)) qouteSalt.value = qouteSalt.value++;
-  if (!bigImgSwitch || relCount < 3 || (Math.random() * 100) <= 70) return;
+  if (!para.value?.bigImgSwitch || relCount < 3 || (Math.random() * 100) <= 70) return;
   relCount = 0;
-  changeStars();
+  para.value?.changeStars();
 });
 
 router.afterEach(({fullPath}) => {
@@ -217,7 +154,6 @@ router.afterEach(({fullPath}) => {
 
 const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.value.fullPath) || '-200vh'));
 onBeforeMount(bodyClass);
-
 
 const {result, onError, onResult,refetch} = useInitQuery({pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
 const {onResult:checkRes,refetch:checkFetch,load} = useLastPostsLazyQuery();
@@ -273,8 +209,8 @@ const scrollcheck = s => {
 
 <template>
   <BgMenu
-    :bw="bw" :cw="cw" :big-img-switch="bigImgSwitch"
-    @stars="changeStars(true)" @res="delRes()" />
+    :bw="bw" :cw="cw" :big-img-switch="para?.bigImgSwitch??true"
+    @stars="para?.changeStars(true)" @res="delRes()" />
   <input id="menucheck" v-model="menVis" type="checkbox">
   <SidebarMobile v-if="result?.categories_connection" :cat-list="result.categories_connection.nodes" />
   <div id="settings" :style="finalStyle" class="grayborder">
@@ -304,14 +240,14 @@ const scrollcheck = s => {
   <label class="menu_label" title="Show Menu" for="menucheck" />
   <div class="wrapper" :style="finalStyle" @scroll="scrollcheck">
     <div class="parallax-wrapper">
-      <div :style="{backgroundImage: backgroundImageBg, opacity: opacityBg}" class="parallax p1" />
-      <div class="parallax p2" />
-      <div :style="{backgroundImage, opacity:`calc(var(--p_opacity) * ${opacity})`}" class="parallax p3 invisible" />
+      <ParallaxLayer ref="para" />
       <div class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal&nbsp;<br>Marginalia</RouterLink></h1>
         <SidebarRegular :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="result?.posts_connection?.nodes ?? []" />
         <RouterView v-slot="{Component, route: compRoute}" :quote="quote">
-          <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter"><component :is="Component" :key="compRoute.fullPath" :style="{'--slide_height': slideVal}" /></Transition>
+          <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter"><component
+            :is="Component" :key="compRoute.fullPath" :style="{'--slide_height': slideVal}"
+            @vue:mounted="visAdjuster" /></Transition>
         </RouterView>
       </div>
       <footer>©{{ new Date().getFullYear() }} Theigno.</footer>
