@@ -1,21 +1,13 @@
 <script lang="ts" setup>
-import {onMounted} from 'vue';
-
 defineProps<{quote:string}>();
-onMounted(() => {
-  const ins = document.getElementById('indexSVG') as any as SVGSVGElement;
-  if (ins) {
-    const classAdder = (e:SVGGElement) => e.classList[e.classList.contains('_t') ? 'remove' : 'add']('_t');
-    ins.addEventListener('mouseover',(e:any) => e?.target?.href?.baseVal === '#g1' && classAdder(e.target.parentElement));
-  }
-});
+const classAdder = (e:SVGGElement) => e.classList[e.classList.contains('_t') ? 'remove' : 'add']('_t');
 </script>
 
 <template>
   <div class="article_container">
     <h2 class="home_header visible">{{ quote }}</h2>
     <div class="svgContainer">
-      <svg id="indexSVG" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg"><defs><polyline id="p1" style="clip-path:url(#C1)" points="30 100 0 50 30 0 0 50" /><g id="g1"><polygon points="10,50 40,100 70,50 40,0" /><g><g style="pointer-events: none"><polygon class="st1" points="-540,100 -570,50 0,50 30,100" /><polygon class="st1" points="-540,0 -570,50 0,50 30,0" /></g><g><polygon class="st2" points="30,100 0,50 10,50 39,100" /><polygon class="st2" points="30,0 0,50 10,50 39,0" /><polygon class="st2" points="10,50 40,100 70,50 39,0" /></g><g style="pointer-events: none"><polygon class="st3" points="-540,100 -570,50 10,50 39,100" /><polygon class="st4" points="-540,0 -570,50 10,50 40,0" /></g></g></g><mask id="C1"><polygon
+      <svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" @mouseover="(e:any) => e?.target?.href?.baseVal === '#g1' && classAdder(e.target.parentElement)"><defs><polyline id="p1" style="clip-path:url(#C1)" points="30 100 0 50 30 0 0 50" /><g id="g1"><polygon points="10,50 40,100 70,50 40,0" /><g><g style="pointer-events: none"><polygon class="st1" points="-540,100 -570,50 0,50 30,100" /><polygon class="st1" points="-540,0 -570,50 0,50 30,0" /></g><g><polygon class="st2" points="30,100 0,50 10,50 39,100" /><polygon class="st2" points="30,0 0,50 10,50 39,0" /><polygon class="st2" points="10,50 40,100 70,50 39,0" /></g><g style="pointer-events: none"><polygon class="st3" points="-540,100 -570,50 10,50 39,100" /><polygon class="st4" points="-540,0 -570,50 10,50 40,0" /></g></g></g><mask id="C1"><polygon
         id="polly" points="1,50 30,100 400,100 400,1 30,1" transform="translate(0,0)"
         style="fill: white" /></mask><linearGradient
           id="sgrad" gradientUnits="userSpaceOnUse" x1="220"
