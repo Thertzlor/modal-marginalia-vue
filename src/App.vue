@@ -4,14 +4,14 @@ import SidebarRegular from './components/navigation/SidebarRegular.vue';
 import CookieWarning from './components/messages/CookieWarning.vue';
 import GenericMessage from './components/messages/GenericMessage.vue';
 import BgMenu from './components/containers/BgMenu.vue';
+// import StyleMenu from './components/containers/StyleMenu.vue';
 import ParallaxLayer from './components/containers/ParallaxLayer.vue';
 import {useGlobals} from './stores/globals';
 import {onBeforeMount, computed, ref, type Ref, type ComputedRef, useTemplateRef} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {PaginationArg, useInitQuery, useLastPostsLazyQuery} from '@/graphql/api';
-const {refreshRate,hist,run} = useGlobals();
+const {refreshRate,hist,run,localCssVars} = useGlobals();
 let relCount = 5;
-const lVar = 'modal-marginalia-css-vars';
 const lCook = 'modal-marginalia-cookie-confirmation';
 const bCook = 'modal-marginalia-a-sucker-is-born-every-minute';
 const route = useRoute();
@@ -37,7 +37,7 @@ const scrollini = (r:Ref<number>,{deltaY}:WheelEvent) => (r.value += (1*((deltaY
 const matcher = (path:RegExp) => computed(() => path.test(route.fullPath));
 const sToN = (s:string,unit='',mult=100) => parseFloat(s.slice(0,unit.length*-1||s.length)) * mult;
 const nToS = (n:number,unit='',mult=100) => `${n/mult}${unit}`;
-const savedVars = JSON.parse(localStorage.getItem(lVar)??'{}');
+const savedVars = JSON.parse(localStorage.getItem(localCssVars)??'{}');
 
 type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number};
 type VarRef<T extends string=string> = {input:Ref<number>, output:ComputedRef<string>,name:T} & VarData;
@@ -73,7 +73,7 @@ const finalStyle = computed(() => {
 
 const resetCss = () => {
   for (const k of cssObject) k.input.value = sToN(window.getComputedStyle(document.body).getPropertyValue(`--${k.name}`)??'',k.unit,k.mult);
-  localStorage.removeItem(lVar);
+  localStorage.removeItem(localCssVars);
 };
 
 const saveCss = async() => {
@@ -82,7 +82,7 @@ const saveCss = async() => {
     if (!await letsCook('To save your preferences this site needs to save a COOKIE on this device.\nDo you consent?','Spoken like a true warrior.\nNow go in peace.','That\'s understandable.\nOne can never be too careful these days.').catch(() => false)) return;
     localStorage.setItem(lCook, 'YES');
   }
-  localStorage.setItem(lVar,JSON.stringify(finalStyle.value));
+  localStorage.setItem(localCssVars,JSON.stringify(finalStyle.value));
 };
 
 const delCook = () => {
@@ -177,8 +177,7 @@ const cl = () => document.getElementById('options')?.click();
 onError(() => void router.push('/ServerError').then(() => hist('/')));
 checkRes(r => void (((numPosts || numPosts === 0) && r.data?.posts_connection?.pageInfo.total !== numPosts) && refetch()));
 
-const fallback = {text: ''};
-const quote = computed(() => (qouteSalt.value !==0 && result.value?.quotes_connection?.nodes[Math.floor(Math.random() * result.value.quotes_connection.nodes.length)] || fallback).text ??'');
+const quote = computed(() => (qouteSalt.value !==0 && result.value?.quotes_connection?.nodes[Math.floor(Math.random() * result.value.quotes_connection.nodes.length)] || {text: ''}).text ??'');
 
 const scrollcheck = s => {
   const toppi = s.target?.scrollTop;

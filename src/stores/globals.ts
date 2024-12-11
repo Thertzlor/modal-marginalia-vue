@@ -8,6 +8,7 @@ export const useGlobals = defineStore('globals',() => {
   const perComment = 20;
   const iMap = new Map<string,Partial<UploadFile>>();
   const refreshRate = 30000;
+  const localCssVars = 'modal-marginalia-css-vars';
   const postRefreshRate = 0;
   const searchSurround = 150;
   const daysNew = 12;
@@ -79,5 +80,5 @@ export const useGlobals = defineStore('globals',() => {
     paral.style.background = `url(${virtualCanvas ?? ''})`;
   }
 
-  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run,localCssVars};
 });
