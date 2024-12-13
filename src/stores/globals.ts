@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia';
-import {UploadFile,Tag, Category} from '@/graphql/api';
+import type {UploadFile,Tag, Category} from '@/graphql/api';
 
 export const useGlobals = defineStore('globals',() => {
   const scrollOption:ScrollIntoViewOptions ={behavior:'smooth'};

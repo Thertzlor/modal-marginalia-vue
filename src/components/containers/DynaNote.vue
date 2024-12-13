@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {type Component, computed} from 'vue';
+import {computed} from 'vue';
 import CustomLink from '../navigation/CustomLink.vue';
 import VueHeader from '../navigation/VueHeader.vue';
 import NoteElement from '../containers/NoteElement.vue';
 import ImageContainer from '../containers/ImageContainer.vue';
 import CodeWrapper from '../containers/CodeWrapper.vue';
+import type {Component} from 'vue';
 
 import {useGlobals} from '@/stores/globals';
 const {defaultNote} = useGlobals();

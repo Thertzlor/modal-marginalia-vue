@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {useRouter} from 'vue-router';// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {useSinglePostQuery, usePostCheckLazyQuery, type PaginationArg,Comment} from '@/graphql/api';
+import {useRouter} from 'vue-router';
+import {useSinglePostQuery, usePostCheckLazyQuery} from '@/graphql/api';
 import ImageContainer from '../containers/ImageContainer.vue';
 import TaxoList from '../containers/TaxoList.vue';
 import CommentSection from '../containers/CommentSection.vue';
@@ -9,6 +9,7 @@ import DynaPost from '../containers/DynaPost.vue';
 import DynaNote from '../containers/DynaNote.vue';
 import {useHead} from '@unhead/vue';
 import {ref} from 'vue';
+import type {PaginationArg} from '@/graphql/api';
 
 const {postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
 const router = useRouter();

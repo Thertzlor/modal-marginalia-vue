@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import {useGlobals} from '@/stores/globals';
-import {computed, ComputedRef, Ref, ref} from 'vue';
-import {RouteLocationNormalizedLoadedGeneric} from 'vue-router';
+import {computed, ref} from 'vue';
+import type {ComputedRef, Ref} from 'vue';
+import type {RouteLocationNormalizedLoadedGeneric} from 'vue-router';
 import type {MessageDefinition} from '../messages/MessageComponent.vue';
 
 const {localCssVars} = useGlobals();

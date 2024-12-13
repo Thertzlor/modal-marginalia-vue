@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed} from 'vue';
 import NodeToC from './NodeToC.vue';
-import type{tNode} from './NodeToC.vue';
+import type {tNode} from './NodeToC.vue';
 
 const props = defineProps<{elements:([level:number,id:string, title:string]|undefined)[]}>();
 const filteredList = computed(() => props.elements.filter((f): f is NonNullable<typeof f> => !!f));

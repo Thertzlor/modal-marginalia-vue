@@ -2,8 +2,8 @@
 import {useRouter} from 'vue-router';
 import {computed} from 'vue';
 import {useTagListQuery} from '@/graphql/api';
-import type {Post} from '@/graphql/api';
 import {useGlobals} from '@/stores/globals';
+import type {Post} from '@/graphql/api';
 
 const {hist} = useGlobals();
 const router = useRouter();

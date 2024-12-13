@@ -3,9 +3,10 @@ import {useRouter} from 'vue-router';
 import {computed, ref} from 'vue';
 import {useGlobals} from '@/stores/globals';
 import {usePostSearchQuery} from '@/graphql/api';
-import type {PostFiltersInput, PaginationArg, UploadFile, Post} from '@/graphql/api';
 import PaginationWidget from '../navigation/PaginationWidget.vue';
 import TaxoList from '../containers/TaxoList.vue';
+import type {PostFiltersInput, PaginationArg, UploadFile, Post} from '@/graphql/api';
+
 const {perPage, unRay, antiNull, hist, searchSurround} = useGlobals();
 
 const router = useRouter();

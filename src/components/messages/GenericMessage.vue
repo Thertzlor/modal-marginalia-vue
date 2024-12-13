@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
-import type {MessageDefinition} from './MessageComponent.vue';
 import {useGlobals} from '@/stores/globals';
+import type {MessageDefinition} from './MessageComponent.vue';
 
 const {sleep,defaultReactionTimeout} = useGlobals();
 const props = defineProps<{def:MessageDefinition,critical?:boolean}>();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type {Category} from '@/graphql/api';
 import CustomLink from './CustomLink.vue';
+import type {Category} from '@/graphql/api';
 
 defineProps<{mainCategories?:(Partial<Category>)[]}>();
 const categories = [

@@ -1,9 +1,9 @@
 <script lang ="ts" setup>
-import type {Pagination, PaginationArg,SinglePostQuery} from '@/graphql/api';
 import {ref,onBeforeUnmount} from 'vue';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
 import {useCommentatorMutation, useCommentEditorMutation} from '@/graphql/api';
 import PaginationWidget from '../navigation/PaginationWidget.vue';
+import type {Pagination, PaginationArg,SinglePostQuery} from '@/graphql/api';
 
 const props = defineProps<{postId:string, commentData:NonNullable<SinglePostQuery['comments_connection']>['nodes'], page?:number, pagination?:Pagination}>();
 const emit = defineEmits<{

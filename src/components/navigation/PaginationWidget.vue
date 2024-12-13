@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type {Pagination, PaginationArg} from '@/graphql/api';
 import PageEntry from '../containers/PageEntry.vue';
+import type {Pagination, PaginationArg} from '@/graphql/api';
 
 const surrounding = 2;
 const maxVisible = surrounding * 2 + 1;
