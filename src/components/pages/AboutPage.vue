@@ -4,6 +4,7 @@ import {useGlobals} from '@/stores/globals';
 import {useAboutQuery} from '@/graphql/api';
 import DynaPost from '../containers/DynaPost.vue';
 import DynaNote from '../containers/DynaNote.vue';
+
 const {hist} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;

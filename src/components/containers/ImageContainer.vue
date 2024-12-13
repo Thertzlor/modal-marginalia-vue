@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import {computed, ref} from 'vue';
 import {useGlobals} from '@/stores/globals';
+
 const {getImageData, getSrcSet,getImageFile} = useGlobals();
 const props = defineProps<{ className:string, customSize?:string, image?:string, caption?:string}>();
 // const data = computed(() => (typeof props.imgData === 'string' ? JSON.parse(props.imgData) as UploadFile : props.imgData));

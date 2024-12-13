@@ -5,6 +5,7 @@ import VueHeader from '../navigation/VueHeader.vue';
 import ImageContainer from '../containers/ImageContainer.vue';
 import CodeWrapper from '../containers/CodeWrapper.vue';
 import ToC from '../navigation/ToC.vue';
+
 const props = defineProps<{content:string,toc?:boolean|null,main?:boolean,published?:string}>();
 const headerinos = ref<[number,string,string][]>([]);
 const addHeader = (index:number,level:number,title:string,id:string) => props.toc && (headerinos.value[index] = [level,id,title]);

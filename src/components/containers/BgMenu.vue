@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {computed} from 'vue';
+
 const props = defineProps<{bigImgSwitch:boolean,bw:number,cw:number}>();
 const emit = defineEmits<{(e:'stars'),(e:'res'),(e:'vis',arg:boolean)}>();
 const positionAdjust = computed(() => {

@@ -3,6 +3,7 @@ import {useGlobals} from '@/stores/globals';
 import {computed, ComputedRef, Ref, ref} from 'vue';
 import {RouteLocationNormalizedLoadedGeneric} from 'vue-router';
 import type {MessageDefinition} from '../messages/MessageComponent.vue';
+
 const {localCssVars} = useGlobals();
 const props = defineProps<{initalData:any,route:RouteLocationNormalizedLoadedGeneric}>();
 const lCook = 'modal-marginalia-cookie-confirmation';

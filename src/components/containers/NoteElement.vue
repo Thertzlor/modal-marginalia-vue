@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import CustomLink from '../navigation/CustomLink.vue';
+
 defineProps<{index:string|number,toe?:boolean}>();
 </script>
 <template>

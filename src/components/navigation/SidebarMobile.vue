@@ -3,6 +3,7 @@ import NavMenu from './NavMenu.vue';
 import {useRouter} from 'vue-router';
 import {ref} from 'vue';
 import type {Category} from '@/graphql/api';
+
 const router = useRouter();
 defineProps<{catList:Partial<Category>[]}>();
 const query = ref('');

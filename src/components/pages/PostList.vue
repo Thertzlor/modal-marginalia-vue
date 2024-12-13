@@ -6,6 +6,7 @@ import {useGlobals} from '@/stores/globals';
 import {computed, ref, onMounted, onBeforeUnmount} from 'vue';
 import {usePostListQuery, usePostCountLazyQuery} from '@/graphql/api';
 import type {CategoryFiltersInput, PaginationArg,PostFiltersInput,TagFiltersInput, UploadFile} from '@/graphql/api';
+
 const {perPage, unRay, antiNull, refreshRate, newTime, hist,isEmpty} = useGlobals();
 const invisible = ref(true);
 const transi = ref('none');

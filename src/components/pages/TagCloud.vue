@@ -4,8 +4,8 @@ import {computed} from 'vue';
 import {useTagListQuery} from '@/graphql/api';
 import type {Post} from '@/graphql/api';
 import {useGlobals} from '@/stores/globals';
-const {hist} = useGlobals();
 
+const {hist} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 const maxEm = 2.5;

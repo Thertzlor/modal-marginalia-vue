@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type {Tag, Category} from '@/graphql/api';
+
 defineProps<{list:(Partial<Tag>|SomeOf<Partial<Category>>|null|undefined)[], taxType:string}>();
 </script>
 

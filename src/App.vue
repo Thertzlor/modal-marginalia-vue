@@ -9,6 +9,7 @@ import {useGlobals} from './stores/globals';
 import {onBeforeMount, computed, ref, useTemplateRef} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {PaginationArg, useInitQuery, useLastPostsLazyQuery} from '@/graphql/api';
+
 const {refreshRate,hist,run,localCssVars} = useGlobals();
 let relCount = 5;
 const route = useRoute();

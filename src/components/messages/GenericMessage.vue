@@ -2,8 +2,8 @@
 import {ref} from 'vue';
 import type {MessageDefinition} from './MessageComponent.vue';
 import {useGlobals} from '@/stores/globals';
-const {sleep,defaultReactionTimeout} = useGlobals();
 
+const {sleep,defaultReactionTimeout} = useGlobals();
 const props = defineProps<{def:MessageDefinition,critical?:boolean}>();
 const emit = defineEmits<{(e:'response',arg:string,cbVal?:any),(e:'timeout')}>();
 const text = ref<string>(props.def.message);

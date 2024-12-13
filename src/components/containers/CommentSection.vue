@@ -4,6 +4,7 @@ import {ref,onBeforeUnmount} from 'vue';
 import VueHcaptcha from '@hcaptcha/vue3-hcaptcha';
 import {useCommentatorMutation, useCommentEditorMutation} from '@/graphql/api';
 import PaginationWidget from '../navigation/PaginationWidget.vue';
+
 const props = defineProps<{postId:string, commentData:NonNullable<SinglePostQuery['comments_connection']>['nodes'], page?:number, pagination?:Pagination}>();
 const emit = defineEmits<{
   (e:'pg', arg:PaginationArg)

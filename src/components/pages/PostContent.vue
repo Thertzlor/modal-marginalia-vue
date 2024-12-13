@@ -9,6 +9,7 @@ import DynaPost from '../containers/DynaPost.vue';
 import DynaNote from '../containers/DynaNote.vue';
 import {useHead} from '@unhead/vue';
 import {ref} from 'vue';
+
 const {postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
@@ -19,11 +20,7 @@ if (isNaN(postId)) router.push('/NotFound').then(() => hist(origRoute)).catch(e 
 
 const targetPage = unRay(router.currentRoute.value.query.p);
 const page = targetPage ? parseInt(targetPage, 10) : 1;
-const commentPagination:PaginationArg = {
-  page,
-  pageSize:perComment
-};
-
+const commentPagination:PaginationArg = {page, pageSize:perComment};
 
 let navd = false;
 const hashNav = (noDelay = false) => {

@@ -2,6 +2,7 @@
 import {computed} from 'vue';
 import {RouterLink} from 'vue-router';
 import {useGlobals} from '@/stores/globals';
+
 const {scrollOption,unHash} = useGlobals();
 const props = defineProps({...(RouterLink as any).props, noBlank: Boolean});
 const emit = defineEmits<{(arg:'nav')}>();

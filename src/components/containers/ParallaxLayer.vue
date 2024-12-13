@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {useGlobals} from '@/stores/globals';
 import {computed, onMounted, ref} from 'vue';
+
 const imgList = (['', '_1', '_2'] as const).map((s => `../img/para_2${s}.png` as const));
 const imgListBg = (['', '_1', '_2'] as const).map((s => `../img/para_1${s}.png` as const));
 const [currentImg, currentImgBg] = ([imgList, imgListBg]).map(l => ref(l[0]));

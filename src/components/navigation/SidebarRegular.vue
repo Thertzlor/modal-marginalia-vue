@@ -3,6 +3,7 @@ import type {Category, Post} from '@/graphql/api';
 import NavMenu from './NavMenu.vue';
 import {useRouter} from 'vue-router';
 import {ref} from 'vue';
+
 defineProps<{catList:Partial<Category>[], latestPosts:(Partial<Post>)[]|undefined}>();
 const router = useRouter();
 const searchQuery = ref('');
