@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import {type Component, computed,ref} from 'vue';
+import {computed,ref} from 'vue';
 import CustomLink from '../navigation/CustomLink.vue';
 import VueHeader from '../navigation/VueHeader.vue';
 import ImageContainer from '../containers/ImageContainer.vue';
 import CodeWrapper from '../containers/CodeWrapper.vue';
 import ToC from '../navigation/ToC.vue';
+import type {Component} from 'vue';
 
 const props = defineProps<{content:string,toc?:boolean|null,main?:boolean,published?:string}>();
 const headerinos = ref<[number,string,string][]>([]);
