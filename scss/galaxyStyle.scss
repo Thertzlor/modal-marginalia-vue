@@ -1462,7 +1462,8 @@ ul.pagination {
     pre {
       max-width: 100%;
       overflow: auto;
-      padding: .1em;
+      padding-left: .5em;
+      line-height: 1.3;
 
       .lang {
         user-select: none;
@@ -1610,11 +1611,6 @@ ul.pagination {
       td.hljs-ln-numbers { opacity: 1; }
     }
   }
-}
-
-td.hljs-ln-code pre {
-  padding-left: .25em;
-  line-height: 1.3;
 }
 
 td.hljs-ln-numbers {
