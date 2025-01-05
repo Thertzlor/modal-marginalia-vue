@@ -5,6 +5,7 @@ import vueJsx from '@vitejs/plugin-vue-jsx';
 import envCompatible from 'vite-plugin-env-compatible';
 import {createHtmlPlugin} from 'vite-plugin-html';
 import {viteCommonjs} from '@originjs/vite-plugin-commonjs';
+import vueDevTools from 'vite-plugin-vue-devtools';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -17,6 +18,7 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    vueDevTools(),
     vueJsx(),
     viteCommonjs(),
     envCompatible(),
@@ -31,4 +33,4 @@ export default defineConfig({
   ],
   server: {strictPort: false, port: 8081, host: '0.0.0.0'},
   build: {target: 'es2019'}
-})
+});

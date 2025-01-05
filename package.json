@@ -52,6 +52,7 @@
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
     "vite-plugin-env-compatible": "^2.0.1",
-    "vite-plugin-html": "^3.2.2"
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-vue-devtools": "^7.6.8"
   }
 }
