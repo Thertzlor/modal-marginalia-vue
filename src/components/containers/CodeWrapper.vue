@@ -2,5 +2,5 @@
 defineProps<{codeClass?:string}>();
 </script>
 <template>
-  <pre><code><slot /></code></pre>
+  <pre><code class="code_block"><slot /></code></pre>
 </template>
