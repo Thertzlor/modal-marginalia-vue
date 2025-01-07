@@ -76,7 +76,7 @@ onResult(r => {
     <PaginationWidget v-if="result?.posts_connection" :page-data="result.posts_connection.pageInfo" @pg="fetcher" />
     <main class="list_body" :class="{transitioning: transActive}">
       <TransitionGroup v-if="result?.posts_connection.nodes.length" :name="transi">
-        <article v-for="{documentId, human_id, header: img, slug, title, pub_date, teaser, tags_connection: tagData, category: catData} in result.posts_connection.nodes.filter((f): f is typeof f & {tags:{}, category:{}, header:UploadFile} => !!(f && f.tags_connection?.nodes && f.header && f.category))" :key="documentId" :class="{listing:true,invisible}">
+        <article v-for="{documentId, human_id, header: img, slug, title, pub_date, teaser, tags_connection: tagData, category: catData} in result.posts_connection.nodes.filter((f): f is typeof f & {tags:{}, category:{}, header:UploadFile} => !!(f && f.tags_connection?.nodes && f.category))" :key="documentId" :class="{listing:true,invisible}">
           <div :class="{top_part:true,empty:!img,is_new:(new Date().getTime()-newTime) < (new Date(pub_date).getTime())}">
             <a v-if="img?.formats.medium.url" :href="`/post/${human_id}-${slug}`">
               <img
