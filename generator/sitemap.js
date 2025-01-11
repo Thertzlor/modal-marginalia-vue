@@ -107,7 +107,7 @@ const mapData = [
  * 
  * @param {Date} d 
  */
-const datur = d => [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('-');
+const datur = d => d.toISOString();
 
 /**
  * @param {LocData} x 
@@ -115,21 +115,14 @@ const datur = d => [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('-');
 const toXML = x => {
   const womp = ['loc', 'lastmod', 'changefreq', 'priority'].map(t => {
     if (!x[t]) return;
-    return /*xml*/`
-    <${t}>${t === 'lastmod' ? datur(x[t]) : t === 'loc' ? baseUrl + x[t] : x[t]}</${t}>
-    `;
-  }).filter(x => x).join('\n');
+    return /*xml*/`<${t}>${t === 'lastmod' ? datur(x[t]) : t === 'loc' ? baseUrl + x[t] : x[t]}</${t}>`;
+  }).filter(x => x).join('');
   return `<url>${womp}</url>`;
 };
 
 
-const xmString = `
-<?xml version="1.0" encoding="UTF-8"?>
-
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...tagData, ...postData, ...catData, ...mapData].map(l => toXML(l)).join('\n')}
-</urlset> 
-`;
+const xmString = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...tagData, ...postData, ...catData, ...mapData].map(l => toXML(l)).join('')}</urlset> `;
 
 
 
