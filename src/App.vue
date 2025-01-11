@@ -138,7 +138,7 @@ const scrollcheck = s => {
       <ParallaxLayer ref="para" />
       <div class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal&nbsp;<br>Marginalia</RouterLink></h1>
-        <SidebarRegular :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="result?.posts_connection?.nodes ?? []" />
+        <SidebarRegular :style="{['--side_width']:isMain?'30vw':undefined,marginRight:isMain?'-10vw':undefined}" :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="result?.posts_connection?.nodes ?? []" />
         <RouterView v-slot="{Component, route: compRoute}" :quote="quote">
           <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter"><component
             :is="Component" :key="compRoute.fullPath" :style="{'--slide_height': slideVal}"

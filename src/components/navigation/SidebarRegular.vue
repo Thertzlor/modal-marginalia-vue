@@ -4,7 +4,7 @@ import {useRouter} from 'vue-router';
 import {ref} from 'vue';
 import type {Category, Post} from '@/graphql/api';
 
-defineProps<{catList:Partial<Category>[], latestPosts:(Partial<Post>)[]|undefined}>();
+defineProps<{catList:Partial<Category>[], latestPosts:(Partial<Post>)[]|undefined, style:Record<string,any>}>();
 const router = useRouter();
 const searchQuery = ref('');
 const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(searchQuery.value)}`);
@@ -12,7 +12,7 @@ const searchSubmit = () => router.push(`/search?q=${encodeURIComponent(searchQue
 
 <template>
   <label class="menu_centered menu_label" title="show Menu" for="menucheck" />
-  <aside class="sidebar">
+  <aside :style="style" class="sidebar">
     <NavMenu v-if="catList.length" :main-categories="catList" />
     <form
       v-if="catList.length" id="search_form" enctype="text/plain"

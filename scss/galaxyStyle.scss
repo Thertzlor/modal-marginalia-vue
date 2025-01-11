@@ -749,6 +749,7 @@ h2.home_header {
     margin-left: -50vw;
     position: absolute;
     transition: margin .5s, visibility .4s, opacity .3s;
+    margin-right: auto !important;
   }
 
   label {
@@ -766,7 +767,7 @@ h2.home_header {
   float: left;
   display: inline-block;
   will-change: transform, opacity;
-  transition: margin .3s, visibility .2s, opacity .1s;
+  transition: margin .3s, visibility .2s, opacity .1s, width .2s ease;
   width: var(--side_width);
 
   .homelink {
