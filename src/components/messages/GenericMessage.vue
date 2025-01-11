@@ -27,7 +27,7 @@ const process = async(b:string) => {
     <br>
     <template v-if="!submitted">
       <button
-        v-for="[i,r] of def.replies?.entries() ?? []" :key="i" class="grayborder hoverglow"
+        v-for="(r,i) of def.replies ?? []" :key="i" class="grayborder hoverglow"
         @click="process(typeof r === 'string'?r:r[1])">{{ typeof r == 'string'?r:r[0] }}</button>
     </template>
   </div>
