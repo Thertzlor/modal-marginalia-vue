@@ -24,7 +24,8 @@ export default [{
         "**/.eslintrc.js",
         "**/vite.config.js",
         "**/babel.config.js",
-        "**/eslint.config.mjs"
+        "**/eslint.config.mjs",
+        "generator/**"
     ],
 }, ...compat.extends(
     "eslint:recommended",

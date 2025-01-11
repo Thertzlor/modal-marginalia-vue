@@ -30,3 +30,4 @@ pnpm-debug.log*
 .old_git
 .VSCodeCounter
 /.other
+/public/sitemap.xml
