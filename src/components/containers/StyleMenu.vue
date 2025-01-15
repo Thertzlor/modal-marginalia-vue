@@ -19,28 +19,29 @@ const matcher = (path:RegExp) => computed(() => path.test(props.route.fullPath))
 const sToN = (s:string,unit='',mult=100) => parseFloat(s.slice(0,unit.length*-1||s.length)) * mult;
 const nToS = (n:number,unit='',mult=100) => `${n/mult}${unit}`;
 
-type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number};
+type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number, defaultVal?:number};
 type VarRef<T extends string=string> = {input:Ref<number>, output:ComputedRef<string>,name:T} & VarData;
 
 type Cd = typeof cssData;
 const cssObject = [] as any as {[K in Extract<keyof Cd,number>]:VarRef<Cd[K]['name']>} & VarRef[];
 const cssData = [
-  {name:'text_multiplier',unit:'em',min:0,max:250,description:'Font Size',condition:matcher(/\/post\/|\/search\b|\/post-list\b|\/about$/)},
-  {name:'side_padding', mult:1,unit:'vw',min:0,max:25,description:'Side Padding',condition:matcher(/\/post\/|\/about$/)},
-  {name:'text_weight', mult:1, min:50,max:1000,description:'Font Weight',condition:matcher(/\/post\/|\/about$/)},
-  {name:'text_fullwidth',unit:'vw',mult:1,min:20,max:60,description:'Article Width',condition:matcher(/\/post\/|\/about$/)},
-  {name:'bg_opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1},
-  {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:''},
+  {name:'text_multiplier',unit:'em',min:0,max:250,description:'Font Size',condition:matcher(/\/post\/|\/search\b|\/post-list\b|\/about$/),defaultVal:98},
+  {name:'side_padding', mult:1,unit:'vw',min:0,max:25,description:'Side Padding',condition:matcher(/\/post\/|\/about$/),defaultVal:3.5},
+  {name:'text_weight', mult:1, min:50,max:1000,description:'Font Weight',condition:matcher(/\/post\/|\/about$/),defaultVal:320},
+  {name:'text_fullwidth',unit:'vw',mult:1,min:20,max:60,description:'Article Width',condition:matcher(/\/post\/|\/about$/),defaultVal:55},
+  {name:'bg_opacity',min:0,max:100,description:'BG Opacity',unit:'%',mult:1,defaultVal:86.7},
+  {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:'',defaultVal:100},
   // {name:'p_factor',min:0,max:3,description:'Paralax factor',unit:'',mult:1,step:0.1},
-  {name:'cubeTransform',min:0,max:10,mult:1,description:'Rectangle Growth',unit:'em',condition:matcher(/^\/$/)}
+  {name:'cubeTransform',min:0,max:10,mult:1,description:'Rectangle Growth',unit:'em',condition:matcher(/^\/$/),defaultVal:3.5}
 ] as const;
 const _miscData = [
   {name:'reading speed',unit:'wpm',min:0,max:800,description:'Reading Speed'}
 ] as const;
 
 for (const v of cssData) {
-  const {name,unit,mult} = v as VarData;
+  const {name,unit,mult, defaultVal} = v as VarData;
   const input = ref(sToN(props.initalData[`--${name}`] ?? window.getComputedStyle(document.body).getPropertyValue(`--${name}`),unit,mult));
+  if (isNaN(input.value)) input.value = defaultVal ?? 0;
   const output = computed(() => nToS(input.value,unit,mult));
   cssObject.push({input,output,...v});
 }

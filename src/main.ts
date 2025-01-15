@@ -20,14 +20,12 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 });
 
 const pinia = createPinia();
-export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustomElement(t){return ['CustomLink'].includes(t);}}},{routes:routes.filter(r => !(['Home','Not Found','Server Error','Search','Post','Only Stars'] as (string|symbol|undefined)[]).includes(r.name))}, ({app,router}) => {
+export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustomElement(t){return ['CustomLink'].includes(t);}}},{routes}, ({app,router}) => {
   app.use(pinia).use(router);
 
   const globals = useGlobals();
   app.config.globalProperties = globals as any;
   const httpLink = new HttpLink({uri: globals.graphqlURL});
-  //@ts-expect-error SSG stuff
-  if (import.meta.env.SSR) globals.setSSG();
   app.provide(
     DefaultApolloClient,
     new ApolloClient({

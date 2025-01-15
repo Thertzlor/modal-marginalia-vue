@@ -6,14 +6,16 @@ const imgList = (['', '_1', '_2'] as const).map((s => `../img/para_2${s}.png` as
 const imgListBg = (['', '_1', '_2'] as const).map((s => `../img/para_1${s}.png` as const));
 const [currentImg, currentImgBg] = ([imgList, imgListBg]).map(l => ref(l[0]));
 const [backgroundImage, backgroundImageBg] = [currentImg, currentImgBg].map(b => computed(() => `url(${b.value})`));
-const [opacity,opacityBg] = ([0,0]).map(v => ref(v));
 const loadedImgs = new Set<string>();
 
-const {activateCanvas,run} = useGlobals();
+const {activateCanvas,run,getSSG} = useGlobals();
+const building = getSSG();
+const [opacity,opacityBg] = ([1,1]).map(v => ref(v));
 const bigImgSwitch = ref(true);
 const loadLimit = 1500;
 onMounted(
   () => {
+    if (building) return;
     ['../img/para_2.png', '../img/para_1.png', ''].map((s) => (s ? document.location.href.split('/').slice(4).reduce(a => `../${a}`, s) : s)).forEach((u, i) => {
       const el = document.getElementsByClassName(['p1', 'p2', 'p3'][i]).item(0) as HTMLElement;
       el.classList.add('vistrans');
