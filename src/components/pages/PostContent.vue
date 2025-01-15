@@ -41,7 +41,20 @@ useSinglePostQuery({postId:postId,commentPagination});
 const {onResult:upRes,refetch:upFetch,load} = usePostCheckLazyQuery({postId:result.value?.posts_connection?.nodes[0]?.documentId ?? ''},{enabled:true});
 upRes(r => {if (new Date(r.data?.post?.updatedAt ?? updated).getTime() !== updated) refetch()?.catch(e => console.log(e));});
 const post = ref<Exclude<Exclude<(typeof result)['value'],undefined>['posts_connection'],null|undefined>['nodes'][number]|undefined>();
-if (getSSG()) post.value = result.value?.posts_connection?.nodes[0];
+
+const postMeta = () => {
+  if (!post.value) return;
+  const titlus = `${post.value.title} - Modal Marginalia`;
+  heady?.patch({
+    title:titlus,
+    meta:[{name:'description',content:post.value.teaser},{name:'og:url',content:`https://www.modal-marginalia.com/post/${post.value.human_id}-${post.value.slug}`},{name:'og:description',content:post.value.teaser},{name:'og:title',content:titlus},{name:'og:image',content:post.value.header?.url}]
+  });
+};
+
+if (getSSG()) {
+  post.value = result.value?.posts_connection?.nodes[0];
+  postMeta();
+}
 
 onError(e => void router.push((e.message.includes('publishedAt') && !(e.networkError||e.clientErrors.length || e.protocolErrors.length))?'/NotFound':'/ServerError').then(() => hist(origRoute)));
 onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connection?.nodes.length ? router.push('/NotFound').then(() => hist(origRoute)) : (() => {
@@ -49,11 +62,7 @@ onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connec
   p.images_connection?.nodes?.forEach(n => !iMap.has(n.url) && iMap.set(n.url, n));
   p.header && !iMap.has(p.header.url) && iMap.set(p.header.url, p.header);
   post.value = p;
-  const titlus = `${post.value.title} - Modal Marginalia`;
-  heady?.patch({
-    title:titlus,
-    meta:[{name:'description',content:post.value.teaser},{name:'og:url',content:`https://www.modal-marginalia.com/post/${post.value.human_id}-${post.value.slug}`},{name:'og:description',content:post.value.teaser},{name:'og:title',content:titlus},{name:'og:image',content:post.value.header?.url}]
-  });
+  postMeta();
   updated = new Date(post.value.updatedAt).getTime();
   if (!inVal) {
     hashNav();
