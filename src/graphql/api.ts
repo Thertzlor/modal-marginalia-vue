@@ -1774,7 +1774,7 @@ export type InitAllQueryVariables = Exact<{
 }>;
 
 
-export type InitAllQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPage', title?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null } | null, quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: { __typename?: 'Quote', documentId: string, text: string }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, priority: number }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: { __typename?: 'Post', human_id: number, documentId: string, pub_date?: any | null, title: string, slug: string }[] } | null };
+export type InitAllQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: { __typename?: 'Quote', documentId: string, text: string }[] } | null, aboutPage?: { __typename?: 'AboutPage', title?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: { __typename?: 'Post', documentId: string, human_id: number, title: string, teaser?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null, slug: string, toc?: boolean | null, pub_date?: any | null, updatedAt?: any | null, comments_enabled: boolean, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, images_connection?: { __typename?: 'UploadFileRelationResponseCollection', nodes: { __typename?: 'UploadFile', url: string, caption?: string | null, alternativeText?: string | null, formats?: any | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', description?: string | null, name: string, slug: string }[] } | null }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, priority: number }[] } | null };
 
 export type LastPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1924,16 +1924,59 @@ export function useInitLazyQuery(variables: InitQueryVariables | VueCompositionA
 export type InitQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<InitQuery, InitQueryVariables>;
 export const InitAllDocument = gql`
     query InitAll($pg: PaginationArg) {
+  quotes_connection(pagination: $pg) {
+    nodes {
+      documentId
+      text
+    }
+  }
   aboutPage {
     title
     body_vue
     toenotes_vue
     footnotes_vue
   }
-  quotes_connection(pagination: $pg) {
+  posts_connection {
     nodes {
       documentId
-      text
+      human_id
+      title
+      header {
+        url
+        caption
+        width
+        height
+        alternativeText
+        formats
+      }
+      teaser
+      body_vue
+      toenotes_vue
+      footnotes_vue
+      slug
+      toc
+      pub_date
+      updatedAt
+      comments_enabled
+      images_connection {
+        nodes {
+          url
+          caption
+          alternativeText
+          formats
+        }
+      }
+      category {
+        name
+        slug
+      }
+      tags_connection {
+        nodes {
+          description
+          name
+          slug
+        }
+      }
     }
   }
   categories_connection(filters: {posts: {publishedAt: {notNull: true}}}) {
@@ -1943,20 +1986,8 @@ export const InitAllDocument = gql`
       priority
     }
   }
-  posts_connection(pagination: {start: 0, limit: 5}, sort: "pub_date:desc") {
-    pageInfo {
-      ...totalPages
-    }
-    nodes {
-      human_id
-      documentId
-      pub_date
-      title
-      slug
-    }
-  }
 }
-    ${TotalPagesFragmentDoc}`;
+    `;
 
 /**
  * __useInitAllQuery__

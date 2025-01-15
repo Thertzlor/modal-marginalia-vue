@@ -41,7 +41,13 @@ query Init($pg: PaginationArg) {
   }
 }
 
-query InitAll {
+query InitAll($pg: PaginationArg) {
+    quotes_connection(pagination: $pg) {
+    nodes {
+      documentId
+      text
+    }
+  }
     aboutPage {
     title
     body_vue
