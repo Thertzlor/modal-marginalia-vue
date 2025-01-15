@@ -11,7 +11,7 @@ import {useHead} from '@unhead/vue';
 import {ref} from 'vue';
 import type {PaginationArg} from '@/graphql/api';
 
-const {postRefreshRate, hist, unRay, perComment,scrollOption,iMap} = useGlobals();
+const {postRefreshRate, hist, unRay, perComment,scrollOption,iMap,mockGraphQL,getSSG} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 const selector = router.currentRoute.value.params.select;
@@ -28,18 +28,21 @@ const hashNav = (noDelay = false) => {
   if (navd) return;
   navd = true;
   const hashy = router.currentRoute.value.hash;
-  hashy && window.setTimeout(() => document.getElementById(hashy.slice(1))?.scrollIntoView(scrollOption), noDelay ? 0 : 1000);
+  hashy && window && window.setTimeout(() => document.getElementById(hashy.slice(1))?.scrollIntoView(scrollOption), noDelay ? 0 : 1000);
 };
 
 let updated:number|undefined;
 let inVal:number|undefined;
 const heady = useHead({});
 
-const {result, onResult, refetch, onError} = useSinglePostQuery({postId:postId,commentPagination});
+const {result, onResult, refetch, onError} = mockGraphQL(d => ref({posts_connection:{nodes:d.posts_connection?.nodes.filter(p => p.human_id === postId) ?? []},comments_connection:undefined})) ??
+useSinglePostQuery({postId:postId,commentPagination});
 
 const {onResult:upRes,refetch:upFetch,load} = usePostCheckLazyQuery({postId:result.value?.posts_connection?.nodes[0]?.documentId ?? ''},{enabled:true});
 upRes(r => {if (new Date(r.data?.post?.updatedAt ?? updated).getTime() !== updated) refetch()?.catch(e => console.log(e));});
 const post = ref<Exclude<Exclude<(typeof result)['value'],undefined>['posts_connection'],null|undefined>['nodes'][number]|undefined>();
+if (getSSG()) post.value = result.value?.posts_connection?.nodes[0];
+
 onError(e => void router.push((e.message.includes('publishedAt') && !(e.networkError||e.clientErrors.length || e.protocolErrors.length))?'/NotFound':'/ServerError').then(() => hist(origRoute)));
 onResult(r => void (r.networkStatus !== 4 &&!r.loading && (!r.data?.posts_connection?.nodes.length ? router.push('/NotFound').then(() => hist(origRoute)) : (() => {
   const p = r.data.posts_connection.nodes[0];

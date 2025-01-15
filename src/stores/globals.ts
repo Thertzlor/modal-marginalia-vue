@@ -37,10 +37,8 @@ export const useGlobals = defineStore('globals',() => {
   let ssgData = {} as any;
   const setDataSSG = d => (ssgData = d.data);
   const getDataSSG = () => (ssgData) as InitAllQuery;
-  const mockGraphQL = <T>(mocker:T) => {
-    if (!getSSG()) return;
-    return {result:mocker, onError:(...a) => void a};
-  };
+  const mockGraphQL = <T extends (data:InitAllQuery)=> any>(transformer:T) => (getSSG()? {result:transformer(getDataSSG()) as ReturnType<T>, onError:(...a) => void a,refetch:(...a) => void a,onResult:(...a) => void a}:undefined);
+
   const ct = '4b14c42a63fb8f0c62e816faf32c5ed5578bd3ec9a5b46eced32f66d47d1430cc54896eeecec06f87a1a355fd4921097c387556930b6527616ba1d8dc1f3da2d790d2a745365f8f73eaeba07d69fbea98c065f00b04a3e170f57fdfce054504d7e15dcc266c70c7ca3edba0b6023840c82380f5d4849d58bb7b15c930220b40b';
   const imgload = (e:Event,parSelect=0):void => {
     let targ = e.target as HTMLElement;

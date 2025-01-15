@@ -4,11 +4,11 @@ import {useGlobals} from '@/stores/globals';
 import {useAboutQuery} from '@/graphql/api';
 import DynaPost from '../containers/DynaPost.vue';
 import DynaNote from '../containers/DynaNote.vue';
-const {hist,getDataSSG,mockGraphQL} = useGlobals();
+const {hist,mockGraphQL} = useGlobals();
 const router = useRouter();
 const origRoute = router.currentRoute.value.fullPath;
 
-const {result, onError} = mockGraphQL(getDataSSG()) ?? useAboutQuery();//useQuery<{aboutPage: Relation<AboutPage>}>(postQuery);
+const {result, onError} = mockGraphQL(d => d) ?? useAboutQuery();//useQuery<{aboutPage: Relation<AboutPage>}>(postQuery);
 onError(() => void router.push('/ServerError').then(() => hist(origRoute)));
 </script>
 
