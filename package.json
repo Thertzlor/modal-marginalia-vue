@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "dev": "vite",
-    "build-vite": "node .\\generator\\sitemap.js & vite-ssg build",
+    "build-vite": "vite-ssg build",
     "preview-vite": "vite preview",
     "auto-graph": "graphql-codegen && replace-in-files --string '@vue/composition-api' --replacement 'vue' ./src/graphql/api.ts && replace-in-files --regex 'DateTime:\\sany' --replacement 'DateTime:Date' ./src/graphql/api.ts"
   },
