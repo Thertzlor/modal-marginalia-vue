@@ -748,7 +748,7 @@ export type Post = {
   id: Scalars['ID']['output'];
   images: Maybe<UploadFile>[];
   images_connection?: Maybe<UploadFileRelationResponseCollection>;
-  pub_date: Scalars['Date']['output'];
+  pub_date?: Maybe<Scalars['Date']['output']>;
   publishedAt?: Maybe<Scalars['DateTime']['output']>;
   slug: Scalars['String']['output'];
   tags: Maybe<Tag>[];
@@ -1767,7 +1767,14 @@ export type InitQueryVariables = Exact<{
 }>;
 
 
-export type InitQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: { __typename?: 'Quote', documentId: string, text: string }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, priority: number }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: { __typename?: 'Post', human_id: number, documentId: string, pub_date: any, title: string, slug: string }[] } | null };
+export type InitQuery = { __typename?: 'Query', quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: { __typename?: 'Quote', documentId: string, text: string }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, priority: number }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: { __typename?: 'Post', human_id: number, documentId: string, pub_date?: any | null, title: string, slug: string }[] } | null };
+
+export type InitAllQueryVariables = Exact<{
+  pg?: InputMaybe<PaginationArg>;
+}>;
+
+
+export type InitAllQuery = { __typename?: 'Query', aboutPage?: { __typename?: 'AboutPage', title?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null } | null, quotes_connection?: { __typename?: 'QuoteEntityResponseCollection', nodes: { __typename?: 'Quote', documentId: string, text: string }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, priority: number }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number }, nodes: { __typename?: 'Post', human_id: number, documentId: string, pub_date?: any | null, title: string, slug: string }[] } | null };
 
 export type LastPostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1791,7 +1798,7 @@ export type PostSearchQueryVariables = Exact<{
 }>;
 
 
-export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Post', documentId: string, human_id: number, pub_date: any, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null, height?: number | null, width?: number | null, url: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null }[] } | null };
+export type PostSearchQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Post', documentId: string, human_id: number, pub_date?: any | null, body_searchable?: string | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null, height?: number | null, width?: number | null, url: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null }[] } | null };
 
 export type SinglePostQueryVariables = Exact<{
   postId?: InputMaybe<Scalars['Int']['input']>;
@@ -1799,7 +1806,7 @@ export type SinglePostQueryVariables = Exact<{
 }>;
 
 
-export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Comment', depth: number, documentId: string, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: { __typename?: 'Comment', documentId: string }[] } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: { __typename?: 'Post', documentId: string, human_id: number, title: string, teaser?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null, slug: string, toc?: boolean | null, pub_date: any, updatedAt?: any | null, comments_enabled: boolean, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, images_connection?: { __typename?: 'UploadFileRelationResponseCollection', nodes: { __typename?: 'UploadFile', url: string, caption?: string | null, alternativeText?: string | null, formats?: any | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', description?: string | null, name: string, slug: string }[] } | null }[] } | null };
+export type SinglePostQuery = { __typename?: 'Query', comments_connection?: { __typename?: 'CommentEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Comment', depth: number, documentId: string, createdAt?: any | null, content: string, subcomments_connection?: { __typename?: 'CommentRelationResponseCollection', nodes: { __typename?: 'Comment', documentId: string }[] } | null, author?: { __typename?: 'UsersPermissionsUser', username: string } | null }[] } | null, posts_connection?: { __typename?: 'PostEntityResponseCollection', nodes: { __typename?: 'Post', documentId: string, human_id: number, title: string, teaser?: string | null, body_vue?: string | null, toenotes_vue?: string | null, footnotes_vue?: string | null, slug: string, toc?: boolean | null, pub_date?: any | null, updatedAt?: any | null, comments_enabled: boolean, header?: { __typename?: 'UploadFile', url: string, caption?: string | null, width?: number | null, height?: number | null, alternativeText?: string | null, formats?: any | null } | null, images_connection?: { __typename?: 'UploadFileRelationResponseCollection', nodes: { __typename?: 'UploadFile', url: string, caption?: string | null, alternativeText?: string | null, formats?: any | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', description?: string | null, name: string, slug: string }[] } | null }[] } | null };
 
 export type PostCheckQueryVariables = Exact<{
   postId: Scalars['ID']['input'];
@@ -1824,7 +1831,7 @@ export type PostListQueryVariables = Exact<{
 }>;
 
 
-export type PostListQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Post', human_id: number, documentId: string, pub_date: any, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null }[] } | null, tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, description?: string | null }[] } | null };
+export type PostListQuery = { __typename?: 'Query', posts_connection?: { __typename?: 'PostEntityResponseCollection', pageInfo: { __typename?: 'Pagination', total: number, page: number, pageSize: number, pageCount: number }, nodes: { __typename?: 'Post', human_id: number, documentId: string, pub_date?: any | null, title: string, teaser?: string | null, slug: string, header?: { __typename?: 'UploadFile', formats?: any | null } | null, tags_connection?: { __typename?: 'TagRelationResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null }[] } | null, category?: { __typename?: 'Category', name: string, slug: string } | null }[] } | null, tags_connection?: { __typename?: 'TagEntityResponseCollection', nodes: { __typename?: 'Tag', name: string, slug: string, description?: string | null }[] } | null, categories_connection?: { __typename?: 'CategoryEntityResponseCollection', nodes: { __typename?: 'Category', name: string, slug: string, description?: string | null }[] } | null };
 
 export type CommentatorMutationVariables = Exact<{
   post: Scalars['ID']['input'];
@@ -1915,6 +1922,64 @@ export function useInitLazyQuery(variables: InitQueryVariables | VueCompositionA
   return VueApolloComposable.useLazyQuery<InitQuery, InitQueryVariables>(InitDocument, variables, options);
 }
 export type InitQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<InitQuery, InitQueryVariables>;
+export const InitAllDocument = gql`
+    query InitAll($pg: PaginationArg) {
+  aboutPage {
+    title
+    body_vue
+    toenotes_vue
+    footnotes_vue
+  }
+  quotes_connection(pagination: $pg) {
+    nodes {
+      documentId
+      text
+    }
+  }
+  categories_connection(filters: {posts: {publishedAt: {notNull: true}}}) {
+    nodes {
+      name
+      slug
+      priority
+    }
+  }
+  posts_connection(pagination: {start: 0, limit: 5}, sort: "pub_date:desc") {
+    pageInfo {
+      ...totalPages
+    }
+    nodes {
+      human_id
+      documentId
+      pub_date
+      title
+      slug
+    }
+  }
+}
+    ${TotalPagesFragmentDoc}`;
+
+/**
+ * __useInitAllQuery__
+ *
+ * To run a query within a Vue component, call `useInitAllQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInitAllQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param variables that will be passed into the query
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useInitAllQuery({
+ *   pg: // value for 'pg'
+ * });
+ */
+export function useInitAllQuery(variables: InitAllQueryVariables | VueCompositionApi.Ref<InitAllQueryVariables> | ReactiveFunction<InitAllQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<InitAllQuery, InitAllQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<InitAllQuery, InitAllQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<InitAllQuery, InitAllQueryVariables>> = {}) {
+  return VueApolloComposable.useQuery<InitAllQuery, InitAllQueryVariables>(InitAllDocument, variables, options);
+}
+export function useInitAllLazyQuery(variables: InitAllQueryVariables | VueCompositionApi.Ref<InitAllQueryVariables> | ReactiveFunction<InitAllQueryVariables> = {}, options: VueApolloComposable.UseQueryOptions<InitAllQuery, InitAllQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<InitAllQuery, InitAllQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<InitAllQuery, InitAllQueryVariables>> = {}) {
+  return VueApolloComposable.useLazyQuery<InitAllQuery, InitAllQueryVariables>(InitAllDocument, variables, options);
+}
+export type InitAllQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<InitAllQuery, InitAllQueryVariables>;
 export const LastPostsDocument = gql`
     query lastPosts {
   posts_connection {

@@ -1,9 +1,10 @@
-import {createWebHistory, createRouter, RouteRecordRaw} from 'vue-router';
+import {RouteRecordRaw} from 'vue-router';
 
-const routes:RouteRecordRaw[] = [
+export const routes:RouteRecordRaw[] = [
   {
     path: '/',
     name: 'Home',
+
     component: () => import('./components/pages/HomePage.vue')
   },
   {
@@ -55,16 +56,16 @@ const routes:RouteRecordRaw[] = [
   }
 ];
 
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-  scrollBehavior(to) {
-    return to.hash?{selector: to.hash,behavior: 'smooth'}:{x: 0, y: 0,behavior:'smooth'};// Go to the top of the page if no hash
-  }
-});
-
-// router.beforeEach(x => {
-//   console.log(x.fullPath);
+// const router = createRouter({
+//   history: createWebHistory(),
+//   routes,
+//   scrollBehavior(to) {
+//     return to.hash?{selector: to.hash,behavior: 'smooth'}:{x: 0, y: 0,behavior:'smooth'};// Go to the top of the page if no hash
+//   }
 // });
 
-export default router;
+// // router.beforeEach(x => {
+// //   console.log(x.fullPath);
+// // });
+
+// export default router;

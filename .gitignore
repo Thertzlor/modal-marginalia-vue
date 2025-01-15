@@ -31,3 +31,5 @@ pnpm-debug.log*
 .VSCodeCounter
 /.other
 /public/sitemap.xml
+/.vite-ssg-temp
+**/**.env

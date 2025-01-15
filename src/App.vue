@@ -8,10 +8,10 @@ import ParallaxLayer from './components/containers/ParallaxLayer.vue';
 import {useGlobals} from './stores/globals';
 import {onBeforeMount, computed, ref, useTemplateRef} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
-import {useInitQuery, useLastPostsLazyQuery} from '@/graphql/api';
+import {useInitQuery, useLastPostsLazyQuery,useInitAllQuery} from '@/graphql/api';
 import type {PaginationArg} from '@/graphql/api';
 
-const {refreshRate,hist,run,localCssVars} = useGlobals();
+const {refreshRate,hist,run,localCssVars,getSSG,setDataSSG} = useGlobals();
 let relCount = 5;
 const route = useRoute();
 const router = useRouter();
@@ -71,14 +71,15 @@ router.afterEach(({fullPath}) => {
 
 const onBeforeEnter = () => (slideVal.value = (sizes.get(router.currentRoute.value.fullPath) || '-200vh'));
 onBeforeMount(bodyClass);
-
-const {result, onError, onResult,refetch} = useInitQuery({pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
+const building = getSSG();
+const {result, onError, onResult,refetch} = (building?useInitAllQuery:useInitQuery)(building?{}:{pg},{fetchPolicy: 'no-cache', nextFetchPolicy: 'no-cache'});
 const {onResult:checkRes,refetch:checkFetch,load} = useLastPostsLazyQuery();
 
 let numPosts:number|undefined;
 let inVal:number|undefined;
 
 onResult(r => {
+  if (building) return setDataSSG(r);
   if (!r.data?.posts_connection?.pageInfo.total || !refreshRate) return;
   numPosts = r.data.posts_connection.pageInfo.total;
   if (!inVal) {
@@ -138,7 +139,7 @@ const scrollcheck = s => {
       <ParallaxLayer ref="para" />
       <div class="content">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal&nbsp;<br>Marginalia</RouterLink></h1>
-        <SidebarRegular :style="{['--side_width']:isMain?'30vw':undefined,marginRight:isMain?'-10vw':undefined}" :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="result?.posts_connection?.nodes ?? []" />
+        <SidebarRegular :style="{['--side_width']:isMain?'30vw':undefined,marginRight:isMain?'-10vw':undefined}" :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="building?[]:result?.posts_connection?.nodes ?? []" />
         <RouterView v-slot="{Component, route: compRoute}" :quote="quote">
           <Transition name="v-slide" mode="out-in" @before-enter="onBeforeEnter"><component
             :is="Component" :key="compRoute.fullPath" :style="{'--slide_height': slideVal}"

@@ -8,7 +8,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "dev": "vite",
-    "build-vite": "node .\\generator\\sitemap.js & vite build",
+    "build-vite": "node .\\generator\\sitemap.js & vite-ssg build",
     "preview-vite": "vite preview",
     "auto-graph": "graphql-codegen && replace-in-files --string '@vue/composition-api' --replacement 'vue' ./src/graphql/api.ts && replace-in-files --regex 'DateTime:\\sany' --replacement 'DateTime:Date' ./src/graphql/api.ts"
   },
@@ -53,6 +53,7 @@
     "vite": "^6.0.3",
     "vite-plugin-env-compatible": "^2.0.1",
     "vite-plugin-html": "^3.2.2",
-    "vite-plugin-vue-devtools": "^7.6.8"
+    "vite-plugin-vue-devtools": "^7.6.8",
+    "vite-ssg": "^25.0.0"
   }
 }

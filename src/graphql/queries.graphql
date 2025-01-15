@@ -41,6 +41,68 @@ query Init($pg: PaginationArg) {
   }
 }
 
+query InitAll {
+    aboutPage {
+    title
+    body_vue
+    toenotes_vue
+    footnotes_vue
+  }
+    posts_connection {
+    nodes {
+    documentId
+    human_id
+    title
+    header {
+      url
+      caption
+      width
+      height
+      alternativeText
+      formats
+    }
+    teaser
+    body_vue
+    toenotes_vue
+    footnotes_vue
+    slug
+    toc
+    pub_date
+    updatedAt
+    comments_enabled
+    images_connection {
+      nodes {
+        url
+        caption
+        alternativeText
+        formats
+      }
+    }
+    category {
+      name
+      slug
+    }
+    tags_connection {
+      nodes {
+        description
+        name
+        slug
+      }
+    }
+  }
+  }
+
+  categories_connection(
+    filters: { posts: { publishedAt: { notNull: true } } }
+  ) {
+    nodes {
+      name
+      slug
+      priority
+    }
+  }
+}
+
 query lastPosts {
   posts_connection {
     pageInfo {
