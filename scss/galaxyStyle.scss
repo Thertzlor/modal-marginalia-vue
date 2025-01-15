@@ -1032,6 +1032,8 @@ h2.home_header {
   overflow: hidden;
   padding-top: 2vh;
   padding-bottom: .3em;
+
+  &.dummy { opacity: 0; }
 }
 
 .parallax {

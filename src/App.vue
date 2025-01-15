@@ -137,7 +137,7 @@ const scrollcheck = s => {
   <div class="wrapper" :style="styler?.finalStyle?? savedVars" @scroll="scrollcheck">
     <div class="parallax-wrapper">
       <ParallaxLayer ref="para" />
-      <div class="content">
+      <div :class="{content:true,dummy:building}">
         <h1 class="sitename" :class="{main: isMain}"><RouterLink to="/">Modal&nbsp;<br>Marginalia</RouterLink></h1>
         <SidebarRegular :style="{['--side_width']:isMain?'30vw':undefined,marginRight:isMain?'-10vw':undefined}" :cat-list="result?.categories_connection?.nodes ?? []" :latest-posts="building?[]:result?.posts_connection?.nodes ?? []" />
         <RouterView v-slot="{Component, route: compRoute}" :quote="quote">

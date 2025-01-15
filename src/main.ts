@@ -20,8 +20,10 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
 });
 
 const pinia = createPinia();
-export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustomElement(t){return ['CustomLink'].includes(t);}}},{routes}, ({app,router}) => {
+export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustomElement(t){return ['CustomLink'].includes(t);}}},{routes}, ({app,router,initialState,onSSRAppRendered}) => {
   app.use(pinia).use(router);
+  if (import.meta.env.SSR)initialState.pinia = pinia.state.value;
+  else onSSRAppRendered(() => {initialState.pinia = pinia.state.value;});
 
   const globals = useGlobals();
   app.config.globalProperties = globals as any;
@@ -65,6 +67,4 @@ export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustom
       }
     })
   );
-
-
 });
