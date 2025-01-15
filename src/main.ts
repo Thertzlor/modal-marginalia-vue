@@ -68,4 +68,3 @@ export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustom
 
 
 });
-//Pina is loaded now
