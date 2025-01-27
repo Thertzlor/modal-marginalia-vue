@@ -1257,6 +1257,13 @@ ul.pagination {
     max-width: 20%;
     font-size: 120%;
   }
+  code.inline {
+    font-family: "Fira Code";
+    background-color: rgb(255 255 255 / 15%);
+    padding: 0 .2em;
+    font-weight: bolder;
+    border-radius: .2em;
+  }
   .post_text {
     font-size: var(--text_multiplier);
     font-weight: var(--text_weight);
@@ -1487,13 +1494,6 @@ ul.pagination {
       clear: both;
       margin: 2.5em auto;
       filter: blur(.025em);
-    }
-    code.inline {
-      font-family: "Fira Code";
-      background-color: rgb(255 255 255 / 15%);
-      padding: 0 .2em;
-      font-weight: bolder;
-      border-radius: .2em;
     }
     pre {
       max-width: 100%;
