@@ -28,7 +28,6 @@ const href = ref(route.fullPath);
 const andMode = ref(boolRoute('andMode', false));
 const incTeaser = ref(boolRoute('ts', true));
 const incTitle = ref(boolRoute('ti', true));
-const incNotes = ref(boolRoute('fn', false));
 const pageTarget = ref(numRoute('page', 1));
 const perPageVal = ref(numRoute('pp', perPage));
 const query = ref(proc(route.query.q) || '');
@@ -58,10 +57,6 @@ const genQuery = (t:string) => {
   const pushy = (f:keyof Post) => filter.or?.push({[f]: {contains: t}});
   if (incTitle.value) pushy('title');
   if (incTeaser.value) pushy('teaser');
-  if (incNotes.value) {
-    pushy('toenotes');
-    pushy('footnotes');
-  }
   return filter;
 };
 
@@ -76,7 +71,7 @@ function searchSubmit() {
   searchQuery.value = query.value;
   refetch({pg: pg.value, postFilter: postFilter.value, sort: [sortArg.value]})?.catch(e => console.log(e));
   pg.value.page = 1;
-  const params = ([[incTeaser, 'ts'], [incTitle, 'ti'], [incNotes, 'fn'], [andMode, 'andMode']] as const).filter(([x]) => x.value).map(([, n]) => `${n}=1`);
+  const params = ([[incTeaser, 'ts'], [incTitle, 'ti'], [andMode, 'andMode']] as const).filter(([x]) => x.value).map(([, n]) => `${n}=1`);
   if (perPageVal.value !== perPage) params.push(`pp=${perPageVal.value}`);
   href.value = `/search?q=${encodeURIComponent(query.value)}${params.length ? `&${params.join('&')}` : ''}`;
   hist(href.value);
@@ -118,9 +113,6 @@ function locatePreview(text:string, queryValue:string[]) {
           name="incTeaser">Match Teaser</label>
       </fieldset>
       <fieldset>
-        <label title="Include footnotes and foenotes in your search"><input
-          id="incNotes" v-model="incNotes" type="checkbox"
-          name="incNotes">Match Notes</label>
         <label title="Posts have to match all terms not just some of them"><input
           id="andMode" v-model="andMode" type="checkbox"
           name="andMode">Strict</label>
