@@ -18,7 +18,7 @@ const sider = () => (switchSides.value = ((document.querySelector(targetSelector
     <Teleport
       v-if="props.current == props.index" defer :to="targetSelector"
       @vue:before-mount="sider()">
-      <div class="inline-note grayborder"><slot /></div>
+      <aside :class="{'inline-note':true,grayborder:true,switched:switchSides}"><slot /></aside>
     </Teleport>
   </Transition>
 </template>
