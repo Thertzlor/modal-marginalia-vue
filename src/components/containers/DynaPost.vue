@@ -6,13 +6,14 @@ import ImageContainer from '../containers/ImageContainer.vue';
 import CodeWrapper from '../containers/CodeWrapper.vue';
 import ToC from '../navigation/ToC.vue';
 import type {Component} from 'vue';
-
+const emit = defineEmits<{(arg:'activeHover',num:number)}>();
 const props = defineProps<{content:string,toc?:boolean|null,main?:boolean,published?:string}>();
 const headerinos = ref<[number,string,string][]>([]);
 const addHeader = (index:number,level:number,title:string,id:string) => props.toc && (headerinos.value[index] = [level,id,title]);
+const setHover = (num:number) => emit('activeHover',num);
 const dynamicComponent = computed(():Component => (
   {
-    methods:{addHeader},
+    methods:{addHeader,setHover},
     template: props.content,
     components: {CustomLink, ImageContainer,VueHeader,CodeWrapper}
   }

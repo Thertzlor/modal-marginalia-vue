@@ -79,6 +79,9 @@ const contentFetcher = () => refetch();
 
 const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPagination:arg,postId}));
 
+const hoverIndex = ref(0);
+const toeHoverIndex = ref(0);
+
 </script>
 
 <template>
@@ -96,10 +99,11 @@ const rePage = (arg:PaginationArg) => (console.log(arg),refetch({commentPaginati
       <main>
         <DynaPost
           :published="post.pub_date"
-          :toc="post.toc" :main="true" :content="post.body_vue ?? ''" />
+          :toc="post.toc"
+          :main="true" :content="post.body_vue ?? ''" @active-hover="n => hoverIndex = n" />
       </main>
-      <DynaNote :content="post.footnotes_vue" />
-      <DynaNote :content="post.toenotes_vue" :toenotes="true" />
+      <DynaNote :hovering="hoverIndex" :content="post.footnotes_vue" @active-hover="n => toeHoverIndex = n" />
+      <DynaNote :hovering="toeHoverIndex" :content="post.toenotes_vue" :toenotes="true" />
     </article>
     <CommentSection
       v-if="post?.comments_enabled" :pagination="result?.comments_connection?.pageInfo" :page="1"
