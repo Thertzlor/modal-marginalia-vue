@@ -1590,7 +1590,7 @@ ul.pagination {
     i { font-weight: calc(var(--text_weight) / 1.2); }
 
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     padding: 2.5em var(--side_padding) 2em;
     background: var(--text_back);
     border-radius: 1.5em;

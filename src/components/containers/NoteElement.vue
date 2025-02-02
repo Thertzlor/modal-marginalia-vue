@@ -5,7 +5,7 @@ import CustomLink from '../navigation/CustomLink.vue';
 const props = defineProps<{index:string|number,toe?:boolean, current?:number}>();
 const switchSides = ref(false);
 const targetSelector = `#${props.toe?'toe':'ref'}_${props.index}_head`;
-const sider = () => (switchSides.value = ((document.querySelector(targetSelector)?.getBoundingClientRect().x ?? 0)/window.innerWidth) >= 0.7);
+const sider = () => (switchSides.value = ((document.querySelector(targetSelector)?.getBoundingClientRect().x ?? 0)/window.innerWidth) >= 0.57);
 </script>
 <template>
   <li>
