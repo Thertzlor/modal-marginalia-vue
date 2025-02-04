@@ -34,7 +34,7 @@ export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustom
       cache:new InMemoryCache({
         typePolicies:{
           PostEntity:{
-            keyFields:['id'],
+            keyFields:['documentId'],
             fields:{
               attributes:{
                 keyArgs:['slug'],
@@ -42,14 +42,14 @@ export const createApp = ViteSSG({render: () => h(App),compilerOptions:{isCustom
               }
             }
           },
-          QuoteEntity:{keyFields:['id']},
+          QuoteEntity:{keyFields:['documentId']},
           Query:{
             fields:{
               posts:{
-                keyArgs:['id'],
+                keyArgs:['documentId'],
                 merge:true
               },
-              tags:{keyArgs:['id']}
+              tags:{keyArgs:['documentId']}
             }
           }
         }
