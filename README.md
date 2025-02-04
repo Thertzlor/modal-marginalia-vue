@@ -12,7 +12,8 @@ The SCSS for this site is designed to be processed with PostCSS, but the plug-in
 
 ## **Highlights**: Features that I am pretty proud of:
 * Full Window, indefinitely scrolling parralax, with dynamically generated elements.
-* User-customizable styles based on CSS custom-properties. 
+* User-customizable styles based on CSS custom-properties.
+* Reading time display for posts that lets you set your own reading speed in words per minute.
 * Self implemented feature rich modal messages, that work pretty well, if I say so myself.
 * Posts with footnotes that can have toenotes, with previews of the notes when hovering over links, including toenote previews *within* footnote previews.
 * Dynamically rendered component templates that enable advanced vue shenanigans on WYSIWYG editor outputs, [as explained here](https://www.modal-marginalia.com/post/6-turning-ck-editor-output-into-dynamic-vue-templates).
