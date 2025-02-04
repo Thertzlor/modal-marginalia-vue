@@ -5,7 +5,7 @@ import type {ComputedRef, Ref} from 'vue';
 import type {RouteLocationNormalizedLoadedGeneric} from 'vue-router';
 import type {MessageDefinition} from '../messages/MessageComponent.vue';
 
-const {localCssVars} = useGlobals();
+const {localCssVars,miscState} = useGlobals();
 const props = defineProps<{initalData:any,route:RouteLocationNormalizedLoadedGeneric}>();
 const lCook = 'modal-marginalia-cookie-confirmation';
 const bCook = 'modal-marginalia-a-sucker-is-born-every-minute';
@@ -13,17 +13,18 @@ const [cookVisible,noPriv] = ([false,!!localStorage.getItem(bCook)]).map(v => re
 
 const scrollini = (r:Ref<number>,{deltaY}:WheelEvent) => (r.value += (1*((deltaY < 1)?1:-1)));
 
-const emit = defineEmits<{(e:'msg',def:MessageDefinition),(e:'abort',key:string,crit?:boolean)}>();
+const emit = defineEmits<{(e:'msg',def:MessageDefinition),(e:'abort',key:string,crit?:boolean),(e:'val',key:string,val:number)}>();
 
 const matcher = (path:RegExp) => computed(() => path.test(props.route.fullPath));
-const sToN = (s:string,unit='',mult=100) => parseFloat(s.slice(0,unit.length*-1||s.length)) * mult;
+const sToN = (s:string,unit='',mult=100) => parseFloat(s?.slice(0,unit.length*-1||s?.length)??0) * mult;
 const nToS = (n:number,unit='',mult=100) => `${n/mult}${unit}`;
 
-type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number, defaultVal?:number};
+type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number, defaultVal?:number, title?:string};
 type VarRef<T extends string=string> = {input:Ref<number>, output:ComputedRef<string>,name:T} & VarData;
 
 type Cd = typeof cssData;
 const cssObject = [] as any as {[K in Extract<keyof Cd,number>]:VarRef<Cd[K]['name']>} & VarRef[];
+const miscObject = [] as any as {[K in Extract<keyof Cd,number>]:VarRef<Cd[K]['name']>} & VarRef[];
 const cssData = [
   {name:'text_multiplier',unit:'em',min:0,max:250,description:'Font Size',condition:matcher(/\/post\/|\/search\b|\/post-list\b|\/about$/),defaultVal:98},
   {name:'side_padding', mult:1,unit:'vw',min:0,max:25,description:'Side Padding',condition:matcher(/\/post\/|\/about$/),defaultVal:3.5},
@@ -34,8 +35,8 @@ const cssData = [
   // {name:'p_factor',min:0,max:3,description:'Paralax factor',unit:'',mult:1,step:0.1},
   {name:'cubeTransform',min:0,max:10,mult:1,description:'Rectangle Growth',unit:'em',condition:matcher(/^\/$/),defaultVal:3.5}
 ] as const;
-const _miscData = [
-  {name:'reading speed',unit:'wpm',min:0,max:800,description:'Reading Speed'}
+const miscData = [
+  {name:'reading_speed',unit:'wpm',min:0,max:800,description:'Reading Speed',title:'Set to 0 to disable.', mult:1, defaultVal:miscState.reading_speed}
 ] as const;
 
 for (const v of cssData) {
@@ -44,6 +45,14 @@ for (const v of cssData) {
   if (isNaN(input.value)) input.value = defaultVal ?? 0;
   const output = computed(() => nToS(input.value,unit,mult));
   cssObject.push({input,output,...v});
+}
+
+for (const v of miscData) {
+  const {name,unit,mult, defaultVal} = v as VarData;
+  const input = ref(sToN(props.initalData[name] ?? ''));
+  if (isNaN(input.value)) input.value = defaultVal ?? 0;
+  const output = computed(() => nToS(input.value,unit,mult));
+  miscObject.push({input,output,...v});
 }
 
 const finalStyle = computed(() => {
@@ -113,16 +122,28 @@ defineExpose({finalStyle});
   <div id="settings" :style="finalStyle" class="grayborder">
     <button id="close" @click="cl">x</button>
     <div>Style Settings</div>
-    <template v-for="{input,min,max,description,condition,output,name,step} of cssObject" :key="name">
-      <label v-if="!condition || condition.value" :title="output.value">
+    <template v-for="{input,min,max,description,condition,output,name,step,title} of cssObject" :key="name">
+      <label v-if="!condition || condition.value" :title="title">
         {{ description }}
         <input
           v-model.number="input.value"
+          :title="output.value"
           :step="step ?? 1" :min="min" :max="max"
           type="range" @wheel.passive="e=>scrollini(input,e)">
       </label>
     </template>
     <div>Other Settings</div>
+    <template v-for="{input,min,max,description,condition,output,name,step,title} of miscObject" :key="name">
+      <label v-if="!condition || condition.value" :title="title">
+        {{ description }}
+        <input
+          v-model.number="miscState[name]"
+          :title="output.value"
+          :step="step ?? 1" :min="min" :max="max"
+          type="range"
+          @wheel.passive="e=>scrollini(input,e)">
+      </label>
+    </template>
     <label><input
       id="a-sucker-is-born-every-minute" v-model="noPriv" type="checkbox"
       @change="e=> myPrivacyIsYourBitch(e)">I hate my privacy.</label>

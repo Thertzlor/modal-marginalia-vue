@@ -253,6 +253,7 @@ query SinglePost($postId: Int, $commentPagination: PaginationArg) {
     toenotes_vue
     footnotes_vue
     slug
+    word_count
     toc
     pub_date
     updatedAt

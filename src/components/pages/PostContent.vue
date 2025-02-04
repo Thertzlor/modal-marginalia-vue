@@ -98,6 +98,7 @@ const toeHoverIndex = ref(0);
       <label id="tocLabel" for="tocButton" title="table of contents">⩸</label>
       <main>
         <DynaPost
+          :words="post.word_count"
           :published="post.pub_date"
           :toc="post.toc"
           :main="true" :content="post.body_vue ?? ''" @active-hover="n => hoverIndex = n" />

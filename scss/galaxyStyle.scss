@@ -1605,7 +1605,7 @@ ul.pagination {
       display: block;
       clear: both;
     }
-    .datespan {
+    .datespan, .timespan {
       top: .8em;
       right: 1em;
       opacity: .5;
@@ -1613,6 +1613,11 @@ ul.pagination {
       text-align: right;
       display: inline-block;
       position: absolute;
+
+      &.timespan {
+        left: 1em;
+        text-align: left;
+      }
     }
   }
 }

@@ -35,6 +35,7 @@ export const useGlobals = defineStore('globals',() => {
 
   const getSSG = () => import.meta.env.SSR;
   let ssgData = {} as any;
+  const miscState = {reading_speed:238} as Record<string,number>;
   const setDataSSG = d => (ssgData = d.data);
   const getDataSSG = () => (ssgData) as InitAllQuery;
   const mockGraphQL = <T extends (data:InitAllQuery)=> any>(transformer:T) => (getSSG()? {result:transformer(getDataSSG()) as ReturnType<T>, onError:(...a) => void a,refetch:(...a) => void a,onResult:(...a) => void a}:undefined);
@@ -87,5 +88,5 @@ export const useGlobals = defineStore('globals',() => {
     paral.style.background = `url(${virtualCanvas ?? ''})`;
   }
 
-  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run,localCssVars,sleep,defaultReactionTimeout,mockGraphQL,getSSG,setDataSSG,getDataSSG};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run,localCssVars,sleep,defaultReactionTimeout,mockGraphQL,getSSG,setDataSSG,getDataSSG,miscState};
 });
