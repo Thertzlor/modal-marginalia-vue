@@ -5,7 +5,7 @@ import type {ComputedRef, Ref} from 'vue';
 import type {RouteLocationNormalizedLoadedGeneric} from 'vue-router';
 import type {MessageDefinition} from '../messages/MessageComponent.vue';
 
-const {localCssVars,miscState} = useGlobals();
+const {localCssVars,miscState,localMiscData,initMiscData} = useGlobals();
 const props = defineProps<{initalData:any,route:RouteLocationNormalizedLoadedGeneric}>();
 const lCook = 'modal-marginalia-cookie-confirmation';
 const bCook = 'modal-marginalia-a-sucker-is-born-every-minute';
@@ -64,6 +64,8 @@ const finalStyle = computed(() => {
 const resetCss = () => {
   for (const k of cssObject) k.input.value = sToN(window.getComputedStyle(document.body).getPropertyValue(`--${k.name}`)??'',k.unit,k.mult);
   localStorage.removeItem(localCssVars);
+  localStorage.removeItem(localMiscData);
+  initMiscData();
 };
 
 const saveCss = async() => {
@@ -73,6 +75,7 @@ const saveCss = async() => {
     if (!userInput) return;
     localStorage.setItem(lCook, 'YES');
   }
+  localStorage.setItem(localMiscData,JSON.stringify(miscState));
   localStorage.setItem(localCssVars,JSON.stringify(finalStyle.value));
 };
 

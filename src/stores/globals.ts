@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia';
 import type {UploadFile,Tag, Category, InitAllQuery} from '@/graphql/api';
+import {reactive} from 'vue';
 
 export const useGlobals = defineStore('globals',() => {
   const scrollOption:ScrollIntoViewOptions ={behavior:'smooth'};
@@ -10,6 +11,7 @@ export const useGlobals = defineStore('globals',() => {
   const iMap = new Map<string,Partial<UploadFile>>();
   const refreshRate = 30000;
   const localCssVars = 'modal-marginalia-css-vars';
+  const localMiscData = 'modal-marginalia-misc-data';
   const postRefreshRate = 0;
   const searchSurround = 150;
   const daysNew = 12;
@@ -35,7 +37,14 @@ export const useGlobals = defineStore('globals',() => {
 
   const getSSG = () => import.meta.env.SSR;
   let ssgData = {} as any;
-  const miscState = {reading_speed:238} as Record<string,number>;
+  const miscDefaults = {reading_speed:238};
+  const miscState = reactive(JSON.parse(localStorage.getItem(localMiscData)??JSON.stringify(miscDefaults))) as Record<string,number>;
+  const initMiscData = () => {
+    for (const k in miscState) {
+      if (!Object.prototype.hasOwnProperty.call(miscState, k)) continue;
+      miscState[k] = miscDefaults[k];
+    }
+  };
   const setDataSSG = d => (ssgData = d.data);
   const getDataSSG = () => (ssgData) as InitAllQuery;
   const mockGraphQL = <T extends (data:InitAllQuery)=> any>(transformer:T) => (getSSG()? {result:transformer(getDataSSG()) as ReturnType<T>, onError:(...a) => void a,refetch:(...a) => void a,onResult:(...a) => void a}:undefined);
@@ -88,5 +97,5 @@ export const useGlobals = defineStore('globals',() => {
     paral.style.background = `url(${virtualCanvas ?? ''})`;
   }
 
-  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run,localCssVars,sleep,defaultReactionTimeout,mockGraphQL,getSSG,setDataSSG,getDataSSG,miscState};
+  return {maxResults,perComment,perPage,refreshRate,postRefreshRate,searchSurround,newTime,defaultNote,graphqlURL,gerDate,taxoSort,getImageData,getSrcSet,unRay,antiNull,pipe,hist,ct,imgload,isEmpty,scrollOption,selectKey,activateCanvas,iMap,getImageFile,unHash,run,localCssVars,sleep,defaultReactionTimeout,mockGraphQL,getSSG,setDataSSG,getDataSSG,miscState,localMiscData,initMiscData};
 });

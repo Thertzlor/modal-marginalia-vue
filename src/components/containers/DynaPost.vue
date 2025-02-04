@@ -7,7 +7,7 @@ import CodeWrapper from '../containers/CodeWrapper.vue';
 import ToC from '../navigation/ToC.vue';
 import type {Component} from 'vue';
 const emit = defineEmits<{(arg:'activeHover',num:number)}>();
-const props = defineProps<{content:string,toc?:boolean|null,main?:boolean,published?:string,words?:number}>();
+const props = defineProps<{content:string,toc?:boolean|null,main?:boolean,published?:string,words?:number|null}>();
 const headerinos = ref<[number,string,string][]>([]);
 const addHeader = (index:number,level:number,title:string,id:string) => props.toc && (headerinos.value[index] = [level,id,title]);
 const setHover = (num:number) => emit('activeHover',num);
@@ -21,7 +21,7 @@ const dynamicComponent = computed(():Component => (
 </script>
 
 <template>
-  <span v-if="props.words && miscState.reading_speed" title="You can set your reading speed in the options." class="timespan">{{ (props.words/miscState.reading_speed).toFixed(0) }} minute read at {{ miscState.reading_speed }} wpm</span>
+  <span v-if="props.words && miscState.reading_speed" :title="`${props.words} words. You can set your reading speed in the options.`" class="timespan">{{ (props.words/miscState.reading_speed).toFixed(0) }} minute read at {{ miscState.reading_speed }} wpm</span>
   <span v-if="published" class="datespan">Posted {{ gerDate(published) }}</span>
   <ToC v-if="toc" :elements="headerinos" />
   <template v-if="main">
