@@ -19,7 +19,7 @@ const matcher = (path:RegExp) => computed(() => path.test(props.route.fullPath))
 const sToN = (s:string,unit='',mult=100) => parseFloat(s?.slice(0,unit.length*-1||s?.length)??0) * mult;
 const nToS = (n:number,unit='',mult=100) => `${n/mult}${unit}`;
 
-type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number, defaultVal?:number, title?:string};
+type VarData = {name:string,unit?:string,min?:number,max?:number,mult?:number,description?:string,condition?:ComputedRef<boolean>,step?:number, defaultVal?:number, title?:string,listener?:(val:number)=>any};
 type VarRef<T extends string=string> = {input:Ref<number>, output:ComputedRef<string>,name:T} & VarData;
 
 type Cd = typeof cssData;
@@ -34,10 +34,17 @@ const cssData = [
   {name:'p_opacity',min:0,max:100,description:'Nebula Opacity',unit:'',defaultVal:100},
   // {name:'p_factor',min:0,max:3,description:'Paralax factor',unit:'',mult:1,step:0.1},
   {name:'cubeTransform',min:0,max:10,mult:1,description:'Rectangle Growth',unit:'em',condition:matcher(/^\/$/),defaultVal:3.5}
-] as const;
+] as const satisfies VarData[];
+
+let displayed = false;
+
 const miscData = [
-  {name:'reading_speed',unit:'wpm',min:0,max:800,description:'Reading Speed',title:'Set to 0 to disable.', mult:1, defaultVal:miscState.reading_speed}
-] as const;
+  {name:'reading_speed',unit:'wpm',min:0,max:900,description:'Reading Speed',title:'Set to 0 to disable.', mult:1, defaultVal:miscState.reading_speed,listener(v) {
+    if (v <= 800 || displayed) return;
+    displayed = true;
+    emit('msg',{message:'I doubt you can actually read this fast.\nBut don\'t let me stop you, buddy.',msgTimeout:2000,replies:['How dare you?']});
+  }}
+] as const satisfies VarData[];
 
 for (const v of cssData) {
   const {name,unit,mult, defaultVal} = v as VarData;
@@ -136,7 +143,7 @@ defineExpose({finalStyle});
       </label>
     </template>
     <div>Other Settings</div>
-    <template v-for="{input,min,max,description,condition,output,name,step,title} of miscObject" :key="name">
+    <template v-for="{input,min,max,description,condition,output,name,step,title,listener} of miscObject" :key="name">
       <label v-if="!condition || condition.value" :title="title">
         {{ description }}
         <input
@@ -144,6 +151,7 @@ defineExpose({finalStyle});
           :title="output.value"
           :step="step ?? 1" :min="min" :max="max"
           type="range"
+          @change="listener?.(miscState[name])"
           @wheel.passive="e=>scrollini(input,e)">
       </label>
     </template>
