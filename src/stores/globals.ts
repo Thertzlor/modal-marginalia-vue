@@ -87,8 +87,7 @@ export const useGlobals = defineStore('globals',() => {
       const radius = minRadius + (Math.random() * (maxRadius - minRadius));
       const xPos = Math.max(Math.random() * (canvas.width - radius * 7), radius*7);
       const yPos = Math.max(Math.random() * (canvas.height - radius * 7),radius*7);
-      const [v1, v2, v3] = [0, 50, 50];
-      const color = `rgb(${255 - (Math.random() * v1)},${255 - (Math.random() * v2)},${255 - (Math.random() * v3)})`;
+      const color = `rgb(${[0, 50, 50].map(i => (255 - (Math.random() * i)).toFixed(0)).join(',')})`;
       drawCircle(context, xPos, yPos, radius, color);
     }
     const virtualCanvas = canvas.toDataURL();

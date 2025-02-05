@@ -23,4 +23,5 @@ The SCSS for this site is designed to be processed with PostCSS, but the plug-in
 * nested comments (maybe)
 * A better search function than the default Strapi search.
 * customaizable parallax effects?
-* dynamically generated stars per SVG instead of canvas
+* dynamically generated stars per SVG instead of canva
+* d3 based visualization of posts. (force directed?)
