@@ -27,8 +27,8 @@ export const useGlobals = defineStore('globals',() => {
   const getImageFile = (src?:string) => (src? iMap.get(src):undefined);
   const getImageData = (imgData:Partial<UploadFile>):SimpleImg[] => ['thumbnail', 'small', 'medium', 'large', ''].map(s => (s ? imgData.formats[s] : {url: imgData.url, width: imgData.width, height: imgData.height})).filter(f => f);
   const getSrcSet = (imgs:SimpleImg[]):string => imgs.filter(i => i.url).map(({url, width}) => `${url} ${width??1000}w`).join(',');
-  const unRay = <T>(x:T):T extends any[] ? T[0] : T => (Array.isArray(x) ? x[0] : x);
-  const antiNull = <T>(arr:T):T extends any[]?Exclude<T[number],null|undefined>[]:T => (Array.isArray(arr)?arr.filter(f => f) as any:arr);
+  const unRay = <T>(x:T) => (Array.isArray(x) ? x[0] : x) as T extends any[] ? T[0] : T;
+  const antiNull = <T>(arr:T) => (Array.isArray(arr)?arr.filter(f => f) as any:arr) as T extends any[]?Exclude<T[number],null|undefined>[]:T;
   const pipe = <T>(something:T,other?:any):T => (console.log(...[something,other].filter(f => f)),something);
   const hist = (url:string):void => window.history.pushState({}, '',url);
   const isEmpty = (obj:Record<any,any>):obj is Record<any,never> => !Object.keys(obj).length;

@@ -33,3 +33,4 @@ pnpm-debug.log*
 /public/sitemap.xml
 /.vite-ssg-temp
 **/**.env
+/.backup
